@@ -7,7 +7,16 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
-    "vue": "^2.7.7"
+    "@babel/runtime": "^7.18.9",
+    "axios": "^0.27.2",
+    "ethers": "^5.7.0",
+    "json-url": "^3.0.0",
+    "mongodb": "^4.2.0",
+    "node-steam-openid": "^1.0.1",
+    "vue": "^2.7.7",
+    "vue-gtag": "^1.16.1",
+    "vue-router": "^3.5.3",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vitejs/plugin-legacy": "^2.0.0",
