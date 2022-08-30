@@ -1,0 +1,22 @@
+// Import Bulma's core
+@import "../../../node_modules/bulma/sass/utilities/_all.sass";
+
+// Custom variables
+@import "./_variables";
+
+// // Import Bulma and Buefy styles
+@import "../../../node_modules/bulma/bulma.sass";
+@import "../../../node_modules/buefy/src/scss/buefy.scss";
+
+
+.navbar {
+    background-color: transparent;
+}
+
+.metamask-btn {
+    border: 1px solid rgba(0,0,0.1);
+}
+
+.navbar-item, .navbar-link {
+    font-size: 16px !important;
+}

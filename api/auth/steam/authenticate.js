@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
       const redirectURL = url.format({
         protocol: process.env.NODE_ENV === "development" ? 'http' : 'https',
         host: process.env.URL,
-        pathname: '/register-player/' + userURL
+        pathname: '/new-lord/' + userURL
       }).toString()
       res.redirect(redirectURL)
     })

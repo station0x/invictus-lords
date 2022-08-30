@@ -8,23 +8,14 @@ export default new Vuex.Store({
     state: {
         signature: window.localStorage.getItem('signature'),
         address: window.localStorage.getItem('address'),
-        steamUser: undefined,
-        gravatar: null,
         profile: undefined,
         intervalId: undefined,
-        matchId: undefined,
-        matchState: undefined,
-        picking: false,
         loaded: false,
-        registered: false,
         innerWidth: window.innerWidth,
         inventory: [],
         withdrawnRewards:{}
     },
     mutations: {
-        setSteamUser(state, user) {
-            state.user = user
-        },
         sign(state, {signature, address}) {
             state.signature = signature
             state.address = address
@@ -32,73 +23,11 @@ export default new Vuex.Store({
         setIntervalId(state, intervalId) {
             state.intervalId = intervalId
         },
-        setActiveMatchId(state, matchId) {
-            state.matchId = matchId
-            if(!matchId) state.matchState = undefined
-        },
-        setMatchState(state, matchDoc) {
-            console.log(matchDoc)
-            matchDoc._id =  matchDoc._id.toString()
-            matchDoc.playerIs = state.address === matchDoc.player0 ? 0 : 1
-            matchDoc.state = matchDoc.board
-            delete matchDoc.board
-            state.matchState = matchDoc
-        },
-        setBoard(state, board) {
-            const matchState = {...state.matchState}
-            matchState.state = board;
-            state.matchState = matchState;
-        },
-        incrementInsertionsCount(state, playerNum) {
-            const matchState = {...state.matchState}
-            if(playerNum === 0) matchState.player0PickingInsertions = matchState.player0PickingInsertions + 1
-            else matchState.player1PickingInsertions = matchState.player1PickingInsertions + 1
-            state.matchState = matchState;
-        },
-        decrementInsertionsCount(state, playerNum) {
-            const matchState = {...state.matchState}
-            if(playerNum === 0) matchState.player0PickingInsertions = matchState.player0PickingInsertions - 1
-            else matchState.player1PickingInsertions = matchState.player1PickingInsertions - 1
-            state.matchState = matchState;
-        },
-        endTurn(state) {
-            const matchState = {...state.matchState}
-            matchState.playerTurn = matchState.playerTurn === 0 ? 1 : 0;
-            matchState['fuel' + matchState.playerTurn] = Math.min(matchState['fuel' + matchState.playerTurn] + CONSTANTS.fuelPerTurn, CONSTANTS.maxFuel)
-            matchState.lastTurnTimestamp = undefined
-            state.matchState = matchState;
-        },
-        setMyFuel(state, newFuel) {
-            const matchState = {...state.matchState}
-            if(matchState.playerIs === 0) {
-                matchState.fuel0 = newFuel
-            } else if(matchState.playerIs === 1) {
-                matchState.fuel1 = newFuel
-            }
-            state.matchState = matchState;
-        },
-        setGravatar(state, gravatarLink) {
-            state.gravatar = gravatarLink
-        },
         setProfile(state, profile) {
             state.profile = profile
         },
-        setWinner (state, playerNumber) {
-            const matchState = {...state.matchState}
-            matchState.winner = playerNumber;
-            state.matchState = matchState;
-        },
-        setPicking(state, boolVal) {
-            state.picking = boolVal
-        },
         load (state) {
             state.loaded = true
-        },
-        sendMessage(state, msg) {
-            const matchState = {...state.matchState}
-            matchState.chat.push({msg, index: matchState.logsIndex + 1, playerNo: matchState.playerIs, timestamp: Date.now()})
-            state.matchState = matchState
-            debouncedMatchState.clear()
         },
         registerAddress(state, bool) {
             if(bool) state.registered = true
@@ -117,15 +46,15 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        // async fetchProfile ({commit, dispatch, state}) {
-        //     const res = await axios.get('/api/player/fetchPlayerProfile', {
-        //         params:{
-        //             address: state.address
-        //         }
-        //     })
-        //     commit('setProfile', res.data.playerDoc)
-        //     dispatch('fetchInventory')
-        // },
+        async fetchProfile ({commit, dispatch, state}) {
+            const res = await axios.get('/api/player/fetchPlayerProfile', {
+                params:{
+                    address: state.address
+                }
+            })
+            commit('setProfile', res.data.playerDoc)
+            // dispatch('fetchInventory')
+        },
         connect({commit, dispatch}, {signature, address}) {
             commit('sign', {signature, address})
             window.localStorage.setItem('signature', signature)
@@ -134,6 +63,7 @@ export default new Vuex.Store({
         },
         disconnect({commit, dispatch}) {
             commit('sign', {})
+            commit('setProfile', {})
             window.localStorage.removeItem('signature')
             window.localStorage.removeItem('address')
             // dispatch('stopPolling')
@@ -261,9 +191,9 @@ export default new Vuex.Store({
         // innerWidth: state => {
         //     return state.innerWidth
         // },
-        // isMobile: state => {
-        //     return state.innerWidth > 769 ? false : true
-        // },
+        isMobile: state => {
+            return state.innerWidth > 769 ? false : true
+        },
         // isPicking: state => {
         //     return state.picking
         // }

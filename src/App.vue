@@ -1,17 +1,25 @@
-<script setup>
-</script>
-
 <template>
   <div id="app">
-    <header>
-
-    </header>
-
-    <main>
+    <Navbar/>
+    <div class="app-body">
       <router-view></router-view>
-    </main>
+    </div>
   </div>
 </template>
+
+<script>
+  import Navbar from '@/components/Navbar.vue'
+  export default {
+    components: {
+      Navbar
+    },
+    computed: {
+      isConnected() {
+        return this.$store.state.address && this.$store.state.address.length > 0 ? true : false
+      }
+    }
+  }
+</script>
 
 <style scoped>
 header {
