@@ -10,7 +10,6 @@ module.exports = async (req, res) => {
     const players = db.collection("players")
     const query = {address}
     const playerDoc = (await players.find(query).limit(1).toArray()).map(player => {
-        if(player.elo === undefined) player.elo = 1200
         player.joinedDate = player._id.getTimestamp().toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })
         return player
     })[0]

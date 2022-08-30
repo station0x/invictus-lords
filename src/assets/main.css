@@ -1,11 +1,34 @@
 @import "./base.css";
+@import url("https://use.typekit.net/jmu0xsj.css");
+@font-face {
+  font-family: 'Evogria';
+  src: url('./fonts/Evogria/Evogria.otf') format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Evogria Italic';
+  src: url('./fonts/Evogria/Evogria-Italic.otf') format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
 
-#app {
+
+body {
+  background-color: black;
+  font-family: 'Evogria' !important;
+}
+
+/* #app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
 
   font-weight: normal;
+}
+
+.app-body {
+  top: 300px;
 }
 
 a,
@@ -19,9 +42,9 @@ a,
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
   }
-}
+} */
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   body {
     display: flex;
     place-items: center;
@@ -32,4 +55,4 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */
