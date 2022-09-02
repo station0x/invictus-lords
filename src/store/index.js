@@ -191,8 +191,11 @@ export default new Vuex.Store({
         // innerWidth: state => {
         //     return state.innerWidth
         // },
+        // isMobile: state => {
+        //     return state.innerWidth > 769 ? false : true
+        // },
         isMobile: state => {
-            return state.innerWidth > 769 ? false : true
+            return state.innerWidth > 1024 ? false : true
         },
         // isPicking: state => {
         //     return state.picking
