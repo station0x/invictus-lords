@@ -13,11 +13,23 @@
     components: {
       Navbar
     },
+    methods: {
+      responsify() {
+        this.$store.commit('changeWindowWidth', window.innerWidth)
+      },
+    },
     computed: {
       isConnected() {
         return this.$store.state.address && this.$store.state.address.length > 0 ? true : false
       }
-    }
+    },
+    created() {
+      this.$store.commit('changeWindowWidth', window.innerWidth)
+      window.addEventListener("resize", this.responsify)
+    },
+    destroyed() {
+      window.removeEventListener("resize", this.responsify)
+    },
   }
 </script>
 

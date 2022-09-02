@@ -1,61 +1,43 @@
 <template>
     <div class="greetings">
-      <h1 class="green">Register new player</h1>
       <h3>
-
+        <center>
+          <ConnectBox v-if="!isMetamask" :user="user" :isMetamask="$route.params.isMetamask" :avatar="user.avatar.large" :username="user.username"/>
+          <ConnectBox v-else :isMetamask="$route.params.isMetamask"/>
+        </center>
       </h3>
-      <button @click="connectMetamask">connect metamask</button>
     </div>
   </template>
   
   <script>
     import axios from 'axios'
     import { ethers } from 'ethers'
+    import ConnectBox from '@/components/SVGs/ConnectBox.vue'
+
     export default {
-      name: 'app',
+      components: {
+        ConnectBox
+      },
       data() {
         return {
-          data: '',
-          user: {}
+          isMetamask: undefined,
+          user: {
+            avatar: {
+              large: undefined
+            }
+          }
         }
       },
-      methods: {
-        async connectMetamask() {
-            const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
-            const signer = provider.getSigner()
-            await provider.send("eth_requestAccounts", []);
-            const accounts = await provider.listAccounts()
-            const signature = await signer.signMessage("Welcome to my house! Enter freely. Go safely, and leave something of the happiness you bring")
-            // this.$router.go()
-            this.$store.dispatch('connect', {signature, address: await signer.getAddress()})
-            this.registerPlayer()
-        },
-        async registerPlayer() {
-            const res = await axios.get('/api/player/registerPlayer', {
-                params: {
-                    signature: this.$store.state.signature,
-                    providerType: "steam",
-                    providerId: this.user.steamid,
-                    providersData: this.$route.params.user,
-                    avatar: this.user.avatar.large
-                }
-            }).then( res => {
-                console.log(res)
-            })
-            return res
-        },
-        // encodeUserObj(obj) {
-        //     const lib = JsonUrl('lzw')
-        //     lib.compress(obj).then(output => { 
-        //         return output
-        //     })
-        // }
-      },
       async created() {
-        const lib = JsonUrl('lzw')
-        lib.decompress(this.$route.params.user).then(output => { 
-           this.user = output
-        })
+        this.isMetamask = parseInt(this.$route.params.isMetamask) ? true : false
+        if(this.isMetamask && this.$store.state.address == null) this.$router.push('/')
+        else if(!this.isMetamask && this.$route.params.user === undefined) this.$router.push('/')
+        if(!this.isMetamask) {
+          const lib = JsonUrl('lzw')
+          lib.decompress(this.$route.params.user).then(output => { 
+            this.user = output
+          })
+        }
       }
     }
   </script>
@@ -73,6 +55,10 @@
   
   .greetings h1,
   .greetings h3 {
+    position: absolute;
+    top: calc(20vh);
+    left: 50%;
+    transform: translate(-50%, 0vh);
     text-align: center;
   }
   

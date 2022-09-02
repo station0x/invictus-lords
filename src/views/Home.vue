@@ -9,7 +9,7 @@
           <img
             class="center"
             src="/img/csgo-small.png"
-            width="100px" 
+            width="100px"
           >
           <b-button @click="auth" :loading="steamLoader" class="center steam-btn">
             <img class="steam-logo" src="/img/steam-logo.svg"/>
@@ -107,10 +107,14 @@
   height: 60px;
   /* width: 250px; */
   border: none;
-  padding-left: 65px;
-  padding-right: 20px;
-  margin-top: 20px;
+  padding-left: 85px;
+  padding-right: 40px;
+  margin-top: 30px;
   transition: all ease-out 500ms;
+}
+.steam-btn:hover {
+  background: white;
+  color: black;
 }
 .steam-btn:focus {
   color: white;

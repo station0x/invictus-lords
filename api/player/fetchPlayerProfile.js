@@ -9,10 +9,7 @@ module.exports = async (req, res) => {
     const db = client.db()
     const players = db.collection("players")
     const query = {address}
-    const playerDoc = (await players.find(query).limit(1).toArray()).map(player => {
-        player.joinedDate = player._id.getTimestamp().toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })
-        return player
-    })[0]
-
-    res.status(200).json({ success: true, playerDoc });
+    const playerDoc = (await players.find({address}).limit(1).toArray())[0]
+    if(!playerDoc) throw new Error('No player registered with given address')
+    res.status(200).json({ success: true, playerDoc: playerDoc });
 }

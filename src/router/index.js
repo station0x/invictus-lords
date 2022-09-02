@@ -9,7 +9,7 @@ import store from '../store'
 const Home = () => import('@/views/Home.vue')
 const RegisterPlayer = () => import('@/views/RegisterPlayer.vue')
 const NotFound = () => import('@/views/NotFound.vue')
-const PlayerProfile = () => import('@/views/PlayerProfile')
+const PlayerProfile = () => import('@/views/PlayerProfile.vue')
 
 // const Login = () => import('@/views/Login')
 // const RedeemAccessKey = () => import('@/views/RedeemAccessKey')
@@ -26,8 +26,8 @@ const routes = [
   // { path: '*', redirect: { name: 'Not Found' }},
   { path: '/home', component: Home, name: 'Home', meta: { requiresLogin: true, title: 'Home' } },
   { path: '/not-found', component: NotFound, name: 'Not Found', meta: { title: 'Page Not Found' } },
-  { path: '/new-lord/:user', component: RegisterPlayer, name: 'Register', meta: { title: 'New Lord' } },
-  { path: '/lord/:playerAddress', component: PlayerProfile, name: 'Lord Profile', meta: { title: 'Profile' } },
+  { path: '/new-lord/:isMetamask/:user?', component: RegisterPlayer, name: 'Register', meta: { title: 'New Lord' }, props: true },
+  { path: '/lord/:playerAddress', component: PlayerProfile, name: 'Lord Profile', meta: { title: 'Lord Profile' }, props: true },
 
 //   { path: '/login/:redirect?:key?', component: Login, name: 'Login', meta: { title: 'Login' } },
 
