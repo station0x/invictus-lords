@@ -5,11 +5,12 @@ const { ObjectId } = require('mongodb');
 
 module.exports = async (req, res) => {
     const address = req.query.address
+    const game = req.query.game
     const client = await clientPromise;
     const db = client.db()
-    const players = db.collection("players")
+    const gameCollection = db.collection(`${game}`)
     const query = {address}
-    const playerDoc = (await players.find({address}).limit(1).toArray())[0]
+    const playerGameDoc = (await gameCollection.find({address}).limit(1).toArray())[0]
     if(!playerDoc) {
         res.status(404).json({ success: false })
     } else res.status(200).json({ success: true, playerDoc: playerDoc })
