@@ -1,9 +1,8 @@
 <template>
     <div>
-        <Loader v-if="!isFetched"/>
-        <div v-else class="nav-wrapper">
-            <img v-if="!$store.getters.isMobile" class="lord-avatar" :src="$store.state.profile.avatar">
-
+        <!-- <Loader v-if="!isFetched"/> -->
+        <div class="nav-wrapper">
+            <img v-if="isConnected && isFetched && !$store.getters.isMobile" class="lord-avatar" :src="playerAvatar">
             <b-navbar transparent>
                 <template #brand>
                     <b-navbar-item tag="router-link" :to="{ path: '/' }">
@@ -24,14 +23,33 @@
                 </template>
 
                 <template #end>
-                    <b-navbar-item class="lord-dropdown" tag="div">
-                        <div v-if="!isConnected" class="buttons">
+                    <b-navbar-item v-if="!isConnected" class="lord-dropdown" tag="div">
+                        <div  class="buttons">
                             <b-button :loading="mmLoader" @click="connectMetamask" class="button metamask-btn">
                                 <img class="fox-icon" src="/img/mm_fox.svg"/>
                                 <strong>Login</strong>
                             </b-button>
                         </div>
-                        <div v-else class="buttons">
+                    </b-navbar-item>
+                    <b-navbar-item v-else-if="isConnected && !isFetched" style="width: 200px; margin-top: 19px">
+                        <article class="media" style="width: 100%; opacity: 0.2">
+                                <figure class="media-center">
+                                    <p class="image is-64x64" style="margin-top: 5px; margin-right: -5px">
+                                        <b-skeleton circle width="45px" height="45px"></b-skeleton>
+                                    </p>
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p>
+                                            <b-skeleton active width="100%"></b-skeleton>
+                                            <b-skeleton height="16px" width="100%"></b-skeleton>
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
+                    </b-navbar-item>
+                    <b-navbar-item v-else class="lord-dropdown" tag="div">
+                        <div class="buttons">
                             <p class="lord-address">{{lordAddress}}</p>
                             <b-navbar-dropdown tag="div" :label="$store.state.profile.playerAlias">
                                 <b-navbar-item @click="openProfile">
@@ -43,6 +61,7 @@
                             </b-navbar-dropdown>
                         </div>
                     </b-navbar-item>
+
                 </template>
             </b-navbar>
             <!-- <p>{{ this.$store.state.address }}</p>
@@ -59,7 +78,8 @@
         data() {
             return {
                 mmLoader: false,
-                loader: true
+                loader: false,
+                loading: true
             }
         },
         components: {
@@ -116,13 +136,16 @@
                 this.$router.push({
                     name: 'Lord Profile',
                     params: {
-                        playerAddress: this.$store.state.address
+                        playerAddress: this.$store.state.address,
+                        game: 'csgo'
                     }
                 })
             }
         },
         async beforeMount() {
-            this.$store.dispatch('fetchProfile')
+            if(this.$store.state.address) {
+                this.$store.dispatch('fetchProfile')
+            }
         },
         computed: {
             isConnected() {
@@ -132,7 +155,13 @@
                 return this.$store.state.address.slice(0, 5) + '...' + this.$store.state.address.slice(-4)
             },
             isFetched() {
-                return this.isConnected && this.$store.state.profile != undefined
+                if (!this.isConnected) return true
+                else if(this.isConnected && this.$store.state.profile !== undefined) return true
+                else return false
+            },
+            playerAvatar() {
+                if(this.$store.state.profile === undefined) return '/img/blank.gif'
+                else return this.$store.state.profile.avatar
             }
         }
     } 

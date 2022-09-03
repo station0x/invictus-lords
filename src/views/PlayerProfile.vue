@@ -16,17 +16,22 @@
         data() {
             return {
                 fetchingProfileLoader: true,
-                playerInfo: undefined
+                playerProfile: undefined,
+                player:undefined
             }
         },
         methods: {
-            async fetchProfile() {
-                const res = await axios.get('/api/player/fetchPlayerProfile', {
-                    params:{
-                        address: this.playerAddress
-                    }
-                })
-                this.playerInfo = res.data.playerDoc
+            async fetchProfile(address) {
+                try {
+                    const res = await axios.get('/api/player/fetchPlayerProfile', {
+                        params:{
+                            address
+                        }
+                    })
+                    this.playerProfile = res.data.playerDoc
+                } catch(err) {
+                    if(!err.response.data.success) this.$router.push('/')
+                }
             },
             async fetchCSGO() {
                 const res = await axios.get('https://public-api.tracker.gg/v2/csgo/standard/profile/steam/76561198008049283', {
@@ -44,13 +49,12 @@
         },
         async created() {
             if(ethers.utils.isAddress(this.$route.params.playerAddress)) {
-                this.isAddress = true
-                this.playerAddress = this.$route.params.playerAddress
-                const playerProfile = await this.fetchProfile()
-                const fetchCSGO = await this.fetchCSGO()
+                await this.fetchProfile(this.$route.params.playerAddress)
                 this.fetchingProfileLoader = false
+
+                // await this.fetchCSGO()
             } else {
-                this.$router.push({ name: 'Not found', params: {message: 'Profile'} })
+                this.$router.push({ name: 'Home' })
             }
         }
     }
@@ -65,6 +69,7 @@
         text-align: center;
         width: 80vw;
         max-width: 1400px;
+        min-width: 1100px;
     }
     /* .profile-box {
         width: 80%;

@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
             ],
             playerAlias: userObj.username,
             avatar: req.query.avatar,
-            providersData: { 
+            personas: { 
                 [`${providerType}`]: userObj
             },
             gamesList: { },
