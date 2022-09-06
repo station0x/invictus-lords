@@ -2,7 +2,13 @@
     <div>
         <Loader v-if="fetchingProfileLoader"/>
         <div v-else class="profile-wrapper">
-            <ProfileBox/>
+            <ProfileBox 
+                :playerInfo="playerInfo"
+                :playerGameProfile="playerGameData"
+                @setSeasonData="setSeasonDataFromChild"
+                @refresh="refetch"
+                :isFetching="isFetching"
+            />
         </div>
     </div>
 </template>
@@ -16,31 +22,40 @@
         data() {
             return {
                 fetchingProfileLoader: true,
-                playerProfile: undefined,
-                player:undefined
+                playerInfo: undefined,
+                playerGameProfile: undefined,
+                isSeasonData: true,
+                isFetching: false
             }
         },
         methods: {
             async fetchProfile(address) {
                 try {
-                    const res = await axios.get('/api/player/fetchPlayerProfile', {
+                    const res = await axios.get('/api/games/fetchGameProfile', {
                         params:{
-                            address
+                            address,
+                            game: this.$route.params.game
                         }
                     })
-                    this.playerProfile = res.data.playerDoc
+                    this.playerGameProfile = res.data.playerGameDoc
+                    this.playerInfo = res.data.playerDoc
                 } catch(err) {
                     if(!err.response.data.success) this.$router.push('/')
                 }
             },
-            async fetchCSGO() {
-                const res = await axios.get('https://public-api.tracker.gg/v2/csgo/standard/profile/steam/76561198008049283', {
-                    headers: {
-                        'TRN-Api-Key': import.meta.env.VITE_TRACKER_API,
-                        'Access-Control-Allow-Origin': '*'
-                    }
-                })
-                this.player = res.data
+            async refetch() {
+                this.isFetching = true
+                await this.fetchProfile(this.$route.params.playerAddress)
+                this.isFetching = false
+            },
+            setSeasonDataFromChild (isSeasonData) {
+                this.isSeasonData = isSeasonData
+            }
+        },
+        computed: {
+            playerGameData() {
+                if(this.fetchingProfileLoader) return undefined
+                else return this.isSeasonData ? this.playerGameProfile.gameInfo : this.playerGameProfile.gameInfoLifetime
             }
         },
         components: {
@@ -51,8 +66,6 @@
             if(ethers.utils.isAddress(this.$route.params.playerAddress)) {
                 await this.fetchProfile(this.$route.params.playerAddress)
                 this.fetchingProfileLoader = false
-
-                // await this.fetchCSGO()
             } else {
                 this.$router.push({ name: 'Home' })
             }
@@ -63,11 +76,11 @@
 <style>
     .profile-wrapper {
         position: absolute;
-        top: calc(13vh);
+        top: 100px;
         left: 50%;
         transform: translate(-50%, 0vh);
         text-align: center;
-        width: 80vw;
+        width: 1200px;
         max-width: 1400px;
         min-width: 1100px;
     }
