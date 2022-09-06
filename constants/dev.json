@@ -1,0 +1,8 @@
+{
+    "games" : {
+        "csgo" : {
+            "persona" : "steam",
+            "personaIdKey" : "steamid"
+        }
+    }
+}
