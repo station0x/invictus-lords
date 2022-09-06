@@ -632,6 +632,11 @@ csstype@^3.1.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.0.tgz#4ddcac3718d787cf9df0d1b7d15033925c8f29f2"
   integrity sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==
 
+date-and-time@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/date-and-time/-/date-and-time-2.4.1.tgz#e028851fcaf01e2626934742cf625e75d9bc2258"
+  integrity sha512-fG+ClATev+wHryqxOoGcTTegr5RhYE+tz/XHUkTQ/zvpWqQ90oOxjOhuMQ02bw87Oy9N3qBENCHHHSKdWJjgTg==
+
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
@@ -864,6 +869,11 @@ glob-parent@~5.1.2:
   integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
   dependencies:
     is-glob "^4.0.1"
+
+gsap@^3.6.0:
+  version "3.11.1"
+  resolved "https://registry.yarnpkg.com/gsap/-/gsap-3.11.1.tgz#2d99acf9c9ad02f3b6668bfab7567d31f217a91e"
+  integrity sha512-UKuJ0UPhntFHMwT6URFQ4cTQv88xc7Kd9Dhxt7qX9IPhC+d+/a5wKW5E5Vn33hZ53nBI1JfApcEbzKgXkcuPZw==
 
 has-symbols@^1.0.3:
   version "1.0.3"
@@ -1328,6 +1338,13 @@ vue-gtag@^1.16.1:
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-1.16.1.tgz#edb2f20ab4f6c4d4d372dfecf8c1fcc8ab890181"
   integrity sha512-5vs0pSGxdqrfXqN1Qwt0ZFXG0iTYjRMu/saddc7QIC5yp+DKgjWQRpGYVa7Pq+KbThxwzzMfo0sGi7ISa6NowA==
+
+vue-number-animation@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vue-number-animation/-/vue-number-animation-1.1.2.tgz#242072ede1e9ba2c7574b9c240fb11fc45e5151a"
+  integrity sha512-3tPgGl8OSWpEVOcoUSl/sikhx8AufYQL+oFAy/xzfQap7o7PeppD3W9WLOn9RvhMi9cXrja5aSeFnfdLS8iFww==
+  dependencies:
+    gsap "^3.6.0"
 
 vue-router@^3.5.3:
   version "3.6.4"

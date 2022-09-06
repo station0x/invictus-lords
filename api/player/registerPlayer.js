@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
             personas: { 
                 [`${providerType}`]: userObj
             },
-            gamesList: { },
+            gamesList: ['csgo'],
             lastSeenTimestamp: Date.now(),
             createdAt: Date.now(),
         })

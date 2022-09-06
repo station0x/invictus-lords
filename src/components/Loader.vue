@@ -42,12 +42,21 @@ export default {
     letter-spacing: 4px;
     font-weight: 100;
     font-size: 25px;
-    color: rgba(250,250,250, 0.6);
+    color: rgba(250,250,250, 1);
 }
 .elementToFadeInAndOut {
-    background: black;
+    background: transparent;
     -webkit-animation: fadeinout 1.5s linear forwards;
     animation: fadeinout 1.5s linear forwards;
     animation-iteration-count: infinite;
+}
+
+@keyframes fadeinout {
+  0%,100% { opacity: 0 }
+  50% { opacity: 0.7 }
+}
+.loader-fake-btn {
+    border: none;
+    user-select: none;
 }
 </style>
