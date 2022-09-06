@@ -24,6 +24,7 @@
       }
     },
     created() {
+      // this.$store.dispatch('disconnect')
       this.$store.commit('changeWindowWidth', window.innerWidth)
       window.addEventListener("resize", this.responsify)
     },

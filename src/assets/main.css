@@ -17,6 +17,11 @@
 body {
   background-color: black;
   font-family: 'Evogria' !important;
+  /* width: 100vw;
+  height: 100vh; */
+  background-image: url('/img/bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 /* #app {
