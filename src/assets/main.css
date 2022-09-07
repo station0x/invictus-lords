@@ -2,13 +2,13 @@
 @import url("https://use.typekit.net/jmu0xsj.css");
 @font-face {
   font-family: 'Evogria';
-  src: url('/assets/fonts/Evogria/Evogria.otf') format("opentype");
+  src: url('./fonts/evogria/Evogria.otf') format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Evogria Italic';
-  src: url('/assets/fonts/Evogria/Evogria-Italic.otf') format("opentype");
+  src: url('./fonts/evogria/EvogriaItalic.otf') format("opentype");
   font-weight: normal;
   font-style: normal;
 }
