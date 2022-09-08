@@ -145,7 +145,7 @@
         <text id="20" fill="white" xml:space="preserve" style="white-space: pre; opacity: 0.2" font-family="Evogria" font-size="24" letter-spacing="0em"><tspan x="227" y="375">Empty</tspan></text>
         <text id="0x45..6556" fill="white" xml:space="preserve" style="white-space: pre; opacity: .8;" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="193" y="106.603">{{ playerInfo.address.slice(0, 5) + '...' + playerInfo.address.slice(-4) }}</tspan></text>
         <text id="25 jan 2022" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="385.389" y="212.603">5000 VAMP</tspan></text>
-        <text id="#1548" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="187.443" y="620.603">#1548</tspan></text>
+        <text id="#1548" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="187.443" y="620.603">{{ '# ' + myRank }}</tspan></text>
         <text id="Rank" fill="#EB020A" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="135.028" y="620.603">Rank</tspan></text>
         <g id="chevron-down">
         <path id="Vector" d="M477 572L483 566L477 560" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -170,14 +170,14 @@
         <!-- <text id="1X" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="430.453" y="109.603">1X</tspan></text> -->
         </g>
         <g id="Group 21">
-        <text id="rank" fill="#F20009" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="610" y="55.1025">RANK #</tspan></text>
+        <text id="rank" fill="#F20009" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="610" y="55.1025"># RANK</tspan></text>
         <foreignObject height="1" width="1" x="610" y="65" dominant-baseline="middle" text-anchor="middle">
             <number
             class="major-number"
             ref="number1"
             :from="0"
-            :to="20000"
-            :format="integerFormat"
+            :to="myRank"
+            :format="hashFormat"
             :duration="2"
             easing="Power1.easeOut"/>
         </foreignObject>
@@ -532,7 +532,7 @@
                 time: Date.now()
             }
         },
-        props: ['playerInfo', 'playerGameProfile', 'isFetching', 'lastFetched'],
+        props: ['playerInfo', 'playerGameProfile', 'isFetching', 'lastFetched', 'myRank'],
         created() {
             const self = this
             this.dateInterval = setInterval(function () {
@@ -582,6 +582,9 @@
             percentageFormat(number) {
                 if(number == NaN || number == undefined) return '-'
                 return number.toFixed(2) + '%'
+            },
+            hashFormat(number) {
+                return '#' + this.toFixedNoRounding(number)
             },
             toFixedNoRounding(n) {
                 return n.toString().match(/^-?\d+(?:\d{0})?/)[0]
