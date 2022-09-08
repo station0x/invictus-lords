@@ -13,7 +13,10 @@ export default new Vuex.Store({
         loaded: false,
         innerWidth: window.innerWidth,
         inventory: [],
-        withdrawnRewards:{}
+        withdrawnRewards:{},
+        candidateSignature: window.localStorage.getItem('candidateSignature'),
+        candidateUsername: window.localStorage.getItem('candidateUsername'),
+        candidateUseSteamData: window.localStorage.getItem('candidateUseSteamData')
     },
     mutations: {
         sign(state, {signature, address}) {
@@ -32,6 +35,11 @@ export default new Vuex.Store({
         registerAddress(state, bool) {
             if(bool) state.registered = true
             else state.registered = false
+        },
+        setCandidate(state, {signature, username, useSteamData}) {
+            state.candidateSignature = signature
+            state.candidateUsername = username
+            state.candidateUseSteamData = useSteamData
         },
         changeWindowWidth(state, width) {
             state.innerWidth = width
@@ -60,6 +68,16 @@ export default new Vuex.Store({
             window.localStorage.setItem('signature', signature)
             window.localStorage.setItem('address', address)
             // dispatch('startPolling')
+        },
+        registerCandidate({commit, dispatch}, {signature, username, useSteamData}) {
+            commit('setCandidate', {signature, username, useSteamData})
+            window.localStorage.setItem('candidateSignature', signature)
+            window.localStorage.setItem('candidateUsername', username)
+            window.localStorage.setItem('candidateUseSteamData', useSteamData)
+        },
+        unregisterCandidate({commit, dispatch}) {
+            commit('setCandidate', {})
+            window.localStorage.removeItem('candidate')
         },
         disconnect({commit, dispatch}) {
             commit('sign', {})

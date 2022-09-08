@@ -5,9 +5,11 @@
             <ProfileBox 
                 :playerInfo="playerInfo"
                 :playerGameProfile="playerGameData"
+                :lastFetched="playerGameProfile.lastFetched"
                 @setSeasonData="setSeasonDataFromChild"
                 @refresh="refetch"
                 :isFetching="isFetching"
+                :myRank="myRank"
             />
         </div>
     </div>
@@ -25,7 +27,8 @@
                 playerInfo: undefined,
                 playerGameProfile: undefined,
                 isSeasonData: true,
-                isFetching: false
+                isFetching: false,
+                rankings: undefined
             }
         },
         methods: {
@@ -43,6 +46,18 @@
                     if(!err.response.data.success) this.$router.push('/')
                 }
             },
+            async fetchRank(address) {
+                try {
+                    const res = await axios.get('/api/games/fetchLeaderboard', {
+                        params:{
+                            game: this.$route.params.game
+                        }
+                    })
+                    this.rankings = res.data.leaderboard
+                } catch(err) {
+                    if(!err.response.data.success) this.$router.push('/')
+                }
+            },
             async refetch() {
                 this.isFetching = true
                 await this.fetchProfile(this.$route.params.playerAddress)
@@ -56,6 +71,17 @@
             playerGameData() {
                 if(this.fetchingProfileLoader) return undefined
                 else return this.isSeasonData ? this.playerGameProfile.gameInfo : this.playerGameProfile.gameInfoLifetime
+            },
+            myRank() {
+            let rank = '--'
+                if(this.rankings){          
+                    this.rankings.map((player, index) => {
+                        if(player.address === this.playerInfo.address) {
+                            rank = (index + 1)
+                        }
+                    })
+                }
+                return rank
             }
         },
         components: {
@@ -65,6 +91,7 @@
         async created() {
             if(ethers.utils.isAddress(this.$route.params.playerAddress)) {
                 await this.fetchProfile(this.$route.params.playerAddress)
+                await this.fetchRank(this.$route.params.playerAddress)
                 this.fetchingProfileLoader = false
             } else {
                 this.$router.push({ name: 'Home' })

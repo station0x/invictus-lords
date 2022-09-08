@@ -17,8 +17,8 @@
             <rect width="139" height="49" transform="matrix(1 0 0 -1 918 49)" fill="#000001"/>
             <rect x="1" y="-1" width="137" height="47" transform="matrix(1 0 0 -1 918 47)" stroke="#0B0B10" stroke-width="2"/>
             </g>
-            <text id="Last fetched data" fill="white" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="695" y="30.4312">Last fetched data</tspan></text>
-            <text id="2 hours ago" fill="white" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="822" y="30.4312">2 hours ago </tspan></text>
+            <text id="Last fetched data" fill="white" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="710" y="30.4312">Last fetched</tspan></text>
+            <text id="2 hours ago" fill="white" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="800" y="30.4312">{{ sinceTime }} </tspan></text>
             <text :class="{'elementToFadeInAndOut': isFetching }" id="Refresh" :fill="isFetching ? 'red' : 'white'" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="949" y="30.4312">{{ isFetching ? 'Loading' : 'Refresh'}}</tspan></text>
             <g id="refresh">
 
@@ -145,7 +145,7 @@
         <text id="20" fill="white" xml:space="preserve" style="white-space: pre; opacity: 0.2" font-family="Evogria" font-size="24" letter-spacing="0em"><tspan x="227" y="375">Empty</tspan></text>
         <text id="0x45..6556" fill="white" xml:space="preserve" style="white-space: pre; opacity: .8;" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="193" y="106.603">{{ playerInfo.address.slice(0, 5) + '...' + playerInfo.address.slice(-4) }}</tspan></text>
         <text id="25 jan 2022" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="385.389" y="212.603">5000 VAMP</tspan></text>
-        <text id="#1548" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="187.443" y="620.603">#1548</tspan></text>
+        <text id="#1548" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="187.443" y="620.603">{{ '# ' + myRank }}</tspan></text>
         <text id="Rank" fill="#EB020A" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="135.028" y="620.603">Rank</tspan></text>
         <g id="chevron-down">
         <path id="Vector" d="M477 572L483 566L477 560" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -170,14 +170,14 @@
         <!-- <text id="1X" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="430.453" y="109.603">1X</tspan></text> -->
         </g>
         <g id="Group 21">
-        <text id="rank" fill="#F20009" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="610" y="55.1025">RANK #</tspan></text>
+        <text id="rank" fill="#F20009" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="610" y="55.1025"># RANK</tspan></text>
         <foreignObject height="1" width="1" x="610" y="65" dominant-baseline="middle" text-anchor="middle">
             <number
             class="major-number"
             ref="number1"
             :from="0"
-            :to="20000"
-            :format="integerFormat"
+            :to="myRank"
+            :format="hashFormat"
             :duration="2"
             easing="Power1.easeOut"/>
         </foreignObject>
@@ -528,16 +528,38 @@
     export default {
         data() {
             return {
-                isSeasonData: true
+                isSeasonData: true,
+                time: Date.now()
             }
         },
-        props: ['playerInfo', 'playerGameProfile', 'isFetching'],
+        props: ['playerInfo', 'playerGameProfile', 'isFetching', 'lastFetched', 'myRank'],
         created() {
+            const self = this
+            this.dateInterval = setInterval(function () {
+                self.time = Date.now()
+                if(((self.time - self.lastFetched) / 1000) > 300) {
+                    self.refetchData()
+                }
+            }, 1000)
+        },
+        computed: {
+            sinceTime() {
+                return this.timeSince(this.time, this.lastFetched)
+            }
         },
         methods: {
             joinedAt(unixTime) {
                 const now = new Date(unixTime)
                 return date.format(now, 'MMM DD YYYY')
+            },
+            timeSince(now, time) {
+                var seconds = Math.floor((now - time) / 1000)
+                var interval = seconds / 31536000
+                interval = seconds / 60
+                if (interval > 1) {
+                    return Math.floor(interval) + " minutes ago"
+                }
+                return Math.floor(seconds) + " seconds ago"
             },
             commafy( num ) {
                 var str = num.toString().split('.');
@@ -560,6 +582,9 @@
             percentageFormat(number) {
                 if(number == NaN || number == undefined) return '-'
                 return number.toFixed(2) + '%'
+            },
+            hashFormat(number) {
+                return '#' + this.toFixedNoRounding(number)
             },
             toFixedNoRounding(n) {
                 return n.toString().match(/^-?\d+(?:\d{0})?/)[0]
