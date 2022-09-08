@@ -11,7 +11,7 @@
             src="/img/csgo-small.png"
             width="100px"
           >
-          <b-button @click="auth" :loading="steamLoader" class="center steam-btn">
+          <b-button v-if="!this.$store.state.address" @click="auth" :loading="steamLoader" class="center steam-btn">
             <img class="steam-logo" src="/img/steam-logo.svg"/>
             Sign up with Steam
           </b-button>

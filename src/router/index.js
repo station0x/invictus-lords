@@ -10,10 +10,11 @@ const Home = () => import('@/views/Home.vue')
 const RegisterPlayer = () => import('@/views/RegisterPlayer.vue')
 const NotFound = () => import('@/views/NotFound.vue')
 const PlayerProfile = () => import('@/views/PlayerProfile.vue')
+const Leaderboard = () => import('@/views/Leaderboard.vue')
 
 // const Login = () => import('@/views/Login')
 // const RedeemAccessKey = () => import('@/views/RedeemAccessKey')
-// const Leaderboard = () => import('@/views/Leaderboard')
+
 // const Dashboard = () => import('@/views/admin/Dashboard.vue')
 
 
@@ -28,6 +29,8 @@ const routes = [
   { path: '/not-found', component: NotFound, name: 'Not Found', meta: { title: 'Page Not Found' } },
   { path: '/new-lord/:isMetamask/:user?', component: RegisterPlayer, name: 'Register', meta: { title: 'New Lord' }, props: true },
   { path: '/lord/:playerAddress/:game', component: PlayerProfile, name: 'Lord Profile', meta: { title: 'Lord Profile' }, props: true },
+  { path: '/leaderboard', component: Leaderboard, name: 'Leaderboard', meta: { title: 'Leaderboard' } },
+
 
 //   { path: '/login/:redirect?:key?', component: Login, name: 'Login', meta: { title: 'Login' } },
 
@@ -37,7 +40,6 @@ const routes = [
 //   { path: '/admin', component: Admin, name: 'Admin' },
 //   { path: '/redeem-your-access-key', component: RedeemAccessKey, name: 'Redeem Access Key', meta: { requiresLogin: true, title: 'Redeem Access Key' } },
 //   { path: '/not-found', component: NotFound, name: 'Not Found', props: true, meta: { title: 'Page Not Found' } },
-//   { path: '/leaderboard', component: Leaderboard, name: 'Leaderboard', meta: { title: 'Leaderboard' } },
 //   // Admin
 //   { path: '/dashboard', component: Dashboard, name: 'Dashboard', meta: { requiresAdmin: true, title: 'Admin Dashboard' } },
 ]
