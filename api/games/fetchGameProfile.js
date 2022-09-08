@@ -30,6 +30,8 @@ module.exports = async (req, res) => {
         }))
         let gameProfile = {
             personaId,
+            address,
+            playerAlias: playerDoc.playerAlias,
             persona,
             rating: 0,
             lastFetched: Date.now(),
@@ -71,11 +73,19 @@ module.exports = async (req, res) => {
             }
         }
         // Calculate percentages-based stats
-        newPlayerGameDoc.gameInfo['kd'].value = newPlayerGameDoc.gameInfo.kills.value / newPlayerGameDoc.gameInfo.deaths.value
-        newPlayerGameDoc.gameInfo['shotsAccuracy'].value = (newPlayerGameDoc.gameInfo.shotsHit.value / newPlayerGameDoc.gameInfo.shotsFired.value) * 100
-        newPlayerGameDoc.gameInfo['wlPercentage'].value = (newPlayerGameDoc.gameInfo.wins.value / newPlayerGameDoc.gameInfo.matchesPlayed.value) * 100
-        newPlayerGameDoc.gameInfo['headshotPct'].value = (newPlayerGameDoc.gameInfo.headshots.value / newPlayerGameDoc.gameInfo.kills.value) * 100
+        newPlayerGameDoc.gameInfo['kd'].value = newPlayerGameDoc.gameInfo.kills.value / newPlayerGameDoc.gameInfo.deaths.value || 0
+        newPlayerGameDoc.gameInfo['shotsAccuracy'].value = (newPlayerGameDoc.gameInfo.shotsHit.value / newPlayerGameDoc.gameInfo.shotsFired.value) * 100 || 0 
+        newPlayerGameDoc.gameInfo['wlPercentage'].value = (newPlayerGameDoc.gameInfo.wins.value / newPlayerGameDoc.gameInfo.matchesPlayed.value) * 100 || 0
+        newPlayerGameDoc.gameInfo['headshotPct'].value = (newPlayerGameDoc.gameInfo.headshots.value / newPlayerGameDoc.gameInfo.kills.value) * 100 || 0
 
+        // Calculate rating
+        newPlayerGameDoc.rating = 
+        Number.parseInt((newPlayerGameDoc.gameInfo['score'].value 
+        * (newPlayerGameDoc.gameInfo['wlPercentage'].value * newPlayerGameDoc.gameInfo['matchesPlayed'].value)
+        * newPlayerGameDoc.gameInfo['headshotPct'].value).toFixed(0))
+
+        // fallback add address if not present
+        newPlayerGameDoc.address = address
         // Update last fetched time
         newPlayerGameDoc.lastFetched = Date.now()
 

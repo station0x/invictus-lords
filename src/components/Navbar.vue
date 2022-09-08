@@ -14,8 +14,11 @@
                     </b-navbar-item>
                 </template>
                 <template #start>
-                    <b-navbar-item href="#">
+                    <b-navbar-item @click="$router.push('/')">
                         Home
+                    </b-navbar-item>
+                    <b-navbar-item @click="openLeaderboard">
+                        Leaderboard
                     </b-navbar-item>
                     <b-navbar-item href="#">
                         Minting
@@ -24,7 +27,7 @@
 
                 <template #end>
                     <b-navbar-item v-if="!isConnected" class="lord-dropdown" tag="div">
-                        <div  class="buttons">
+                        <div v-if="mmInstalled" class="buttons">
                             <b-button :loading="mmLoader" @click="connectMetamask" class="button metamask-btn">
                                 <img class="fox-icon" src="/img/mm_fox.svg"/>
                                 <strong>Login</strong>
@@ -51,7 +54,7 @@
                     <b-navbar-item v-else class="lord-dropdown" tag="div">
                         <div class="buttons">
                             <p class="lord-address">{{lordAddress}}</p>
-                            <b-navbar-dropdown tag="div" :label="$store.state.profile.playerAlias">
+                            <b-navbar-dropdown tag="div" :label="formatName($store.state.profile.playerAlias)">
                                 <b-navbar-item @click="openProfile">
                                     Profile
                                 </b-navbar-item>
@@ -79,17 +82,25 @@
             return {
                 mmLoader: false,
                 loader: false,
-                loading: true
+                loading: true,
+                mmInstalled: false
             }
         },
         components: {
             Loader
         },
+        created() {
+            if(typeof window.ethereum !== 'undefined') this.mmInstalled = true
+        },  
         methods: {
             logout() {
                 this.$store.dispatch('disconnect')
                 // this.$router.push({name: 'Home'})
                 // this.$emit('close')
+            },
+            openLeaderboard() {
+                let routeData = this.$router.resolve({ name: 'Leaderboard' })
+                window.open(routeData.href, '_self')
             },
             async connectMetamask() {
                 this.mmLoader = true   
@@ -105,9 +116,7 @@
                             signature: signature
                         }
                     }).then(res => {
-                        console.log(res)
                         if(res.data.success) {
-                            console.log('ds')
                             this.$store.dispatch('connect', {signature, address})
                             this.$store.dispatch('fetchProfile')
                             this.$buefy.snackbar.open({
@@ -115,12 +124,15 @@
                                 type: 'is-success',
                                 position: 'is-top'
                             })
+                            this.openProfile()
                         } else {
-                            this.$store.dispatch('connect', {signature, address})
+                            // this.$store.dispatch('connect', {signature, address})
+                            console.log(signature)
                             this.$router.push({
                                 name: 'Register',
                                 params: {
-                                    isMetamask: "1"
+                                    isMetamask: "1",
+                                    user: signature
                                 }
                             })
                         }
@@ -140,6 +152,10 @@
                         game: 'csgo'
                     }
                 })
+            },
+            formatName(name) {
+                if(this.$store.state.address) return name.slice(0, 11) + ' ..'
+                return '--'
             }
         },
         async beforeMount() {

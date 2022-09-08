@@ -9,6 +9,8 @@ import VueNumber from 'vue-number-animation'
 import '../src/assets/scss/main.scss'
 import './assets/main.css'
 
+Vue.prototype.ethereum = window.ethereum
+
 Vue.use(Buefy)
 Vue.use(VueNumber)
 Vue.use(VueGtag, {
