@@ -69,13 +69,23 @@
         <line id="Line 2" x1="3.99998" y1="151.006" x2="0.999957" y2="617.006" stroke="#0B0B10" stroke-width="2"/>
         <line id="Line 3" x1="527" y1="151.006" x2="524" y2="617.006" stroke="#0B0B10" stroke-width="2"/>
         <circle id="Ellipse 2" cx="263" cy="322" r="73" fill="url(#avatar-pattern)" stroke="#0B0B10" stroke-width="4"/>
-        <text id="leaderboard" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em" x="50%" y="439.603" width="700" height="40px" text-anchor="middle"><tspan fill="#F20009">Lord  </tspan>{{ username }}</text>
+        <foreignObject height="150" width="100%" x="0" y="408" dominant-baseline="middle" text-anchor="middle">
+            <div class="playerAlias-input-wrapper">
+                <b-field custom-class="playerAlias-input-label" label="Lord" label-postion="on-border">
+                    <b-input :disabled="useSteamData" :autofocus="true" custom-class="playerAlias-input" :value="playerAlias" @input="changePlayerAlias"></b-input>
+                </b-field>
+            </div>
+        </foreignObject>
+
         <foreignObject height="150" width="100%" x="0" y="470" dominant-baseline="middle" text-anchor="middle">
-            <p v-if="isMetamaskTrue" class="body-text">Hey Anon! Just one more step to start getting your rewards by playing your favourite games. <br/> Connect Steam Below.</p>
-            <p v-else="isMetamaskTrue" class="body-text"> One last step to start competing with other lords!  
+            <p v-if="isMetamaskTrue" class="body-text" style="margin-top: 25px;">Hey Anon! Just one more step to start getting your rewards by playing your favourite games. </p>
+            <p v-else="isMetamaskTrue" class="body-text" style="margin-top: 25px;"> One last step to start competing with other lords!  
                 Link wallet to your account to be  able to claim your hard-earned rewards.
                 <p style="font-weight: 500; margin-top: -20px">GLHF.</p>
             </p>
+        </foreignObject>
+        <foreignObject height="150" width="100%" x="0" y="485" dominant-baseline="middle" text-anchor="middle">
+            <b-switch type="is-info" class="absolute-checkbox" v-model="useSteamData" size="is-small">Use steam profile name</b-switch>
         </foreignObject>
         <line id="Line 5" x1="3" y1="150" x2="528" y2="150" stroke="#0B0B10" stroke-width="2"/>
         </g>
@@ -104,9 +114,9 @@
         </clipPath>
         </defs>
         </svg>
-        <b-button v-if="isMetamaskTrue" :loading="steamLoader" class="center steam-btn">
+        <b-button v-if="isMetamaskTrue" @click="auth" :loading="steamLoader" class="center steam-btn">
             <img class="steam-logo" src="/img/steam-logo.svg"/>
-            Sign up with Steam
+            Connect Steam
         </b-button>
         <b-button v-else @click="connectMetamask" :loading="steamLoader" class="center mm-btn">
             <img class="steam-logo" src="/img/mm_fox.svg"/>
@@ -121,7 +131,9 @@
     export default {
         data () {
             return {
-                steamLoader: false
+                steamLoader: false,
+                localPlayerAlias: undefined,
+                useSteamData: false
             }
         },
         props: {
@@ -132,20 +144,25 @@
                     return 'https://res.cloudinary.com/station0x/image/upload/v1662109397/invictus/Ellipse_2_xz7niz.png'
                 }
             },
-            username: {
-                type: String,
-                default() {
-                    return 'Anon'
-                }
-            },
-            user: Object
+            playerAlias: String,
+            user: Object,
+            address: String,
+            signature: String
         },
         computed: {
             isMetamaskTrue() {
                 return parseInt(this.isMetamask) ? true : false
             }
         },
+        beforeUpdate() {
+            if(!this.isMetamaskTrue) {
+                this.localPlayerAlias = this.playerAlias
+            }
+        },
         methods: {
+        changePlayerAlias(data) {
+            this.localPlayerAlias = data
+        },
         async connectMetamask() {
             const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
             const signer = provider.getSigner()
@@ -153,19 +170,22 @@
             const accounts = await provider.listAccounts()
             const signature = await signer.signMessage("Welcome to my house! Enter freely. Go safely, and leave something of the happiness you bring")
             // this.$router.go()
-            this.$store.dispatch('connect', {signature, address: await signer.getAddress()})
-            this.registerPlayer()
+            // this.$store.dispatch('connect', {signature, address: await signer.getAddress()})
+            this.registerPlayer(signature, await signer.getAddress())
         },
-        async registerPlayer() {
+        async registerPlayer(signature, address) {
+            this.steamLoader = true
             const res = await axios.get('/api/player/registerPlayer', {
                 params: {
-                    signature: this.$store.state.signature,
+                    signature: signature,
                     providerType: "steam",
-                    providerId: this.user.steamid,
-                    providersData: this.$route.params.user,
-                    avatar: this.user.avatar.large
+                    hash: this.user.steamHash,
+                    avatar: this.user.avatar,
+                    playerAlias: this.localPlayerAlias,
+                    useSteamName: this.useSteamData
                 }
             }).then( res => {
+                this.$store.dispatch('connect', {signature, address})
                 this.$store.dispatch('fetchProfile')
                 this.$router.push({
                     name: 'Lord Profile',
@@ -174,14 +194,26 @@
                         game: 'csgo'
                     }
                 })
-            })
+            }).finally(() => { this.steamLoader = false })
             return res
         },
+        async auth() {
+            this.steamLoader = true
+            this.$store.dispatch('registerCandidate', {signature: this.signature, username: this.playerAlias, useSteamData: this.useSteamData})
+            const res = await axios.get('/api/auth/steam/getRedirect', {})
+            .then( res => 
+                window.open(res.data.redirectUrl, "_self")
+            )
+            .finally(
+                this.steamLoader = true
+            )
+            return res
+        }
       },
     }
 </script>
 
-<style scoped>
+<style >
     .cb {
         color: white;
     }
@@ -189,7 +221,7 @@
         font-family: 'open-sans';
         font-weight: 300;
         font-size: 16px;
-        padding: 30px 40px;
+        padding: 25px 40px;
         line-height: 1.5;
     }
     .steam-btn {
@@ -200,7 +232,7 @@
         height: 60px;
         /* width: 250px; */
         border: none;
-        padding-left: 85px;
+        padding-left: 80px;
         padding-right: 40px;
         margin-top: 20px;
         transition: all ease-out 500ms;
@@ -246,6 +278,22 @@
         width: 100%;
         height: 40.5%;
         position: absolute;
+    }
+    input.input.playerAlias-input {
+        font-family: 'Evogria' !important;
+        font-size: 18px;
+        width: 100%;
+        text-align: center;
+    }
+    .playerAlias-input-wrapper {
+        width: fit-content;
+    }
+    .playerAlias-input-label {
+        color: red;
+        font-size: 16px;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.2em !important;
+        margin-top: 0.3em;
     }
 </style>
     

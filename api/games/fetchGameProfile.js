@@ -30,6 +30,8 @@ module.exports = async (req, res) => {
         }))
         let gameProfile = {
             personaId,
+            address,
+            playerAlias: playerDoc.playerAlias,
             persona,
             rating: 0,
             lastFetched: Date.now(),
@@ -76,6 +78,14 @@ module.exports = async (req, res) => {
         newPlayerGameDoc.gameInfo['wlPercentage'].value = (newPlayerGameDoc.gameInfo.wins.value / newPlayerGameDoc.gameInfo.matchesPlayed.value) * 100
         newPlayerGameDoc.gameInfo['headshotPct'].value = (newPlayerGameDoc.gameInfo.headshots.value / newPlayerGameDoc.gameInfo.kills.value) * 100
 
+        // Calculate rating
+        newPlayerGameDoc.rating = 
+        Number.parseInt((newPlayerGameDoc.gameInfo['score'].value 
+        * (newPlayerGameDoc.gameInfo['wlPercentage'].value * newPlayerGameDoc.gameInfo['matchesPlayed'].value)
+        * newPlayerGameDoc.gameInfo['headshotPct'].value).toFixed(0))
+
+        // fallback add address if not present
+        newPlayerGameDoc.address = address
         // Update last fetched time
         newPlayerGameDoc.lastFetched = Date.now()
 

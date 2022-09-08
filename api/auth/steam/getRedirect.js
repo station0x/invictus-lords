@@ -1,5 +1,5 @@
 "use strict";
-const SteamAuth = require("node-steam-openid");
+const SteamAuth = require("../../../api-utils/node-steam-openid")
 
 const realm = process.env.REALM_URL
 const returnUrl = realm + "/api/auth/steam/authenticate"

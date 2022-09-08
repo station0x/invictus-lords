@@ -12,34 +12,45 @@ function validate(address) {
 
 module.exports = async (req, res) => {
     const address = getAddress(req.query.signature)
+    const providerType = req.query.providerType.toLowerCase()
+    const providerIdHash = req.query.hash
+    let playerAlias = req.query.playerAlias
+    console.log(playerAlias)
+    const useSteamName = req.query.useSteamName
+    if(!providerIdHash) throw new Error('Hash is missing')
     if(!validate(address)) {
         res.json({success:false, error:"invalid"})
         return true
     }
-
-    const providerType = req.query.providerType.toLowerCase()
-    const providerId = req.query.providerId
     const client = await clientPromise;
     const db = client.db()
     const players = db.collection("players")
-    const playerDoc = (await players.find({address}).limit(1).toArray())[0]
-    
-    let userObj = await codec.decompress(req.query.providersData)
-    if(!playerDoc) { // player document doesn't exist, let's create one
-        await players.insertOne({
-            address,
-            providersId: [
-                `${providerType}_${providerId}`
-            ],
-            playerAlias: userObj.username,
-            avatar: req.query.avatar,
-            personas: { 
-                [`${providerType}`]: userObj
-            },
-            gamesList: ['csgo'],
-            lastSeenTimestamp: Date.now(),
-            createdAt: Date.now(),
-        })
-    } else throw new Error('Address already registered')
+    const steam = db.collection("steamEntries")
+    const playerDocByAddress = (await players.find({address}).limit(1).toArray())[0]
+    if(playerDocByAddress) throw new Error('Address already registered')
+
+    const steamData = (await steam.find({steamHash: providerIdHash}).limit(1).toArray())[0]
+    if(!steamData) throw new Error('No steam linked')
+    const providerId = steamData.user.steamid
+    const playerDocById = (await players.find({[`${providerType}`]:`${providerId}`}).limit(1).toArray())[0]
+    if(playerDocById) throw new Error('Player already registered with this provider ID')
+    if(!playerAlias)  {
+        playerAlias = steamData.user.username
+    } else if(useSteamName === 'true') {
+        playerAlias = steamData.user.username
+    }
+     // player document doesn't exist, let's create one
+    await players.insertOne({
+        address,
+        [`${providerType}`] : `${providerId}`,
+        playerAlias,
+        avatar: req.query.avatar,
+        personas: { 
+            [`${providerType}`]: steamData.user
+        },
+        gamesList: ['csgo'],
+        lastUpdated: Date.now(),
+        createdAt: Date.now(),
+    })
     res.status(200).json({ success: true });
 }

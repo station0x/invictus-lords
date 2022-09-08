@@ -17,8 +17,8 @@
             <rect width="139" height="49" transform="matrix(1 0 0 -1 918 49)" fill="#000001"/>
             <rect x="1" y="-1" width="137" height="47" transform="matrix(1 0 0 -1 918 47)" stroke="#0B0B10" stroke-width="2"/>
             </g>
-            <text id="Last fetched data" fill="white" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="695" y="30.4312">Last fetched data</tspan></text>
-            <text id="2 hours ago" fill="white" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="822" y="30.4312">2 hours ago </tspan></text>
+            <text id="Last fetched data" fill="white" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="710" y="30.4312">Last fetched</tspan></text>
+            <text id="2 hours ago" fill="white" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="800" y="30.4312">{{ sinceTime }} </tspan></text>
             <text :class="{'elementToFadeInAndOut': isFetching }" id="Refresh" :fill="isFetching ? 'red' : 'white'" xml:space="preserve" style="white-space: pre" font-family="open-sans" font-size="14" letter-spacing="0em"><tspan x="949" y="30.4312">{{ isFetching ? 'Loading' : 'Refresh'}}</tspan></text>
             <g id="refresh">
 
@@ -528,16 +528,38 @@
     export default {
         data() {
             return {
-                isSeasonData: true
+                isSeasonData: true,
+                time: Date.now()
             }
         },
-        props: ['playerInfo', 'playerGameProfile', 'isFetching'],
+        props: ['playerInfo', 'playerGameProfile', 'isFetching', 'lastFetched'],
         created() {
+            const self = this
+            this.dateInterval = setInterval(function () {
+                self.time = Date.now()
+                if(((self.time - self.lastFetched) / 1000) > 300) {
+                    self.refetchData()
+                }
+            }, 1000)
+        },
+        computed: {
+            sinceTime() {
+                return this.timeSince(this.time, this.lastFetched)
+            }
         },
         methods: {
             joinedAt(unixTime) {
                 const now = new Date(unixTime)
                 return date.format(now, 'MMM DD YYYY')
+            },
+            timeSince(now, time) {
+                var seconds = Math.floor((now - time) / 1000)
+                var interval = seconds / 31536000
+                interval = seconds / 60
+                if (interval > 1) {
+                    return Math.floor(interval) + " minutes ago"
+                }
+                return Math.floor(seconds) + " seconds ago"
             },
             commafy( num ) {
                 var str = num.toString().split('.');
