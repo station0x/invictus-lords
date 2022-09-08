@@ -480,7 +480,7 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-axios@^0.21.2, axios@^0.21.4:
+axios@^0.21.4:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
@@ -1072,14 +1072,6 @@ node-lzw@^0.3.1:
   resolved "https://registry.yarnpkg.com/node-lzw/-/node-lzw-0.3.1.tgz#f50e37968976aca83320028b91f101df4a436b2d"
   integrity sha512-BGjQRR92HJsEsm1Ebp3Qvn2Jq+tlXEGY8zorNdal+FxOWpLMyyZBHoQWeyOc/TxsCzCvGbcCG4mU0u/RBSWxjQ==
 
-node-steam-openid@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/node-steam-openid/-/node-steam-openid-1.0.1.tgz#206a9abfcdb2360f1adecf9fadd2203e143c7da5"
-  integrity sha512-7tYp3BRZVz7I+CAK1hpnVgoCRjnos8leK062OAwWV8UQMTKIXAKyrmWdvM7Dx0ignvflYuEzZsRU2TrvMNkK0Q==
-  dependencies:
-    axios "^0.21.2"
-    openid "^2.0.6"
-
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
@@ -1090,7 +1082,7 @@ object-inspect@^1.9.0:
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.12.2.tgz#c0641f26394532f28ab8d796ab954e43c009a8ea"
   integrity sha512-z+cPxW0QGUp0mcqcsgQyLVRDoXFQbXOwBaqyF7VIgI4TWNQsDHrBpUQslRmIfAoYWdYzs6UlKJtB2XJpTaNSpQ==
 
-openid@^2.0.6:
+openid@^2.0.10:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/openid/-/openid-2.0.10.tgz#b611ee673dbefd9c8199f1e30ff3e75628b4a504"
   integrity sha512-EFTQ61/OUVhCeq78Y3rBpdKSuvgb0lwkU8nN4QTdcv0afc5MT7e4IVuZwgkMsgE993dmhbIhkxHFP3iTVJXWmw==
@@ -1311,6 +1303,11 @@ tr46@^3.0.0:
   integrity sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==
   dependencies:
     punycode "^2.1.1"
+
+unique-username-generator@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/unique-username-generator/-/unique-username-generator-1.1.1.tgz#7434bd3e9b53110342a752de18ae715d56e1b254"
+  integrity sha512-0FOgI/8T7czM9d7OmDLLTf/DrmsGKYgz6+AmgTEwV61ydbtr7NWmROKV+vY68e/V9xtIpidIY3hYiwEJB6Tg6Q==
 
 urlsafe-base64@^1.0.0:
   version "1.0.0"

@@ -141,9 +141,8 @@ tspan {
   font-family: 'Evogria';
 }
 @media (min-width: 1400px) {
-  .center-wrapper {
-    /* transform: scale(1.15); */
-    
-  }
+  /* .center-wrapper {
+    transform: scale(1.15);
+  } */
 }
 </style>

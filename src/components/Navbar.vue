@@ -51,7 +51,7 @@
                     <b-navbar-item v-else class="lord-dropdown" tag="div">
                         <div class="buttons">
                             <p class="lord-address">{{lordAddress}}</p>
-                            <b-navbar-dropdown tag="div" :label="$store.state.profile.playerAlias">
+                            <b-navbar-dropdown tag="div" :label="formatName($store.state.profile.playerAlias)">
                                 <b-navbar-item @click="openProfile">
                                     Profile
                                 </b-navbar-item>
@@ -105,9 +105,7 @@
                             signature: signature
                         }
                     }).then(res => {
-                        console.log(res)
                         if(res.data.success) {
-                            console.log('ds')
                             this.$store.dispatch('connect', {signature, address})
                             this.$store.dispatch('fetchProfile')
                             this.$buefy.snackbar.open({
@@ -115,12 +113,15 @@
                                 type: 'is-success',
                                 position: 'is-top'
                             })
+                            this.openProfile()
                         } else {
-                            this.$store.dispatch('connect', {signature, address})
+                            // this.$store.dispatch('connect', {signature, address})
+                            console.log(signature)
                             this.$router.push({
                                 name: 'Register',
                                 params: {
-                                    isMetamask: "1"
+                                    isMetamask: "1",
+                                    user: signature
                                 }
                             })
                         }
@@ -140,6 +141,9 @@
                         game: 'csgo'
                     }
                 })
+            },
+            formatName(name) {
+                return name.slice(0, 11) + ' ..'
             }
         },
         async beforeMount() {
