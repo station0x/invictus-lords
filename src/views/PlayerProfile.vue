@@ -65,6 +65,7 @@
                             ariaRole: 'alertdialog',
                             ariaModal: true,
                             confirmText: 'How?',
+                            canCancel: ['escape', 'outside'],
                             onConfirm: () => this.$buefy.modal.open({
                                 parent: this,
                                 component: SteamPublicGuide,

@@ -77,7 +77,9 @@ export default new Vuex.Store({
         },
         unregisterCandidate({commit, dispatch}) {
             commit('setCandidate', {})
-            window.localStorage.removeItem('candidate')
+            window.localStorage.removeItem('candidateSignature')
+            window.localStorage.removeItem('candidateUsername')
+            window.localStorage.removeItem('candidateUseSteamData')
         },
         disconnect({commit, dispatch}) {
             commit('sign', {})
