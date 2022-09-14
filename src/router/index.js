@@ -49,12 +49,16 @@ const router = new VueRouter({
   mode: 'history'
 })
 
-// router.beforeEach((to, from, next) => {
-//   if(to.matched.some(record => record.meta.requiresLogin) && !store.state.address) next({ name: 'Login' })
-//   else if(to.name == 'Login' && store.state.address) next({ name: 'Home' })
-//   // else if(to.name == 'Lobby' && (!store.state.profile || store.state.profile.banned)) next({ name: 'Home' })
-//   else next()
-// })
+router.beforeEach((to, from, next) => {
+  // if(to.matched.some(record => record.meta.requiresLogin) && !store.state.address) next({ name: 'Login' })
+  if(to.name != 'Register' && store.state.candidateSignature) {
+    // clear candidate data from state and localstorage 
+    store.dispatch('unregisterCandidate')
+    next()
+  }
+  // else if(to.name == 'Lobby' && (!store.state.profile || store.state.profile.banned)) next({ name: 'Home' })
+  else next()
+})
 
 router.afterEach((to, from, next) => {
   // Use next tick to handle router history correctly
