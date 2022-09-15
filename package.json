@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
+    "alchemy-sdk": "^2.0.4",
     "axios": "^0.27.2",
     "buefy": "^0.9.21",
     "date-and-time": "^2.4.1",
