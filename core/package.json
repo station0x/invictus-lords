@@ -1,0 +1,26 @@
+{
+    "name": "hardhat-project",
+    "license": "UNLICENSED",
+    "scripts": {
+      "compile": "./node_modules/.bin/hardhat compile",
+      "deploy:mainnet": "./node_modules/.bin/hardhat deploy --network mainnet --tags rewards --reset --verbose",
+      "deploy:goerli": "./node_modules/.bin/hardhat deploy --network goerli --tags rewards --reset --verbose",
+      "verify:mainnet": "env-cmd node ./scripts/verify.js mainnet",
+      "verify:goerli": "env-cmd node ./scripts/verify.js goerli"
+    },
+    "devDependencies": {
+      "@nomiclabs/hardhat-ethers": "^2.0.2",
+      "@nomiclabs/hardhat-waffle": "^2.0.1",
+      "@openzeppelin/contracts": "^4.5.0",
+      "chai": "^4.3.4",
+      "ethereum-waffle": "^3.4.0",
+      "ethers": "^5.4.1",
+      "hardhat": "^2.4.3",
+      "hardhat-deploy": "^0.8.11"
+    },
+    "dependencies": {
+      "dotenv": "^10.0.0",
+      "env-cmd": "^10.1.0"
+    }
+  }
+  

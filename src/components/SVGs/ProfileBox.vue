@@ -135,8 +135,7 @@
         <line id="Line 11" x1="608" y1="719.5" x2="1530" y2="719.5" stroke="#0B0B10"/>
         <circle id="Ellipse 2" cx="108.5" cy="85.5" r="63.5" fill="url(#avatar-pattern)" stroke="#0B0B10" stroke-width="4"/>
         
-        <text id="ABu ali" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="22" letter-spacing="0em"><tspan x="193" y="84.292">{{ playerInfo.playerAlias }}</tspan></text>
-        <text id="ABu ali" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="22" letter-spacing="0em"><tspan x="193" y="84.292">{{ playerInfo.playerAlias }}</tspan></text>
+        <text id="ABu ali" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="22" letter-spacing="0em"><tspan x="193" y="84.292">{{ playerInfo.playerAlias.slice(0, 20) + '...' }}</tspan></text>
         <text id="Joined" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="16" letter-spacing="0em"><tspan x="43" y="212.758">Season Rewards</tspan></text>
         <text id="NFTS inentory" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="16" letter-spacing="0em"><tspan x="43" y="280.758">NFTS inentory</tspan></text>
         <text id="Games" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="16" letter-spacing="0em"><tspan x="43" y="496.758">Games</tspan></text>
