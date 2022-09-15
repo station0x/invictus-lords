@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     // const players = db.collection("players")
     const gameCollection = db.collection(`${game}`)
     // const playerDoc = (await players.find({address}).limit(1).toArray())[0]
-    // if(!playerDoc) res.status(404).json({sucess: false}) //throw new Error('Player does not exist')
+    // if(!playerDoc) res.status(404).json({success: false}) //throw new Error('Player does not exist')
 
     const projection = { _id: 0, rating: 1, playerAlias: 1, address: 1, gameInfo: 1}
     // Sort then limit (MongoServer exec default behavior)
