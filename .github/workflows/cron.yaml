@@ -10,5 +10,5 @@ jobs:
       - name: Call our API route
         run: |
           curl --request POST \
-          --url 'https://invictuslords.com/api/cron' \
+          --url 'https://develop.invictuslords.com/api/tokens/cron' \
           --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
