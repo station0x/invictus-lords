@@ -13,5 +13,4 @@ module.exports = async (req, res) => {
     if(!playerDoc) {
         res.status(404).json({ success: false })
     } else res.status(200).json({ success: true, playerDoc: playerDoc })
-    
 }

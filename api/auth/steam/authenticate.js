@@ -17,7 +17,7 @@ const steam = new SteamAuth({
 module.exports = async (req, res) => {
   try {
     const user = await steam.authenticate(req)
-    const steamHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(user))
+    const steamHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(user) + ethers.utils.keccak256(ethers.utils.toUtf8Bytes((Math.random() * 1000))))
     const client = await clientPromise;
     const db = client.db()
     const players = db.collection("players")
@@ -53,3 +53,10 @@ module.exports = async (req, res) => {
     console.error(error);
   }
 }
+
+
+// http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=13AB931A0622483A32268A2973C7EEE3&steamids=76561199192392211
+// http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=13AB931A0622483A32268A2973C7EEE3&steamid=76561199394150515&format=json
+// http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=4000&count=3&maxlength=300&format=json
+// http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=730&key=13AB931A0622483A32268A2973C7EEE3&steamid=76561199192392211
+// http://store.steampowered.com/api/appdetails?appids=4000

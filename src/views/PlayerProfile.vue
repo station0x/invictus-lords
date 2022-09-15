@@ -18,8 +18,10 @@
 <script>
     import ProfileBox from '@/components/SVGs/ProfileBox.vue'
     import Loader from '@/components/Loader.vue'
+    import SteamPublicGuide from '@/components/SteamPublicGuide.vue'
     import { ethers } from 'ethers'
     import axios from 'axios'
+
     export default {
         data() {
             return {
@@ -32,6 +34,15 @@
             }
         },
         methods: {
+            SteamPublicGuideModal() {
+                this.$buefy.modal.open({
+                    parent: this,
+                    component: SteamPublicGuide,
+                    hasModalCard: true,
+                    customClass: 'custom-class custom-class-2',
+                    trapFocus: true
+                })
+            },
             async fetchProfile(address) {
                 try {
                     const res = await axios.get('/api/games/fetchGameProfile', {
@@ -43,6 +54,26 @@
                     this.playerGameProfile = res.data.playerGameDoc
                     this.playerInfo = res.data.playerDoc
                 } catch(err) {
+                    if(err.response.status === 451) {
+                        this.$buefy.dialog.alert({
+                            title: 'Error',
+                            message: `${err.response.data.msg}`,
+                            type: 'is-danger',
+                            hasIcon: true,
+                            icon: 'times-circle',
+                            iconPack: 'fa',
+                            ariaRole: 'alertdialog',
+                            ariaModal: true,
+                            confirmText: 'How?',
+                            canCancel: ['escape', 'outside'],
+                            onConfirm: () => this.$buefy.modal.open({
+                                parent: this,
+                                component: SteamPublicGuide,
+                                canCancel: ['escape', 'button'],
+                                trapFocus: true
+                            })
+                        })
+                    }
                     if(!err.response.data.success) this.$router.push('/')
                 }
             },
@@ -86,7 +117,8 @@
         },
         components: {
             ProfileBox,
-            Loader
+            Loader,
+            SteamPublicGuide
         },
         async created() {
             if(ethers.utils.isAddress(this.$route.params.playerAddress)) {
@@ -110,6 +142,13 @@
         width: 1200px;
         max-width: 1400px;
         min-width: 1100px;
+    }
+    .media-content {
+        color: white;
+        font-family: 'open-sans'
+    }
+    p.modal-card-title {
+        color: red;
     }
     /* .profile-box {
         width: 80%;
