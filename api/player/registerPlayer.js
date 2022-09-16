@@ -2,7 +2,6 @@
 // Import the dependency.
 const clientPromise = require('../../api-utils/mongodb-client');
 const getAddress = require('../../api-utils/getAddress');
-const { ObjectId } = require('mongodb');
 const codec = require('json-url')('lzw');
 
 function validate(address) {

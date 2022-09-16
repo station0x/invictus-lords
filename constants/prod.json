@@ -4,5 +4,10 @@
             "persona" : "steam",
             "personaIdKey" : "steamid"
         }
+    },
+    "economicPolicy": { 
+        "_comment": "100,000 each day",
+        "releaseInterval" : 86400,
+        "dailyRewards": 100000
     }
 }
