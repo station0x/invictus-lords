@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/tokens/VictusCronusPotion.sol": {
+      "content": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity 0.8.10;\r\n\r\ncontract VictusCronusPotion {\r\n    string public name;\r\n    string public symbol;\r\n    uint8 constant public decimals = 18;\r\n    uint public totalSupply;\r\n    // Guarded launch\r\n    bool public transferable;\r\n    // operator assign-accept model\r\n    address public operator;\r\n    address public pendingOperator;\r\n    address public ERC20Minter;\r\n\r\n    mapping(address => bool) public recipientWhitelist;\r\n    mapping(address => uint) public balanceOf;\r\n    mapping(address => mapping(address => uint)) public allowance;\r\n    // delegation\r\n    mapping(address => uint) public nonces;\r\n    bytes32 public DOMAIN_SEPARATOR;\r\n    bytes32 public constant PERMIT_TYPEHASH = 0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9;\r\n\r\n    modifier onlyOperator {\r\n        require(msg.sender == operator, \"ONLY OPERATOR\");\r\n        _;\r\n    }\r\n\r\n    constructor(string memory name_, string memory symbol_) {\r\n        name = name_;\r\n        symbol = symbol_;\r\n        operator = msg.sender;\r\n        DOMAIN_SEPARATOR = keccak256(\r\n            abi.encode(\r\n                keccak256('EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'),\r\n                keccak256(bytes(name)),\r\n                keccak256(bytes('1')),\r\n                block.chainid,\r\n                address(this)\r\n            )\r\n        );\r\n    }\r\n\r\n    function setPendingOperator(address newOperator_) public onlyOperator {\r\n        pendingOperator = newOperator_;\r\n    }\r\n\r\n    function claimOperator() public {\r\n        require(msg.sender == pendingOperator, \"ONLY PENDING OPERATOR\");\r\n        operator = pendingOperator;\r\n        pendingOperator = address(0);\r\n        emit ChangeOperator(operator);\r\n    }\r\n\r\n    function changeMinter(address minter_) public onlyOperator {\r\n        ERC20Minter = minter_;\r\n        emit ChangeMinter(minter_);\r\n    }\r\n\r\n    function mint(address to, uint amount) public {\r\n        require(msg.sender == ERC20Minter || msg.sender == operator, \"ONLY MINTER OR OPERATOR\");\r\n        _mint(to, amount);\r\n    }\r\n\r\n    function burn(uint amount) public {\r\n        _burn(msg.sender, amount);\r\n    }\r\n\r\n    function _mint(address to, uint value) internal {\r\n        totalSupply = totalSupply + value;\r\n        balanceOf[to] = balanceOf[to] + value;\r\n        emit Transfer(address(0), to, value);\r\n    }\r\n\r\n    function _burn(address from, uint value) internal {\r\n        balanceOf[from] = balanceOf[from] - value;\r\n        totalSupply = totalSupply - value;\r\n        emit Transfer(from, address(0), value);\r\n    }\r\n\r\n    function _approve(address owner, address spender, uint value) private {\r\n        allowance[owner][spender] = value;\r\n        emit Approval(owner, spender, value);\r\n    }\r\n\r\n    function _transfer(address from, address to, uint value) private {\r\n        require(transferable || recipientWhitelist[to], \"Token is not transferrable and the recipient is not whitelisted!\");\r\n        balanceOf[from] = balanceOf[from] - value;\r\n        balanceOf[to] = balanceOf[to] + value;\r\n        emit Transfer(from, to, value);\r\n    }\r\n\r\n    function approve(address spender, uint value) external returns (bool) {\r\n        _approve(msg.sender, spender, value);\r\n        return true;\r\n    }\r\n\r\n    function transfer(address to, uint value) external returns (bool) {\r\n        _transfer(msg.sender, to, value);\r\n        return true;\r\n    }\r\n\r\n    function transferFrom(address from, address to, uint value) external returns (bool) {\r\n        if (allowance[from][msg.sender] != type(uint).max) {\r\n            allowance[from][msg.sender] = allowance[from][msg.sender] - value;\r\n        }\r\n        _transfer(from, to, value);\r\n        return true;\r\n    }\r\n\r\n    function permit(address owner, address spender, uint value, uint deadline, uint8 v, bytes32 r, bytes32 s) external {\r\n        require(deadline >= block.timestamp, 'EXPIRED');\r\n        bytes32 digest = keccak256(\r\n            abi.encodePacked(\r\n                '\\x19\\x01',\r\n                DOMAIN_SEPARATOR,\r\n                keccak256(abi.encode(PERMIT_TYPEHASH, owner, spender, value, nonces[owner]++, deadline))\r\n            )\r\n        );\r\n        address recoveredAddress = ecrecover(digest, v, r, s);\r\n        require(recoveredAddress != address(0) && recoveredAddress == owner, 'INVALID_SIGNATURE');\r\n        _approve(owner, spender, value);\r\n    }\r\n\r\n    function whitelist(address _recipient, bool _isWhitelisted) public onlyOperator {\r\n        recipientWhitelist[_recipient] = _isWhitelisted;\r\n        emit WhiteList(_recipient, _isWhitelisted);\r\n    }\r\n\r\n    function openTheGates() public onlyOperator {\r\n        transferable = true;\r\n    }\r\n\r\n    // operator can seize tokens during the guarded launch only while tokens are non-transferable\r\n    function seize(address _user, uint _amount) public onlyOperator {\r\n        require(!transferable, \"Cannot seize while token is transferable\");\r\n        _transfer(_user, address(0), _amount);\r\n    }\r\n\r\n    event Approval(address indexed owner, address indexed spender, uint value);\r\n    event Transfer(address indexed from, address indexed to, uint value);\r\n    event ChangeMinter(address indexed minter);\r\n    event ChangeOperator(address indexed newOperator);\r\n    event WhiteList(address indexed _recipient, bool _isWhitelisted);\r\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
