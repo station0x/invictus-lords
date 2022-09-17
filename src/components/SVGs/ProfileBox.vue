@@ -143,7 +143,7 @@
         <!-- <text id="20" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="469.113" y="282.603">20</tspan></text> -->
         <text id="20" fill="white" xml:space="preserve" style="white-space: pre; opacity: 0.2" font-family="Evogria" font-size="24" letter-spacing="0em"><tspan x="227" y="375">Empty</tspan></text>
         <text id="0x45..6556" fill="white" xml:space="preserve" style="white-space: pre; opacity: .8;" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="193" y="106.603">{{ playerInfo.address.slice(0, 5) + '...' + playerInfo.address.slice(-4) }}</tspan></text>
-        <text id="25 jan 2022" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="385.389" y="212.603">5000 VAMP</tspan></text>
+        <text id="25 jan 2022" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="385.389" y="212.603">{{playerInfo.rewards}} $VON</tspan></text>
         <text id="#1548" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="187.443" y="620.603">{{ '# ' + myRank }}</tspan></text>
         <text id="Rank" fill="#EB020A" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="18" letter-spacing="0em"><tspan x="135.028" y="620.603">Rank</tspan></text>
         <g id="chevron-down">

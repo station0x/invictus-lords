@@ -71,7 +71,7 @@
         <circle id="Ellipse 2" cx="263" cy="322" r="73" fill="url(#avatar-pattern)" stroke="#0B0B10" stroke-width="4"/>
         <foreignObject height="150" width="100%" x="0" y="408" dominant-baseline="middle" text-anchor="middle">
             <div class="playerAlias-input-wrapper">
-                <b-field custom-class="playerAlias-input-label" label="Lord" label-postion="on-border">
+                <b-field custom-class="playerAlias-input-label" label="Lord, your name!" label-postion="on-border">
                     <b-input :disabled="useSteamData" :autofocus="true" custom-class="playerAlias-input" :value="playerAlias" @input="changePlayerAlias"></b-input>
                 </b-field>
             </div>
@@ -294,6 +294,9 @@
         letter-spacing: 0.08em;
         margin-bottom: 0.2em !important;
         margin-top: 0.3em;
+    }
+    .absolute-checkbox {
+        margin-top: 8px;
     }
 </style>
     

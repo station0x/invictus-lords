@@ -2,7 +2,6 @@
     <div>
         <!-- <Loader v-if="!isFetched"/> -->
         <div class="nav-wrapper">
-            <img v-if="isConnected && isFetched && !$store.getters.isMobile" class="lord-avatar" :src="playerAvatar">
             <b-navbar transparent>
                 <template #brand>
                     <b-navbar-item tag="router-link" :to="{ path: '/' }">
@@ -25,8 +24,8 @@
                     </b-navbar-item>
                 </template>
 
-                <template #end>
-                    <b-navbar-item v-if="!isConnected" class="lord-dropdown" tag="div">
+                <template v-if="!isConnected" #end>
+                    <b-navbar-item class="lord-dropdown" tag="div">
                         <div v-if="mmInstalled" class="buttons">
                             <b-button :loading="mmLoader" @click="connectMetamask" class="button metamask-btn">
                                 <img class="fox-icon" src="/img/mm_fox.svg"/>
@@ -34,7 +33,9 @@
                             </b-button>
                         </div>
                     </b-navbar-item>
-                    <b-navbar-item v-else-if="isConnected && !isFetched" style="width: 200px; margin-top: 19px">
+                </template>
+                <template v-else-if="isConnected && !isFetched" #end>
+                    <b-navbar-item style="width: 200px; margin-top: 19px">
                         <article class="media" style="width: 100%; opacity: 0.2">
                                 <figure class="media-center">
                                     <p class="image is-64x64" style="margin-top: 5px; margin-right: -5px">
@@ -51,7 +52,36 @@
                                 </div>
                             </article>
                     </b-navbar-item>
-                    <b-navbar-item v-else class="lord-dropdown" tag="div">
+                </template>
+                <template v-else #end>
+                    <b-navbar-item @click="log('hey')" class="lord-dropdown total-rewards" tag="div" style="cursor: pointer; margin-right: 10px">
+                        <img class="navlink-icon" src="/img/von-reward.svg"/>
+                        <div class="buttons">
+                            <div class="rewards-amount"><span class="navbar-subtext">{{rewardsFormatted}}</span> <div class="claim-btn">CLAIM</div></div>
+                            <div arrowless style="font-size: 17px; margin-left: 10px; margin-top: 5px; margin-bottom: 5px">
+                                Total Rewards
+                            </div>
+                        </div>
+                    </b-navbar-item>
+                    <b-navbar-item class="lord-dropdown total-rewards" tag="div" style="margin-right: 10px">
+                        <img class="navlink-icon" src="/img/von-token.svg"/>
+                        <div class="buttons">
+                            <div class="rewards-amount"><span class="navbar-subtext">{{rewardsFormatted}}</span></div>
+                            <div arrowless style="font-size: 17px; margin-left: 10px; margin-top: 5px; margin-bottom: 5px">
+                                VON Balance
+                            </div>
+                        </div>
+                    </b-navbar-item>
+                    <!-- <b-navbar-item @click="log('hey')" class="lord-dropdown" tag="div">
+                        <img class="navlink-icon" src="/img/rewards-icon.png"/>
+                        <div class="buttons">
+                            <p class="lord-address">7,438</p>
+                            <b-navbar-dropdown arrowless tag="div" label="$ VON Balance">
+                            </b-navbar-dropdown>
+                        </div>
+                    </b-navbar-item> -->
+                    <b-navbar-item class="lord-dropdown" tag="div" style="margin-left: -15px">
+                        <img class="navlink-icon lord-avatar" :src="playerAvatar" style="transform: scale(2)"/>
                         <div class="buttons">
                             <p class="lord-address">{{lordAddress}}</p>
                             <b-navbar-dropdown tag="div" :label="formatName($store.state.profile.playerAlias)">
@@ -61,10 +91,16 @@
                                 <b-navbar-item @click="logout">
                                     Logout
                                 </b-navbar-item>
+                                <!-- <b-navbar-item class="balance-section">
+                                    <img style="margin-top: -20px; margin-left: -10px; margin-right: 10px;" src="/img/rewards-icon.png"/>
+                                    <div style="height: 60px">
+                                        <p style="margin-top: 6px">Balance</p>
+                                        <p style="opacity: 0.5">7,438 $ VON</p>
+                                    </div>
+                                </b-navbar-item> -->
                             </b-navbar-dropdown>
                         </div>
                     </b-navbar-item>
-
                 </template>
             </b-navbar>
             <!-- <p>{{ this.$store.state.address }}</p>
@@ -97,6 +133,9 @@
                 this.$store.dispatch('disconnect')
                 // this.$router.push({name: 'Home'})
                 // this.$emit('close')
+            },
+            log(string) {
+                alert(string)
             },
             openLeaderboard() {
                 let routeData = this.$router.resolve({ name: 'Leaderboard' })
@@ -170,6 +209,9 @@
             lordAddress() {
                 return this.$store.state.address.slice(0, 5) + '...' + this.$store.state.address.slice(-4)
             },
+            rewardsFormatted() {
+                return this.$store.state.profile.rewards ? Number(this.$store.state.profile.rewards).toLocaleString() : 0
+            },
             isFetched() {
                 if (!this.isConnected) return true
                 else if(this.isConnected && this.$store.state.profile !== undefined) return true
@@ -238,6 +280,7 @@
 .lord-dropdown {
     margin-top: -30px;
     font-size: 14px !important;
+    width: 190px;
 }
 .lord-address {
     opacity: 0.7;
@@ -246,15 +289,54 @@
     top: 30px;
     font-size: 18px !important;
 }
+.rewards-amount {
+    position: absolute;
+    left: 12px;
+    top: 30px;
+    font-size: 18px !important;
+    width: 100%;
+}
 img.lord-avatar {
     /* border-radius: 99px !important; */
-    position: absolute;
-    right: 175px;
-    top: 36px;
     border: 2px solid #0B0B10;
     border-radius: 999px !important;
-    width: 45px;
-    height: 45px;
+
     /* background: url(this.$store.state.avatar) */
+}
+.navlink-icon {
+    transform: scale(1.62);
+    top: 17px;
+    right: 8px;
+}
+.total-rewards:hover .claim-btn{
+    opacity: 0.9;
+}
+.claim-btn {
+    /* opacity: 0; */
+    color: red; 
+    float: right; 
+    right: -18px;
+    font-size: 16px;
+    top: -25px;
+    background: rgb(0,0,0);
+    background: -moz-radial-gradient(circle, rgba(0,0,0,1) 43%, transparent 95%);
+    background: -webkit-radial-gradient(circle, rgba(0,0,0,1) 43%, transparent 95%);
+    background: radial-gradient(circle, rgba(0,0,0,1) 43%, transparent 95%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="transparent",GradientType=1);
+    padding: 0 30px 0px 30px;
+    transition: all ease-out 300ms;
+}
+.balance-section {
+    padding: 0px 26.5px !important;
+    padding-top: 10px !important;
+    border-top: 2px solid rgba(256,256,256,.05);
+} 
+.navbar.is-transparent .navbar-dropdown a.navbar-item.balance-section:hover {
+    color: white !important;
+}
+.navbar-subtext {
+    opacity: 0.7;
+    font-size: 15px;
+    margin-left: -3px;
 }
 </style>
