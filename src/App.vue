@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <Navbar/>
+    <div class="notices is-bottom">
+      <div v-if="lastDistribution" class="toast is-small is-danger is-bottom countdown-div">Next Rewards distribution round in <p style="color: rgb(250, 255, 0); margin-left: 10px">{{countdown}}</p></div>
+    </div>
     <div class="app-body">
       <router-view></router-view>
     </div>
@@ -10,7 +13,17 @@
 <script>
   import Navbar from '@/components/Navbar.vue'
   import axios from 'axios'
+  import date from 'date-and-time'
+  import dev from '../constants/dev.json'
+  import prod from '../constants/prod.json'
+  const CONSTANTS = import.meta.env.VITE_APP_ENV === prod ? prod : dev
   export default {
+    data() {
+      return {
+        lastDistribution: undefined,
+        time: Date.now()
+      }
+    },
     components: {
       Navbar
     },
@@ -18,37 +31,44 @@
       responsify() {
         this.$store.commit('changeWindowWidth', window.innerWidth)
       },
-      fetchLastDistribution() {
-        axios
+      async fetchLastDistribution() {
+        const res = await axios.get('/api/rewards/fetchLastDistribution')
+        this.lastDistribution = res.data.lastDistribution
+      },
+      async distributeRewards() {
+        const res = await axios.post('/api/rewards/distributeRewards')
+        this.$router.go('/')
       }
     },
     computed: {
       isConnected() {
         return this.$store.state.address && this.$store.state.address.length > 0 ? true : false
       },
-      async rewardsCountdown() {
-        // const res = await axios.get('/api/rewards/fetchLastDistribution')
-        //   .then( res => 
-        //     console.log(res.data.lastDistribution)
-        //   )
-        console.log('hello')
-      },
+      countdown() {
+        if(this.lastDistribution) {
+          const releaseDate = new Date((CONSTANTS.economicPolicy.releaseInterval + this.lastDistribution) * 1000)
+          const nowDate = new Date(this.time)
+          const countdown = new Date(date.subtract(releaseDate , nowDate).toMilliseconds()).toISOString().substr(11, 8)
+          if((date.subtract(releaseDate , nowDate).toMilliseconds()/1000) <= 0) {
+            this.distributeRewards()
+          }
+          return countdown
+        } else return undefined
+      }
     },
     created() {
       // this.$store.dispatch('disconnect')
+      const self = this
+      this.dateInterval = setInterval(function () {
+        self.time = Date.now()
+      }, 1000)
+      this.fetchLastDistribution()
       this.$store.commit('changeWindowWidth', window.innerWidth)
       window.addEventListener("resize", this.responsify)
-      this.rewardsCountdown
-      this.$buefy.toast.open({
-          indefinite: true,
-          message: `Something's not good, also I'm on <b>bottom</b>`,
-          position: 'is-bottom-left',
-          type: 'is-danger'
-      })
     },
     destroyed() {
       window.removeEventListener("resize", this.responsify)
-    },
+    }
   }
 </script>
 
@@ -78,5 +98,10 @@ header {
     place-items: flex-start;
     flex-wrap: wrap;
   }
+
+ .countdown-div {
+  background: black !important;
+  border: 3px solid rgb(250, 255, 0);
+ }
 }
 </style>
