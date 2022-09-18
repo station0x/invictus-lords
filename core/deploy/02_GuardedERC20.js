@@ -18,3 +18,4 @@ module.exports = async ({
   // add minter as minter in erc20 token
   // add erc20 token address to minter
   // update dailyLimit in minter
+  // changesigner to server signer address in minter

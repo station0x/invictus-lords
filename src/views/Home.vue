@@ -95,7 +95,7 @@
   align-items: center;
   padding-top: 190px; */
   position: absolute;
-  top: calc(50% - 12.5vh);
+  top: calc(50% - 13vh);
   left: 50%;
   transform: translate(-50%, -25%);
 }

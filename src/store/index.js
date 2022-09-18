@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { ethers } from 'ethers'
+import prodCONSTANTS from '../../constants/dev.json'
+import devCONSTANTS from '../../constants/dev.json'
+const CONSTANTS = import.meta.env.VITE_APP_ENV === "prod" ? prodCONSTANTS : devCONSTANTS
 
 Vue.use(Vuex)
 
@@ -16,7 +20,8 @@ export default new Vuex.Store({
         withdrawnRewards:{},
         candidateSignature: window.localStorage.getItem('candidateSignature'),
         candidateUsername: window.localStorage.getItem('candidateUsername'),
-        candidateUseSteamData: window.localStorage.getItem('candidateUseSteamData')
+        candidateUseSteamData: window.localStorage.getItem('candidateUseSteamData'),
+        inventory: []
     },
     mutations: {
         sign(state, {signature, address}) {
@@ -51,7 +56,12 @@ export default new Vuex.Store({
         },
         setWithdrawnRewards(state, withdrawnRewards) {
             state.withdrawnRewards = withdrawnRewards
-        }
+        },
+        setAssetBalance(state, {assetSymbol, assetBalance}) {
+            const inventory = [...state.inventory].filter(v => v.symbol !== assetSymbol)
+            inventory.push({symbol: assetSymbol, balance: assetBalance})
+            state.inventory = inventory
+        },
     },
     actions: {
         async fetchProfile ({commit, dispatch, state}) {
@@ -87,6 +97,20 @@ export default new Vuex.Store({
             window.localStorage.removeItem('signature')
             window.localStorage.removeItem('address')
             // dispatch('stopPolling')
+        },
+        fetchInventory({state, commit}) {
+            const provider = new ethers.providers.JsonRpcProvider(CONSTANTS.chainInfo.rpcUrl)
+            Object.keys(CONSTANTS.economicPolicy.assets).forEach(async v => {
+                if(CONSTANTS.economicPolicy.assets[v].type === "erc20") {
+                    const Contract = new ethers.Contract(CONSTANTS.economicPolicy.assets[v].address, ["function balanceOf(address) view returns (uint)"], provider);
+                    const Balance = Number(ethers.utils.formatEther(await Contract.balanceOf(state.address)))
+                    const Symbol = v
+                    commit('setAssetBalance', { 
+                        assetSymbol: Symbol,
+                        assetBalance: Balance
+                    })
+                }
+            })
         },
         // async startPolling({state, commit, dispatch}) {
         //     if(state.intervalId) {
