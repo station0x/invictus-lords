@@ -50,6 +50,7 @@ module.exports = async (req, res) => {
         gamesList: ['csgo'],
         lastUpdated: Date.now(),
         createdAt: Date.now(),
+        rewards: 0
     })
     res.status(200).json({ success: true });
 }

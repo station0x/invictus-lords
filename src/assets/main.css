@@ -1,5 +1,5 @@
 @import "./base.css";
-@import url("https://use.typekit.net/jmu0xsj.css");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;700&display=swap');
 @font-face {
   font-family: 'Evogria';
   src: url('/assets/fonts/evogria/Evogria.otf') format("opentype");
@@ -13,7 +13,6 @@
   font-style: normal;
 }
 
-
 body {
   background-color: black;
   font-family: 'Evogria' !important;
@@ -22,6 +21,20 @@ body {
   background-image: url('/img/bg.png');
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.snackbar.is-danger {
+  background: #C72929;
+}
+.notices .snackbar .action .button {
+  background: transparent;
+  color: black !important;
+  font-weight: 700;
+  border: none;
+}
+.notices .snackbar .action .button:hover {
+  background: transparent;
+  color: black;
 }
 
 /* #app {
