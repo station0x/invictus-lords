@@ -4,7 +4,7 @@
       <div class="center-wrapper">
         <img class="center" src="/img/logo-large.png" style="user-select: none;"/>
           <h1 class="one-text" style="font-size: 28px">Play everyday games</h1>
-          <h1 class="one-text" style="font-size: 52px">And earn <span style="color: #FF111F">$VAMP</span></h1>
+          <h1 class="one-text" style="font-size: 52px">And earn <span style="color: #FF111F">$VON</span></h1>
           <h1 class="one-text" style="margin-top: 10px; font-family: 'Evogria';font-size: 23; color: #FAFF00;">Earn rewards by playing</h1>
           <img
             class="center"
@@ -95,7 +95,7 @@
   align-items: center;
   padding-top: 190px; */
   position: absolute;
-  top: calc(50% - 12.5vh);
+  top: calc(50% - 13vh);
   left: 50%;
   transform: translate(-50%, -25%);
 }
