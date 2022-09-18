@@ -2,7 +2,6 @@
 // Import the dependency.
 const clientPromise = require('../../api-utils/mongodb-client');
 const getAddress = require('../../api-utils/getAddress');
-const { ObjectId } = require('mongodb');
 
 function validate(address) {
     if(!address) throw new Error('Player address not provided')

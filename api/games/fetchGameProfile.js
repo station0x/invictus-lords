@@ -1,7 +1,6 @@
 "use strict";
 // Import the dependency.
 const clientPromise = require('../../api-utils/mongodb-client');
-const { ObjectId } = require('mongodb');
 const CONSTANTS = require('../../constants')
 const axios = require('axios')
 
