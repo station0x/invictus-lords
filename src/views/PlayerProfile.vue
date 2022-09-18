@@ -145,7 +145,7 @@
     }
     .media-content {
         color: white;
-        font-family: 'open-sans'
+        font-family: 'Inter', sans-serif
     }
     p.modal-card-title {
         color: red;

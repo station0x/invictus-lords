@@ -4,5 +4,27 @@
             "persona" : "steam",
             "personaIdKey" : "steamid"
         }
+    },
+    "economicPolicy": {
+        "releaseInterval": 180,
+        "dailyRewards": 100000,
+        "minter": "0xEcEF91b10D451d1CD96F5940623173Bb24503F6B",
+        "assets": {
+            "VON": {
+              "name": "Victus Cronus Potion",
+              "symbol": "VON",
+              "address":"0x7A35f851572467B8e47128681Ac0Af9732930806",
+              "type": "erc20",
+              "img": ""
+            }
+        }
+    },
+    "chainInfo": {
+        "_comment": "Ethereum Goerli Testnet",
+        "chainId":5,
+        "hexChainId":"0x5",
+        "rpcUrl":"https://eth-goerli.g.alchemy.com/v2/C3nMlOB0Z40G5sJ18FQeERNOTzZhBz82",
+        "chainName":"Ethereum Goerli Testent",
+        "chainExplorer":"https://goerli.etherscan.io/"
     }
 }

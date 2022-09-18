@@ -2,7 +2,7 @@
     <div>
         <!-- <Loader v-if="!isFetched"/> -->
         <div class="nav-wrapper">
-            <b-navbar transparent>
+            <b-navbar transparent :fixed-top="isFixed">
                 <template #brand>
                     <b-navbar-item tag="router-link" :to="{ path: '/' }">
                         <img
@@ -25,11 +25,19 @@
                 </template>
 
                 <template v-if="!isConnected" #end>
-                    <b-navbar-item class="lord-dropdown" tag="div">
+                    <b-navbar-item class="lord-dropdown" tag="div" style="width: fit-content">
+                        <div v-if="isFixed" class="buttons">
+                            <b-button :loading="mmLoader" @click="connectMetamask" class="button steam-btn">
+                                <img class="steam-icon" src="/img/steam-logo.svg"/>
+                                <strong>Register</strong>
+                            </b-button>
+                        </div>
+                    </b-navbar-item>
+                    <b-navbar-item class="lord-dropdown" tag="div" style="width: fit-content">
                         <div v-if="mmInstalled" class="buttons">
                             <b-button :loading="mmLoader" @click="connectMetamask" class="button metamask-btn">
                                 <img class="fox-icon" src="/img/mm_fox.svg"/>
-                                <strong>Login</strong>
+                                <strong>Connect</strong>
                             </b-button>
                         </div>
                     </b-navbar-item>
@@ -54,21 +62,24 @@
                     </b-navbar-item>
                 </template>
                 <template v-else #end>
-                    <b-navbar-item @click="log('hey')" class="lord-dropdown total-rewards" tag="div" style="cursor: pointer; margin-right: 10px">
+                    <b-navbar-item @click="claimRewards()" class="lord-dropdown total-rewards" tag="div" style="cursor: pointer; margin-right: 10px">
                         <img class="navlink-icon" src="/img/von-reward.svg"/>
                         <div class="buttons">
-                            <div class="rewards-amount"><span class="navbar-subtext">{{rewardsFormatted}}</span> <div class="claim-btn">CLAIM</div></div>
+                            <div class="rewards-amount"><span class="navbar-subtext">{{rewardsFormatted}}</span> 
+                                <div :class="{'claim-btn':true, 'elementToFadeInAndOut': claiming }">{{ claiming ? 'CLAIMING' : 'CLAIM'}}</div>
+                            </div>
                             <div arrowless style="font-size: 17px; margin-left: 10px; margin-top: 5px; margin-bottom: 5px">
                                 Total Rewards
                             </div>
                         </div>
+                        <!-- <b-loading v-model="claiming" :is-full-page="false"></b-loading> -->
                     </b-navbar-item>
                     <b-navbar-item class="lord-dropdown total-rewards" tag="div" style="margin-right: 10px">
                         <img class="navlink-icon" src="/img/von-token.svg"/>
                         <div class="buttons">
-                            <div class="rewards-amount"><span class="navbar-subtext">{{rewardsFormatted}}</span></div>
+                            <div class="rewards-amount"><span class="navbar-subtext">{{$store.state.inventory[0].balance + ' VON'}}</span></div>
                             <div arrowless style="font-size: 17px; margin-left: 10px; margin-top: 5px; margin-bottom: 5px">
-                                VON Balance
+                                Balance
                             </div>
                         </div>
                     </b-navbar-item>
@@ -113,13 +124,19 @@
     import { ethers } from 'ethers'
     import axios from 'axios'
     import Loader from '@/components/Loader.vue'
+    import detectEthereumProvider from '@metamask/detect-provider'
+    import dev from '../../constants/dev.json'
+    import prod from '../../constants/prod.json'
+    const CONSTANTS = import.meta.env.VITE_APP_ENV === prod ? prod : dev
     export default {
         data() {
             return {
                 mmLoader: false,
                 loader: false,
                 loading: true,
-                mmInstalled: false
+                mmInstalled: false,
+                yValue: 0,
+                claiming: false
             }
         },
         components: {
@@ -127,15 +144,94 @@
         },
         created() {
             if(typeof window.ethereum !== 'undefined') this.mmInstalled = true
-        },  
+            this.$store.dispatch('fetchInventory')
+        },
+        mounted() {
+            window.addEventListener('scroll', this.handleScroll);
+        },
+        beforeMount () {
+            window.removeEventListener('scroll', this.handleScroll);
+        }, 
         methods: {
             logout() {
                 this.$store.dispatch('disconnect')
                 // this.$router.push({name: 'Home'})
                 // this.$emit('close')
             },
-            log(string) {
-                alert(string)
+            async claimRewards() {
+                this.claiming = true
+                try {
+                    const metamaskProvider = await detectEthereumProvider()
+                    if(metamaskProvider) {
+                        const provider = new ethers.providers.Web3Provider(metamaskProvider, "any")
+                        const signer = provider.getSigner()
+                        const address = await signer.getAddress()
+                        if(address !== this.$store.state.address) {
+                            this.$buefy.snackbar.open({
+                                // duration: 5000,
+                                indefinite: true,
+                                message: 'Please switch your wallet address to your logged in address',
+                                type: 'is-danger',
+                                position: 'is-bottom',
+                                actionText: 'Close'
+                            })
+                            this.claiming = false
+                            return;
+                        }
+                        let chainId = (await provider.getNetwork()).chainId
+                        if(chainId !== CONSTANTS.chainInfo.chainId) {
+                            await provider.provider.request({
+                                method: "wallet_switchEthereumChain",
+                                params: [{
+                                    chainId: CONSTANTS.chainInfo.hexChainId
+                                }]
+                            });
+                            chainId = (await provider.getNetwork()).chainId
+                            if(chainId !== CONSTANTS.chainId) {
+                                this.$buefy.snackbar.open({
+                                    duration: 5000,
+                                    message: 'Failed to switch network. Please try again',
+                                    type: 'is-danger',
+                                    position: 'is-bottom',
+                                })
+                                this.claiming = false
+                                return;
+                            }
+                        }
+                        // all check already passed, let's start claiming
+                        const res = await axios.get('/api/rewards/claimRewards', {
+                            params:{
+                                signature:this.$store.state.signature
+                            }
+                        })
+                        const signature = ethers.utils.splitSignature(res.data.signature)
+                        const MinterContract = new ethers.Contract(CONSTANTS.economicPolicy.minter, ["function mint(uint _amount, uint8 _v, bytes32 _r, bytes32 _s)"], signer);
+                        const tx = await MinterContract.mint(
+                            ethers.utils.parseEther(this.$store.state.profile.rewards.toString()),
+                            signature.v,
+                            signature.r,
+                            signature.s
+                        )
+                        await tx.wait()
+                        this.$store.dispatch('fetchProfile')
+                        this.$store.dispatch('fetchInventory')
+                        this.$buefy.snackbar.open({
+                            duration: 5000,
+                            message: 'Rewards Claimed! Check your balance.',
+                            type: 'is-success', 
+                            position: 'is-bottom'
+                        })
+                    } else {
+                        this.$buefy.snackbar.open({
+                            duration: 5000,
+                            message: 'Cannot connect wallet. Please use a web3 wallet in your browser',
+                            type: 'is-danger',
+                            position: 'is-bottom',
+                        })
+                    }
+                } finally {
+                    this.claiming = false
+                }
             },
             openLeaderboard() {
                 let routeData = this.$router.resolve({ name: 'Leaderboard' })
@@ -166,7 +262,6 @@
                             this.openProfile()
                         } else {
                             // this.$store.dispatch('connect', {signature, address})
-                            console.log(signature)
                             this.$router.push({
                                 name: 'Register',
                                 params: {
@@ -195,6 +290,9 @@
             formatName(name) {
                 if(this.$store.state.address) return name.slice(0, 11) + ' ..'
                 return '--'
+            },
+            handleScroll () {
+                this.yValue = window.scrollY
             }
         },
         async beforeMount() {
@@ -220,6 +318,9 @@
             playerAvatar() {
                 if(this.$store.state.profile === undefined) return '/img/blank.gif'
                 else return this.$store.state.profile.avatar
+            },
+            isFixed() {
+                return this.yValue > 50;
             }
         }
     } 
@@ -237,6 +338,15 @@
     margin-right: auto;
     background-color: transparent;
     z-index: 2;
+}
+.navbar.is-fixed-top {
+    width: 100%;
+    padding: 10px 7.5%;
+    background: rgb(0,0,0);
+background: -moz-linear-gradient(180deg, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
+background: -webkit-linear-gradient(180deg, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
+background: linear-gradient(180deg, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#000000",GradientType=1);
 }
 .metamask-btn {
     border: 1.5px solid rgb(53, 53, 53);
@@ -256,11 +366,39 @@
     color: white;
     box-shadow: none;
 }
+.steam-btn {
+    border: 1.5px solid rgb(53, 53, 53);
+    height: 40px;
+    padding-right: 20px;
+    padding-left: 50px;
+    transition: all ease-in-out 200ms;
+    font-weight: 300;
+    font-family: 'Evogria'
+}
+.steam-btn:hover {
+    border-color: white;
+    color: white;
+}
+.steam-btn:focus {
+    border: 1.5px solid rgb(53, 53, 53);
+    color: white;
+    box-shadow: none;
+}
 .fox-icon {
     position: absolute;
     left: -40px;
     top: -2px;
     transform: scale(1.1);
+}
+
+.steam-icon {
+    position: absolute;
+    left: -40px;
+    top: -2px;
+    transform: scale(0.9);
+}
+.steam-icon:hover {
+    color: #151B1F;
 }
 .nav-logo {
     max-height: fit-content !important;
@@ -310,9 +448,9 @@ img.lord-avatar {
 }
 .total-rewards:hover .claim-btn{
     opacity: 0.9;
+    color: red; 
 }
 .claim-btn {
-    /* opacity: 0; */
     color: red; 
     float: right; 
     right: -18px;
@@ -335,8 +473,20 @@ img.lord-avatar {
     color: white !important;
 }
 .navbar-subtext {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
     opacity: 0.7;
     font-size: 15px;
     margin-left: -3px;
 }
+.elementToFadeInAndOut {
+    background: transparent;
+    -webkit-animation: fadeinout 1s linear forwards;
+    animation: fadeinout 1s linear forwards;
+    animation-iteration-count: infinite;
+}
+@keyframes fadeinout {
+    0%,100% { opacity: 0 }
+    50% { opacity: 1 }
+    }
 </style>

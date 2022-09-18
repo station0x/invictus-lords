@@ -4,5 +4,27 @@
             "persona" : "steam",
             "personaIdKey" : "steamid"
         }
+    },
+    "economicPolicy": {
+        "releaseInterval": 86400,
+        "dailyRewards": 100000,
+        "minter": "",
+        "assets": {
+            "VON": {
+              "name": "Victus Cronus Potion",
+              "symbol": "VON",
+              "address":"",
+              "type": "erc20",
+              "img": ""
+            }
+        }
+    },
+    "chainInfo": {
+        "_comment": "Ethereum Mainnet",
+        "chainId":1,
+        "hexChainId":"0x1",
+        "rpcUrl":"https://eth-mainnet.g.alchemy.com/v2/IJtZUWJFVrpzu1HshKSnAC_1CaLKhOIC",
+        "chainName":"Ethereum",
+        "chainExplorer":"https://etherscan.io/"
     }
 }

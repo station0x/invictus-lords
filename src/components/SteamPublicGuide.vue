@@ -7,7 +7,7 @@
           class="delete"
           @click="$emit('close')"/>
       </header>
-      <section class="modal-card-body" style="color: white; padding: 0px 30px; font-family: 'open-sans';">
+      <section class="modal-card-body" style="color: white; padding: 0px 30px; font-family: 'Inter', sans-serif;">
         <p style="margin-top: 25px; margin-bottom: 25px;">You need to have a public steam account to be eligible for invictus lords rewards. See video below to know how to make your profile public.
 
         </p>
