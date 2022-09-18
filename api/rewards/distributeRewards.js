@@ -41,7 +41,7 @@ module.exports = async (req, res) => {
                 "updateOne": {
                     "filter": { "address": doc.address },
                     "update": {
-                        "$set": { rewards: doc.playerReward }
+                        "$inc": { rewards: Number.parseInt(doc.playerReward) }
                     }
                 }
             });
@@ -51,7 +51,6 @@ module.exports = async (req, res) => {
                 ops = [];
             }
         })
-        console.log(await db.collection('players'))
         if (ops.length > 0)  await db.collection('players').bulkWrite(ops);
 
         // update rewards distribution time

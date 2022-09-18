@@ -161,6 +161,7 @@
             async claimRewards() {
                 this.claiming = true
                 try {
+                    window.ethereum.enable()
                     const metamaskProvider = await detectEthereumProvider()
                     if(metamaskProvider) {
                         const provider = new ethers.providers.Web3Provider(metamaskProvider, "any")
@@ -204,6 +205,7 @@
                                 signature:this.$store.state.signature
                             }
                         })
+                        console.log(res)
                         const signature = ethers.utils.splitSignature(res.data.signature)
                         const MinterContract = new ethers.Contract(CONSTANTS.economicPolicy.minter, ["function mint(uint _amount, uint8 _v, bytes32 _r, bytes32 _s)"], signer);
                         const tx = await MinterContract.mint(
@@ -343,10 +345,10 @@
     width: 100%;
     padding: 10px 7.5%;
     background: rgb(0,0,0);
-background: -moz-linear-gradient(180deg, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
-background: -webkit-linear-gradient(180deg, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
-background: linear-gradient(180deg, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#000000",GradientType=1);
+    background: -moz-linear-gradient(180deg, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
+    background: -webkit-linear-gradient(180deg, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(180deg, rgba(0,0,0,1) 12%, rgba(0,0,0,0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#000000",GradientType=1);
 }
 .metamask-btn {
     border: 1.5px solid rgb(53, 53, 53);
