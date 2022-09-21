@@ -37,6 +37,20 @@ body {
   color: black;
 }
 
+.button.is-danger {
+  background-color: red;
+}
+
+section.modal-card-body {
+  color: white;
+  font-family: 'Inter';
+  padding-top: 3px;
+}
+
+.modal-card-title {
+  color: red !important;
+  font-size: 19px !important;
+}
 /* #app {
   max-width: 1280px;
   margin: 0 auto;

@@ -17,6 +17,8 @@ contract ERC20Minter {
     mapping(uint => uint) public DailyMinted;
     // user => total claimed
     mapping(address => uint) public UserClaimed;
+    // user => nonce
+    mapping(address => uint) public UserNonce;
 
     constructor(
         address _signer
@@ -41,16 +43,17 @@ contract ERC20Minter {
         emit SetDailyLimit(_limit);
     }
 
-    function mint(uint _amount, uint8 _v, bytes32 _r, bytes32 _s) public {
+    function mint(uint _amount, uint _nonce, uint8 _v, bytes32 _r, bytes32 _s) public {
         require(!paused, "Contract is paused!");
-        // hashing amount + caller + callee + chainID
-        bytes32 _hash = keccak256(abi.encodePacked(_amount, msg.sender, address(this), block.chainid));
+        // hashing amoun + nonce + caller + callee + chainID
+        bytes32 _hash = keccak256(abi.encodePacked(_amount, _nonce, msg.sender, address(this), block.chainid));
         require(ecrecover(_hash, _v, _r, _s) == signer, "Signature is not valid!");
-        uint withdrawableAmount = _amount - UserClaimed[msg.sender];
-        require(getAllowedDailyMint() >= withdrawableAmount, "Amounts exceeds daily minting limit");
-        DailyMinted[block.timestamp / 24 hours] += withdrawableAmount;
-        UserClaimed[msg.sender] += withdrawableAmount;
-        IERC20(ERC20).mint(msg.sender, withdrawableAmount);
+        require(_nonce == (UserNonce[msg.sender] + 1), "Invalid nonce");
+        require(getAllowedDailyMint() >= _amount, "Amounts exceeds daily minting limit");
+        DailyMinted[block.timestamp / 24 hours] += _amount;
+        UserClaimed[msg.sender] += _amount;
+        UserNonce[msg.sender] += 1;
+        IERC20(ERC20).mint(msg.sender, _amount);
     }
 
     function changeOperator(address _newOperator) public onlyOperator {

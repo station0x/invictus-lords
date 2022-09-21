@@ -77,7 +77,7 @@
                     if(!err.response.data.success) this.$router.push('/')
                 }
             },
-            async fetchRank(address) {
+            async fetchRank() {
                 try {
                     const res = await axios.get('/api/games/fetchLeaderboard', {
                         params:{
@@ -149,6 +149,10 @@
     }
     p.modal-card-title {
         color: red;
+        font-size: 19px;
+    }
+    .modal-card-body {
+        padding-top: 3px;
     }
     /* .profile-box {
         width: 80%;
