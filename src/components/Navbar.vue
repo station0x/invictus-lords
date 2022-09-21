@@ -13,14 +13,15 @@
                     </b-navbar-item>
                 </template>
                 <template #start>
+
                     <b-navbar-item @click="$router.push('/')">
-                        Home
+                        Ecosystem
+                    </b-navbar-item>
+                    <b-navbar-item @click="openMinting">
+                        MINTING
                     </b-navbar-item>
                     <b-navbar-item @click="openLeaderboard">
                         Leaderboard
-                    </b-navbar-item>
-                    <b-navbar-item href="#">
-                        Minting
                     </b-navbar-item>
                 </template>
 
@@ -62,11 +63,11 @@
                     </b-navbar-item>
                 </template>
                 <template v-else #end>
-                    <b-navbar-item @click="claimRewards()" class="lord-dropdown total-rewards" tag="div" style="cursor: pointer; margin-right: 10px">
+                    <b-navbar-item @click="claimAllRewards()" class="lord-dropdown total-rewards" tag="div" style="cursor: pointer; margin-right: 10px">
                         <img class="navlink-icon" src="/img/von-reward.svg"/>
                         <div class="buttons">
                             <div class="rewards-amount"><span class="navbar-subtext">{{rewardsFormatted}}</span> 
-                                <div :class="{'claim-btn':true, 'elementToFadeInAndOut': claiming }">{{ claiming ? 'CLAIMING' : 'CLAIM'}}</div>
+                                <div :class="{'claim-btn':true, 'elementToFadeInAndOut': claiming, 'disabled': rewardsFormatted === 0 }">{{ claiming ? 'CLAIMING' : 'CLAIM'}}</div>
                             </div>
                             <div arrowless style="font-size: 17px; margin-left: 10px; margin-top: 5px; margin-bottom: 5px">
                                 Total Rewards
@@ -74,11 +75,11 @@
                         </div>
                         <!-- <b-loading v-model="claiming" :is-full-page="false"></b-loading> -->
                     </b-navbar-item>
-                    <b-navbar-item class="lord-dropdown total-rewards" tag="div" style="margin-right: 10px">
+                    <b-navbar-item class="lord-dropdown total-rewards" tag="div" style="margin-right: -10px">
                         <img class="navlink-icon" src="/img/von-token.svg"/>
                         <div class="buttons">
-                            <div class="rewards-amount"><span class="navbar-subtext">{{$store.state.inventory[0].balance + ' VON'}}</span></div>
-                            <div arrowless style="font-size: 17px; margin-left: 10px; margin-top: 5px; margin-bottom: 5px">
+                            <div class="rewards-amount"><span class="navbar-subtext">{{userBalance.toLocaleString() + ' VON'}}</span></div>
+                            <div arrowless style="font-size: 17px; margin-left: 10px; margin-top: 5px; margin-bottom: 5px; width: 200px">
                                 Balance
                             </div>
                         </div>
@@ -127,6 +128,7 @@
     import detectEthereumProvider from '@metamask/detect-provider'
     import dev from '../../constants/dev.json'
     import prod from '../../constants/prod.json'
+    import { serializeError } from "eth-rpc-errors"
     const CONSTANTS = import.meta.env.VITE_APP_ENV === prod ? prod : dev
     export default {
         data() {
@@ -135,7 +137,6 @@
                 loader: false,
                 loading: true,
                 mmInstalled: false,
-                yValue: 0,
                 claiming: false
             }
         },
@@ -158,10 +159,12 @@
                 // this.$router.push({name: 'Home'})
                 // this.$emit('close')
             },
-            async claimRewards() {
+            async claimAllRewards(amount) {
+                if(this.rewardsFormatted === 0) return false
                 this.claiming = true
                 try {
-                    window.ethereum.enable()
+                    window.ethereum.eth_requestAccounts
+                    // window.ethereum.enable()
                     const metamaskProvider = await detectEthereumProvider()
                     if(metamaskProvider) {
                         const provider = new ethers.providers.Web3Provider(metamaskProvider, "any")
@@ -200,29 +203,74 @@
                             }
                         }
                         // all check already passed, let's start claiming
-                        const res = await axios.get('/api/rewards/claimRewards', {
-                            params:{
-                                signature:this.$store.state.signature
-                            }
-                        })
-                        console.log(res)
+                        let res
+                        if(!amount) {
+                            res = await axios.get('/api/rewards/claimAllRewards', {
+                                params:{
+                                    signature:this.$store.state.signature
+                                }
+                            })
+                        } else {
+                            res = await axios.get('/api/rewards/claimRewardsWithAmount', {
+                                params:{
+                                    signature:this.$store.state.signature,
+                                    amount
+                                }
+                            })
+                        }
+
                         const signature = ethers.utils.splitSignature(res.data.signature)
-                        const MinterContract = new ethers.Contract(CONSTANTS.economicPolicy.minter, ["function mint(uint _amount, uint8 _v, bytes32 _r, bytes32 _s)"], signer);
-                        const tx = await MinterContract.mint(
-                            ethers.utils.parseEther(this.$store.state.profile.rewards.toString()),
-                            signature.v,
-                            signature.r,
-                            signature.s
-                        )
-                        await tx.wait()
-                        this.$store.dispatch('fetchProfile')
-                        this.$store.dispatch('fetchInventory')
-                        this.$buefy.snackbar.open({
-                            duration: 5000,
-                            message: 'Rewards Claimed! Check your balance.',
-                            type: 'is-success', 
-                            position: 'is-bottom'
-                        })
+                        const MinterContract = new ethers.Contract(CONSTANTS.economicPolicy.minter, 
+                        ["function mint(uint _amount, uint nonce, uint8 _v, bytes32 _r, bytes32 _s)",
+                        "function getAllowedDailyMint() view returns (uint)",
+                        "function UserClaimed(address) view returns (uint)",
+                        "function DailyMinted(uint) view returns (uint)"],
+                        signer);
+                        try {
+                            const claimAmount = amount ? 
+                            ethers.utils.parseEther(amount.toString()) : 
+                            ethers.utils.parseEther(res.data.claimableRewards.toString())
+                            const tx = await MinterContract.mint(
+                                claimAmount,
+                                res.data.nonce,
+                                signature.v,
+                                signature.r,
+                                signature.s
+                            )
+                            await tx.wait()
+                            this.$store.dispatch('fetchProfile')
+                            this.$store.dispatch('fetchInventory')
+                            this.$buefy.snackbar.open({
+                                duration: 5000,
+                                message: 'Rewards Claimed! Check your balance.',
+                                type: 'is-success', 
+                                position: 'is-bottom'
+                            })
+                        } catch(err) {
+                            if((serializeError(err).code === -32603)) {
+                                const withdrawablAmnt = Number(ethers.utils.formatEther(await MinterContract.getAllowedDailyMint()))
+                                const today = Number.parseInt(((Date.now() / 1000) / 86400).toString().split('.')[0])
+                                const DailyMinted = Number(ethers.utils.formatEther(await MinterContract.DailyMinted(today)))
+                                const MaxAmount = this.$store.state.profile.rewards < withdrawablAmnt ? this.$store.state.profile.rewards : withdrawablAmnt
+                                this.$buefy.dialog.prompt({
+                                    title: serializeError(err).data.originalError.reason.split(':')[1],
+                                    message: `The daily maximum VON amount to be minted is ${CONSTANTS.economicPolicy.dailyRewards.toLocaleString()} VON. Other players minted ${DailyMinted.toLocaleString()} VON. You can mint up to ${withdrawablAmnt.toLocaleString()} VON.`,
+                                    type: 'is-danger',
+                                    inputAttrs: {
+                                        placeholder: 'e.g. Walter',
+                                        maxlength: 10,
+                                        max: MaxAmount,
+                                        value: withdrawablAmnt,
+                                        required: true,
+                                    },
+                                    trapFocus: true,
+                                    confirmText: 'CLAIM',
+                                    onConfirm: (value) => this.claimAllRewards(value)
+                                })
+                            } else {
+                                this.$buefy.toast.open('Error occurred! Try again.')
+                            }
+                        }
                     } else {
                         this.$buefy.snackbar.open({
                             duration: 5000,
@@ -256,11 +304,7 @@
                         if(res.data.success) {
                             this.$store.dispatch('connect', {signature, address})
                             this.$store.dispatch('fetchProfile')
-                            this.$buefy.snackbar.open({
-                                message: 'Welcome back my Lord!',
-                                type: 'is-success',
-                                position: 'is-top'
-                            })
+                            this.$buefy.toast.open('Welcome back my Lord!')
                             this.openProfile()
                         } else {
                             // this.$store.dispatch('connect', {signature, address})
@@ -289,17 +333,23 @@
                     }
                 })
             },
+            openMinting() {
+                this.$router.push('minting')
+            },
             formatName(name) {
                 if(this.$store.state.address) return name.slice(0, 11) + ' ..'
                 return '--'
             },
             handleScroll () {
-                this.yValue = window.scrollY
+                this.$store.commit('setScrollY', window.scrollY)
             }
         },
         async beforeMount() {
             if(this.$store.state.address) {
                 this.$store.dispatch('fetchProfile')
+                setTimeout(() => {
+                    if(!this.$store.state.profile) this.$store.dispatch('disconnect')
+                }, 15000)
             }
         },
         computed: {
@@ -322,7 +372,10 @@
                 else return this.$store.state.profile.avatar
             },
             isFixed() {
-                return this.yValue > 50;
+                return this.$store.state.scrollY > 50;
+            },
+            userBalance() {
+                return this.$store.state.inventory.length > 0 ? this.$store.state.inventory[0].balance : '--'
             }
         }
     } 
@@ -448,16 +501,22 @@ img.lord-avatar {
     top: 17px;
     right: 8px;
 }
-.total-rewards:hover .claim-btn{
+.total-rewards:hover .claim-btn {
     opacity: 0.9;
     color: red; 
+}
+.total-rewards:hover .claim-btn.disabled  {
+    color: grey;
+    opacity: 0.6;
 }
 .claim-btn {
     color: red; 
     float: right; 
     right: -18px;
     font-size: 16px;
-    top: -25px;
+    top: 0px;
+    float: right;
+    position: absolute;
     background: rgb(0,0,0);
     background: -moz-radial-gradient(circle, rgba(0,0,0,1) 43%, transparent 95%);
     background: -webkit-radial-gradient(circle, rgba(0,0,0,1) 43%, transparent 95%);
@@ -465,6 +524,11 @@ img.lord-avatar {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="transparent",GradientType=1);
     padding: 0 30px 0px 30px;
     transition: all ease-out 300ms;
+}
+.claim-btn.disabled {
+    color: grey;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 .balance-section {
     padding: 0px 26.5px !important;
@@ -480,15 +544,30 @@ img.lord-avatar {
     opacity: 0.7;
     font-size: 15px;
     margin-left: -3px;
+    top: -3px;
 }
 .elementToFadeInAndOut {
-    background: transparent;
+    /* background: transparent; */
     -webkit-animation: fadeinout 1s linear forwards;
     animation: fadeinout 1s linear forwards;
     animation-iteration-count: infinite;
+    /* left: -5px; */
+    font-size: 17px;
 }
 @keyframes fadeinout {
     0%,100% { opacity: 0 }
     50% { opacity: 1 }
-    }
+}
+.media-content {
+    color: red !important;
+}
+.modal-card-title {
+    color: red !important;
+    font-size: 19px !important;
+}
+.media-content {
+    padding-top: 3px;
+    color: white !important;
+}
+
 </style>

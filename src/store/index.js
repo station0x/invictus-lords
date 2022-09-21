@@ -21,7 +21,8 @@ export default new Vuex.Store({
         candidateSignature: window.localStorage.getItem('candidateSignature'),
         candidateUsername: window.localStorage.getItem('candidateUsername'),
         candidateUseSteamData: window.localStorage.getItem('candidateUseSteamData'),
-        inventory: []
+        inventory: [],
+        scrollY: 0
     },
     mutations: {
         sign(state, {signature, address}) {
@@ -57,11 +58,9 @@ export default new Vuex.Store({
         setWithdrawnRewards(state, withdrawnRewards) {
             state.withdrawnRewards = withdrawnRewards
         },
-        setAssetBalance(state, {assetSymbol, assetBalance}) {
-            const inventory = [...state.inventory].filter(v => v.symbol !== assetSymbol)
-            inventory.push({symbol: assetSymbol, balance: assetBalance})
-            state.inventory = inventory
-        },
+        setScrollY(state, scrollVal) {
+            state.scrollY = scrollVal
+        }
     },
     actions: {
         async fetchProfile ({commit, dispatch, state}) {

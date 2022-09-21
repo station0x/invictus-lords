@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <Navbar/>
-    <div class="notices is-bottom">
-      <div v-if="lastDistribution" class="toast is-small is-danger is-bottom countdown-div">Next Rewards distribution round in <p style="color: rgb(250, 255, 0); margin-left: 10px">{{countdown}}</p></div>
+    <div v-if="$store.state.scrollY < 200" class="notices is-bottom">
+      <div v-if="lastDistribution" class="toast is-small is-danger is-bottom countdown-div">
+        <img class="rewards-toast" src="/img/von-reward.svg"/> <p style="margin-left: 40px">Next Rewards distribution round in</p> 
+        <p style="color: rgb(250, 255, 0); margin-left: 10px">{{countdown}}</p></div>
     </div>
     <div class="app-body">
       <router-view></router-view>
@@ -102,6 +104,12 @@ header {
  .countdown-div {
   background: black !important;
   border: 3px solid rgb(250, 255, 0);
+ }
+ .rewards-toast {
+  position: absolute;
+  left: -8px;
+  top: -14px;
+  width: 62px;
  }
 }
 </style>
