@@ -509,7 +509,7 @@
         <clipPath id="clip2_106_3">
         <rect width="18" height="22" fill="white" transform="translate(1401 36)"/>
         </clipPath>
-        <image id="background-image" data-name="bg.png" width="2560" height="1024" href="https://res.cloudinary.com/station0x/image/upload/v1662375347/invictus/captainlarry_httpss.mj_1_ckgbrr.png"/>
+        <image id="background-image" data-name="bg.png" width="2560" height="1024" href="/img/artistic-cover.jpg"/>
         <image id="cs-image" data-name="cs.png" width="830" height="368" href="/img/csgo-small.png"/>
         <image id="avatar-image" data-name="image.png" width="900" height="444" :href="playerInfo.avatar"/>
         <image id="lord-logo-image" data-name="image.png" width="2048" height="2048" :href="''"/>

@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
         ['uint', 'uint', 'address', 'address', 'uint'],
         [
 
-            ethers.utils.parseEther(claimableRewards.toString()), // amount
+            ethers.utils.parseEther(amount.toString()), // amount
             Nonce, // nonce
             address, // caller 
             CONSTANTS.economicPolicy.minter, // calee
@@ -40,6 +40,6 @@ module.exports = async (req, res) => {
     let wallet = new ethers.utils.SigningKey(process.env.SIGNER)
     let signature = await wallet.signDigest(hash)
     console.log(signature)
-    res.json({signature})
+    res.json({signature, nonce: Nonce})
     return
 }

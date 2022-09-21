@@ -42,7 +42,7 @@
     }
     .card-header {
         color: #FF111F;
-        text-decoration: underline;
+        /* text-decoration: underline; */
         font-size: 18px;
         line-height: 130.8%;
     }

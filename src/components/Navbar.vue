@@ -63,7 +63,7 @@
                 </template>
                 <template v-else #end>
                     <b-navbar-item @click="claimAllRewards()" class="lord-dropdown total-rewards" tag="div" style="cursor: pointer; margin-right: 10px">
-                        <img class="navlink-icon" src="/img/von-reward.svg"/>
+                        <img class="navlink-icon" src="/img/von-reward.png"/>
                         <div class="buttons">
                             <div class="rewards-amount"><span class="navbar-subtext">{{rewardsFormatted}}</span> 
                                 <div :class="{'claim-btn':true, 'elementToFadeInAndOut': claiming, 'disabled': rewardsFormatted === 0 }">{{ claiming ? 'CLAIMING' : 'CLAIM'}}</div>
@@ -75,7 +75,7 @@
                         <!-- <b-loading v-model="claiming" :is-full-page="false"></b-loading> -->
                     </b-navbar-item>
                     <b-navbar-item class="lord-dropdown total-rewards" tag="div" style="margin-right: -10px">
-                        <img class="navlink-icon" src="/img/von-token.svg"/>
+                        <img class="navlink-icon" src="/img/von-token.png"/>
                         <div class="buttons">
                             <div class="rewards-amount"><span class="navbar-subtext">{{userBalance.toLocaleString() + ' VON'}}</span></div>
                             <div arrowless style="font-size: 17px; margin-left: 10px; margin-top: 5px; margin-bottom: 5px; width: 200px">
@@ -159,10 +159,11 @@
                 // this.$emit('close')
             },
             async claimAllRewards(amount) {
+                console.log(amount)
                 if(this.rewardsFormatted === 0) return false
                 this.claiming = true
                 try {
-                    window.ethereum.eth_requestAccounts
+                    window.ethereum.request({ method: "eth_requestAccounts" })
                     // window.ethereum.enable()
                     const metamaskProvider = await detectEthereumProvider()
                     if(metamaskProvider) {
@@ -206,19 +207,20 @@
                         if(!amount) {
                             res = await axios.get('/api/rewards/claimAllRewards', {
                                 params:{
-                                    signature:this.$store.state.signature
+                                    signature: this.$store.state.signature
                                 }
                             })
                         } else {
                             res = await axios.get('/api/rewards/claimRewardsWithAmount', {
                                 params:{
-                                    signature:this.$store.state.signature,
+                                    signature: this.$store.state.signature,
                                     amount
                                 }
                             })
                         }
-
+                        console.log(res.data.signature)
                         const signature = ethers.utils.splitSignature(res.data.signature)
+                        console.log(signature)
                         const MinterContract = new ethers.Contract(CONSTANTS.economicPolicy.minter, 
                         ["function mint(uint _amount, uint nonce, uint8 _v, bytes32 _r, bytes32 _s)",
                         "function getAllowedDailyMint() view returns (uint)",
@@ -226,9 +228,13 @@
                         "function DailyMinted(uint) view returns (uint)"],
                         signer);
                         try {
-                            const claimAmount = amount ? 
+                            console.log('amount ', amount, typeof amount)
+                            console.log('claimable ', res.data.claimableRewards, typeof res.data.claimableRewards)
+                            const claimAmount = amount ?
                             ethers.utils.parseEther(amount.toString()) : 
-                            ethers.utils.parseEther(res.data.claimableRewards.toString())
+                            ethers.utils.parseEther(res.data.claimableRewards.toString());
+                            console.log(claimAmount)
+                            console.log(Number(ethers.utils.formatEther(claimAmount)))
                             const tx = await MinterContract.mint(
                                 claimAmount,
                                 res.data.nonce,
@@ -243,12 +249,12 @@
                                 duration: 5000,
                                 message: 'Rewards Claimed! Check your balance.',
                                 type: 'is-success', 
-                                position: 'is-bottom'
+                                position: 'is-top'
                             })
                         } catch(err) {
                             console.log(serializeError(err))
                             if((serializeError(err).code === -32603)) {
-                                const message = serializeError(err).data.originalError.reason === "user rejected transaction" ? 
+                                const message = serializeError(err).data.originalError.reason != "execution reverted: Amounts exceeds daily minting limit" ? 
                                 serializeError(err).data.originalError.reason : 
                                 serializeError(err).data.originalError.reason.split(':')[1]
                                 const withdrawablAmnt = Number(ethers.utils.formatEther(await MinterContract.getAllowedDailyMint()))
@@ -268,7 +274,7 @@
                                     },
                                     trapFocus: true,
                                     confirmText: 'Try Again',
-                                    onConfirm: (value) => this.claimAllRewards(value)
+                                    onConfirm: (value) => this.claimAllRewards(Number.parseInt(value))
                                 })
                             } else {
                                 this.$buefy.toast.open('Error occurred! Try again.')

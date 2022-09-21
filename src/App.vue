@@ -3,7 +3,7 @@
     <Navbar/>
     <div v-if="$store.state.scrollY < 200" class="notices is-bottom">
       <div v-if="lastDistribution" class="toast is-small is-danger is-bottom countdown-div">
-        <img class="rewards-toast" src="/img/von-reward.svg"/> <p style="margin-left: 40px">Next Rewards distribution round in</p> 
+        <img class="rewards-toast" src="/img/von-reward.png"/> <p style="margin-left: 40px">Next Rewards distribution round in</p> 
         <p style="color: rgb(250, 255, 0); margin-left: 10px">{{countdown}}</p></div>
     </div>
     <div class="app-body">
