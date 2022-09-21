@@ -267,23 +267,8 @@
   left: 50%;
   transform: translate(-50%, -25%);
 }
-/* tspan {
-  font-family: 'Evogria';
-} */
+
 .cards {
-  /* height: 50px; */
-  /* width: 500px;
-  height: 700px;
-  cursor: grab;
-  overflow-x: scroll;
-  /* overflow: auto; */
-  /* user-select: none;
-  display: inline-block;  */
-}
-.cards {
-  /* cursor: grab;
-  width: 100vw;
-  margin: 0 auto; */
   display: inline;
 }
 

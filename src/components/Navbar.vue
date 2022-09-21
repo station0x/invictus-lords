@@ -13,8 +13,7 @@
                     </b-navbar-item>
                 </template>
                 <template #start>
-
-                    <b-navbar-item @click="$router.push('/')">
+                    <b-navbar-item @click="$router.push('/ecosystem')">
                         Ecosystem
                     </b-navbar-item>
                     <b-navbar-item @click="openMinting">
@@ -247,13 +246,17 @@
                                 position: 'is-bottom'
                             })
                         } catch(err) {
+                            console.log(serializeError(err))
                             if((serializeError(err).code === -32603)) {
+                                const message = serializeError(err).data.originalError.reason === "user rejected transaction" ? 
+                                serializeError(err).data.originalError.reason : 
+                                serializeError(err).data.originalError.reason.split(':')[1]
                                 const withdrawablAmnt = Number(ethers.utils.formatEther(await MinterContract.getAllowedDailyMint()))
                                 const today = Number.parseInt(((Date.now() / 1000) / 86400).toString().split('.')[0])
                                 const DailyMinted = Number(ethers.utils.formatEther(await MinterContract.DailyMinted(today)))
                                 const MaxAmount = this.$store.state.profile.rewards < withdrawablAmnt ? this.$store.state.profile.rewards : withdrawablAmnt
                                 this.$buefy.dialog.prompt({
-                                    title: serializeError(err).data.originalError.reason.split(':')[1],
+                                    title: message,
                                     message: `The daily maximum VON amount to be minted is ${CONSTANTS.economicPolicy.dailyRewards.toLocaleString()} VON. Other players minted ${DailyMinted.toLocaleString()} VON. You can mint up to ${withdrawablAmnt.toLocaleString()} VON.`,
                                     type: 'is-danger',
                                     inputAttrs: {
@@ -264,7 +267,7 @@
                                         required: true,
                                     },
                                     trapFocus: true,
-                                    confirmText: 'CLAIM',
+                                    confirmText: 'Try Again',
                                     onConfirm: (value) => this.claimAllRewards(value)
                                 })
                             } else {
@@ -569,5 +572,8 @@ img.lord-avatar {
     padding-top: 3px;
     color: white !important;
 }
-
+input.input {
+    border: 2px solid grey !important;
+    border-radius: 5px !important;
+}
 </style>

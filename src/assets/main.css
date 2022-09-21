@@ -51,6 +51,14 @@ section.modal-card-body {
   color: red !important;
   font-size: 19px !important;
 }
+
+input.input {
+  border: 2px solid rgba(255,255,255,.2) !important;
+  border-radius: 5px !important;
+}
+input.input:focus {
+  border: 2px solid white !important;
+}
 /* #app {
   max-width: 1280px;
   margin: 0 auto;
