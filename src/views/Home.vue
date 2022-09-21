@@ -8,8 +8,9 @@
           <h1 class="one-text" style="margin-top: 10px; font-family: 'Evogria';font-size: 23; color: #FAFF00;">Earn rewards by playing</h1>
           <img
             class="center"
-            src="/img/csgo-small.png"
-            width="100px"
+            src="/img/games.png"
+            width="450px"
+            style="margin-top: 20px; margin-bottom: 20px;"
           >
           <b-button style="transform: scale(0.8)" v-if="!this.$store.state.address" @click="auth" :loading="steamLoader" class="center steam-btn">
             <img class="steam-logo" src="/img/steam-logo.svg"/>
@@ -17,17 +18,17 @@
           </b-button>
       </div>
     </div>
-    <div class="landing-two" style="height: 70vh">
+    <div class="landing-two" style="min-height: 800px;">
       <div class="svg-wrapper" style="transform: scale(1.15)">
         <Synthesis style="margin-top: 80px"/>
       </div>
     </div>
-    <div class="landing-two" style="height: 100vh">
+    <div class="landing-two" style="">
       <div class="svg-wrapper" style="transform: scale(0.75);">
         <Building/>
       </div>
     </div>
-    <div class="landing-two" style="height: 50vh">
+    <div class="landing-two" style="">
       <div class="svg-wrapper" style="transform: scale(0.9)">
         <svg viewBox="0 0 1240 465" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g id="Group 80">
@@ -63,14 +64,14 @@
         </svg>
       </div>
     </div>
-    <div class="landing-two" style="height: 100vh">
+    <div class="landing-two" style="min-height: 1000px;">
       <div class="svg-wrapper" style="transform: scale(1.05);">
-        <NFTSection style="margin-top: 140px"/>
+        <NFTSection style="margin-top: 200px"/>
       </div>
     </div>
     
     <div class="landing-two scrollable-cards">
-      <div style="margin-top: -200px;">
+      <div style="">
         <center>
           <h1 style="color: white; font-size: 25px">HOW TO</h1>
           <h1 style="color: red; font-size: 32px; margin-top: -8px; margin-bottom: 30px;">JOIN THE MOVE</h1>
@@ -84,7 +85,7 @@
         </div>
       </div>
     </div>
-    <div class="landing-two" style="height: 35vh">
+    <div class="landing-two" style="min-height: 420px;">
         <div class="svg-wrapper" style="transform: scale(.9);">
           <svg viewBox="0 0 1164 194" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="Group 84">
@@ -100,7 +101,7 @@
             <rect x="860" y="69" width="238" height="56" rx="12" fill="url(#paint0_radial_334_2)" fill-opacity="0.2"/>
             </g>
             <g id="Group 2">
-            <text id="ReAD MORE" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="16" letter-spacing="0em"><tspan x="938" y="103.758">Know More</tspan></text>
+            <text id="ReAD MORE" @click="$router.push('/ecosystem')" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="16" letter-spacing="0em"><tspan x="938" y="103.758" style="cursor: pointer">Know More</tspan></text>
             </g>
             </g>
             </g>
@@ -182,9 +183,10 @@
 <style scoped>
 .landing-one {
   width: 100vw;
-  height: 95vh;
-  background-image: url('/img/bg.png');
+  min-height: 1000px;
+  background-image: url('/img/bg.jpg');
   background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
 }
 .landing-two {
