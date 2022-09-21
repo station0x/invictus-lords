@@ -183,7 +183,7 @@
 <style scoped>
 .landing-one {
   width: 100vw;
-  min-height: 1000px;
+  min-height: 1100px;
   background-image: url('/img/bg.jpg');
   background-repeat: no-repeat;
   background-position: center;

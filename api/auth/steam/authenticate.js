@@ -17,7 +17,7 @@ const steam = new SteamAuth({
 module.exports = async (req, res) => {
   try {
     const user = await steam.authenticate(req)
-    const steamHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(user) + ethers.utils.keccak256(ethers.utils.toUtf8Bytes((Math.random() * 1000))))
+    const steamHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(user))
     const client = await clientPromise;
     const db = client.db()
     const players = db.collection("players")
@@ -32,6 +32,7 @@ module.exports = async (req, res) => {
     }
     const steamCollection = db.collection("steamEntries")
     const steamByHash = (await steamCollection.find({steamHash}).limit(1).toArray())[0]
+    console.log()
     if(!steamByHash) {
       await steamCollection.insertOne({
         user,
