@@ -2,8 +2,8 @@
 const SteamAuth = require("../../../api-utils/node-steam-openid")
 const url = require('url');
 const codec = require('json-url')('lzw');
-const ethers = require('ethers')
-const clientPromise = require('../../../api-utils/mongodb-client');
+var hash = require('object-hash')
+const clientPromise = require('../../../api-utils/mongodb-client')
 
 
 const realm = process.env.REALM_URL
@@ -17,7 +17,9 @@ const steam = new SteamAuth({
 module.exports = async (req, res) => {
   try {
     const user = await steam.authenticate(req)
-    const steamHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(user))
+    console.log(user)
+    const steamHash = hash(user)
+    console.log('================ STEAM HASH ==============', steamHash)
     const client = await clientPromise;
     const db = client.db()
     const players = db.collection("players")
@@ -31,8 +33,8 @@ module.exports = async (req, res) => {
       throw new Error('Player already registered')
     }
     const steamCollection = db.collection("steamEntries")
-    const steamByHash = (await steamCollection.find({steamHash}).limit(1).toArray())[0]
-    console.log()
+    const steamByHash = (await steamCollection.find({steamHash: steamHash}).limit(1).toArray())[0]
+    console.log('-=====================================> ', steamByHash)
     if(!steamByHash) {
       await steamCollection.insertOne({
         user,

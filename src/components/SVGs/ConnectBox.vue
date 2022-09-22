@@ -81,7 +81,7 @@
             <p v-if="isMetamaskTrue" class="body-text" style="margin-top: 25px;">Hey Anon! Just one more step to start getting your rewards by playing your favourite games. </p>
             <p v-else="isMetamaskTrue" class="body-text" style="margin-top: 25px;"> One last step to start competing with other lords!  
                 Link wallet to your account to be  able to claim your hard-earned rewards.
-                <p style="font-weight: 500; margin-top: -20px">GLHF.</p>
+                <!-- <p style="font-weight: 500; margin-top: -20px">GLHF.</p> -->
             </p>
         </foreignObject>
         <foreignObject height="150" width="100%" x="0" y="485" dominant-baseline="middle" text-anchor="middle">
