@@ -13,6 +13,7 @@ module.exports = async (req, res) => {
     const address = getAddress(req.query.signature)
     const providerType = req.query.providerType.toLowerCase()
     const providerIdHash = req.query.hash
+    console.log(providerIdHash)
     let playerAlias = req.query.playerAlias
     console.log(playerAlias)
     const useSteamName = req.query.useSteamName
@@ -29,9 +30,12 @@ module.exports = async (req, res) => {
     if(playerDocByAddress) throw new Error('Address already registered')
 
     const steamData = (await steam.find({steamHash: providerIdHash}).limit(1).toArray())[0]
+    console.log(steamData)
     if(!steamData) throw new Error('No steam linked')
     const providerId = steamData.user.steamid
     const playerDocById = (await players.find({[`${providerType}`]:`${providerId}`}).limit(1).toArray())[0]
+    console.log(playerDocById)
+    console.log({[`${providerType}`]:`${providerId}`})
     if(playerDocById) throw new Error('Player already registered with this provider ID')
     if(!playerAlias)  {
         playerAlias = steamData.user.username

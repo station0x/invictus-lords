@@ -20,6 +20,7 @@
     "ethers": "^5.7.0",
     "json-url": "^3.0.0",
     "mongodb": "^4.2.0",
+    "object-hash": "^3.0.0",
     "openid": "^2.0.10",
     "unique-username-generator": "^1.1.1",
     "vue": "^2.7.7",
