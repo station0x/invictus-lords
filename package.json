@@ -28,7 +28,8 @@
     "vue-gtag": "^1.16.1",
     "vue-number-animation": "^1.1.2",
     "vue-router": "^3.5.3",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "vue-hotjar": "^1.4.0"
   },
   "devDependencies": {
     "@vitejs/plugin-legacy": "^2.0.0",

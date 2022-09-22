@@ -116,11 +116,13 @@ header {
   background: black !important;
   border: 3px solid rgb(250, 255, 0);
  }
- .rewards-toast {
+}
+
+
+.rewards-toast {
   position: absolute;
   left: -8px;
   top: -14px;
   width: 62px;
  }
-}
 </style>
