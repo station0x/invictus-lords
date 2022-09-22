@@ -56,10 +56,12 @@ module.exports = async (req, res) => {
                 if(err.response.status === 451) res.status(451).json({ succes: false, msg: "The player either hasn't played CSGO or their profile is private." })
                 else throw new Error('Unknown error occured')
             }
-        } else {
+    } else {
+        if(Date.now() > playerGameDoc.lastFetched + (CONSTANTS.api.refetchTimout * 1000)) {
+            console.log('api')
             // calculate seasons data
             const newPlayerGameDoc = {...playerGameDoc}
-            try{
+            try {
             const data = (await axios.get(`https://public-api.tracker.gg/v2/csgo/standard/profile/${persona}/${personaId}`, {
                 headers: {
                     'TRN-Api-Key': process.env.TRACKER_API
@@ -98,9 +100,13 @@ module.exports = async (req, res) => {
                 $set:newPlayerGameDoc
             })
             res.status(200).json({ succes: true, playerGameDoc, playerDoc, data: data.data.data })
-        } catch(err) {
-            if(err.response.status === 451) res.status(451).json({ succes: false, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
-            else throw new Error('Unknown error occured')
+            } catch(err) {
+                if(err.response.status === 451) res.status(451).json({ succes: false, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
+                else throw new Error('Unknown error occured')
+            }
+        } else {
+            console.log('db')
+            res.status(200).json({ succes: true, playerGameDoc, playerDoc })
         }
     }
 }

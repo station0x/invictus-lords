@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <div class="test-notice">
+      <p>This is a test version on the Goerli Network. Feel free to test and report bugs at our <a href="
+https://t.me/invictuslords" target="_blank">Telegram</a></p>
+    </div>
     <Navbar/>
     <div v-if="$store.state.scrollY < 200" class="notices is-bottom">
       <div v-if="lastDistribution" class="toast is-small is-danger is-bottom-left countdown-div">
@@ -75,6 +79,13 @@
 </script>
 
 <style scoped>
+.test-notice {
+  width: 100vw;
+  background: #FF111F;
+  color: white;
+  padding: 5px;
+  text-align: center;
+}
 header {
   line-height: 1.5;
 }
