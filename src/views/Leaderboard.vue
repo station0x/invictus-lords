@@ -24,7 +24,7 @@
                     {{ props.row.gameInfo.matchesPlayed.value }}
                 </b-table-column>
                 <b-table-column cell-class="hoverable-cell" width="100px" field="kd" label="K/D %" v-slot="props">
-                    {{ props.row.gameInfo.kd.value + ' %' }}
+                    {{ props.row.gameInfo.kd.value.toLocaleString() + ' %' }}
                 </b-table-column>
             </b-table>
         </div>
@@ -64,7 +64,7 @@ export default {
             }
         },
         openProfile(address) {
-            let routeData = this.$router.resolve({ name: 'Lord Profile', params: { playerAddress: address } })
+            let routeData = this.$router.resolve({ name: 'Lord Profile', params: { playerAddress: address, game: 'csgo' } })
             window.open(routeData.href, '_self')
         },
     },

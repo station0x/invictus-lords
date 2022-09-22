@@ -14,17 +14,17 @@
             <rect x="1" y="-1" width="206" height="47" transform="matrix(1 0 0 -1 207 47)" stroke="#0B0B10" stroke-width="2"/>
             </g>
             <g id="Rectangle 24" filter="url(#filter2_b_152_2)">
-            <rect width="139" height="49" transform="matrix(1 0 0 -1 918 49)" fill="#000001"/>
-            <rect x="1" y="-1" width="137" height="47" transform="matrix(1 0 0 -1 918 47)" stroke="#0B0B10" stroke-width="2"/>
+            <!-- <rect width="139" height="49" transform="matrix(1 0 0 -1 918 49)" fill="#000001"/>
+            <rect x="1" y="-1" width="137" height="47" transform="matrix(1 0 0 -1 918 47)" stroke="#0B0B10" stroke-width="2"/> -->
             </g>
-            <text id="Last fetched data" fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="14" letter-spacing="0em"><tspan x="710" y="30.4312">Last fetched</tspan></text>
-            <text id="2 hours ago" fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="14" letter-spacing="0em"><tspan x="800" y="30.4312">{{ sinceTime }} </tspan></text>
-            <text :class="{'elementToFadeInAndOut': isFetching }" id="Refresh" :fill="isFetching ? 'red' : 'white'" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="14" letter-spacing="0em"><tspan x="949" y="30.4312">{{ isFetching ? 'Loading' : 'Refresh'}}</tspan></text>
-            <g id="refresh">
+            <text id="Last fetched data" fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="14" letter-spacing="0em"><tspan x="680" y="30.4312">Last fetched</tspan></text>
+            <text id="2 hours ago" fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="14" letter-spacing="0em"><tspan x="770" y="30.4312">{{ sinceTime }} (Auto refresh in 10 minutes)</tspan></text>
+            <!-- <text :class="{'elementToFadeInAndOut': isFetching }" id="Refresh" :fill="isFetching ? 'red' : 'white'" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="14" letter-spacing="0em"><tspan x="949" y="30.4312">{{ isFetching ? 'Loading' : 'Refresh'}}</tspan></text> -->
+            <!-- <g id="refresh">
 
             <path :class="{'elementToFadeInAndOut': isFetching }" id="Vector_2" d="M1027.75 31.75C1027.55 31.75 1027.36 31.671 1027.22 31.5303C1027.08 31.3897 1027 31.1989 1027 31V28H1024C1023.8 28 1023.61 27.921 1023.47 27.7803C1023.33 27.6397 1023.25 27.4489 1023.25 27.25C1023.25 27.0511 1023.33 26.8603 1023.47 26.7197C1023.61 26.579 1023.8 26.5 1024 26.5H1027.75C1027.95 26.5 1028.14 26.579 1028.28 26.7197C1028.42 26.8603 1028.5 27.0511 1028.5 27.25V31C1028.5 31.1989 1028.42 31.3897 1028.28 31.5303C1028.14 31.671 1027.95 31.75 1027.75 31.75ZM1018 23.5H1014.25C1014.05 23.5 1013.86 23.421 1013.72 23.2803C1013.58 23.1397 1013.5 22.9489 1013.5 22.75V19C1013.5 18.8011 1013.58 18.6103 1013.72 18.4697C1013.86 18.329 1014.05 18.25 1014.25 18.25C1014.45 18.25 1014.64 18.329 1014.78 18.4697C1014.92 18.6103 1015 18.8011 1015 19V22H1018C1018.2 22 1018.39 22.079 1018.53 22.2197C1018.67 22.3603 1018.75 22.5511 1018.75 22.75C1018.75 22.9489 1018.67 23.1397 1018.53 23.2803C1018.39 23.421 1018.2 23.5 1018 23.5V23.5Z" fill="#F20009"></path>
             <path :class="{'elementToFadeInAndOut': isFetching }" id="Vector_3" d="M1021 32.5C1019.15 32.5003 1017.37 31.8204 1016 30.5903C1014.62 29.3602 1013.75 27.6663 1013.55 25.8325C1013.53 25.734 1013.54 25.6343 1013.57 25.5392C1013.6 25.4441 1013.64 25.3553 1013.71 25.278C1013.83 25.1219 1014.01 25.0219 1014.21 25C1014.41 24.9781 1014.61 25.0362 1014.77 25.1613C1014.92 25.2865 1015.02 25.4686 1015.05 25.6675C1015.19 27.0195 1015.8 28.2811 1016.76 29.2453C1017.72 30.2095 1018.97 30.8192 1020.32 30.9744C1021.68 31.1295 1023.04 30.821 1024.19 30.0993C1025.35 29.3777 1026.22 28.2857 1026.67 27.0025C1026.7 26.9039 1026.75 26.812 1026.81 26.7327C1026.88 26.6534 1026.96 26.5882 1027.05 26.5413C1027.14 26.4943 1027.24 26.4666 1027.34 26.4598C1027.44 26.4529 1027.55 26.4672 1027.64 26.5016C1027.74 26.5361 1027.83 26.5899 1027.9 26.66C1027.98 26.73 1028.04 26.8146 1028.08 26.9086C1028.12 27.0027 1028.14 27.1041 1028.14 27.2067C1028.14 27.3093 1028.12 27.4108 1028.08 27.505C1027.56 28.9678 1026.6 30.2337 1025.33 31.1283C1024.07 32.023 1022.55 32.5022 1021 32.5ZM1027.71 25C1027.52 25.0011 1027.34 24.9335 1027.2 24.8103C1027.06 24.687 1026.98 24.5168 1026.96 24.3325C1026.8 22.9869 1026.19 21.7334 1025.24 20.7757C1024.28 19.818 1023.03 19.2126 1021.68 19.0579C1020.33 18.9031 1018.98 19.2082 1017.83 19.9235C1016.68 20.6388 1015.8 21.7222 1015.35 22.9975C1015.32 23.0961 1015.27 23.188 1015.2 23.2673C1015.14 23.3466 1015.06 23.4118 1014.97 23.4587C1014.88 23.5057 1014.78 23.5334 1014.67 23.5402C1014.57 23.5471 1014.47 23.5328 1014.37 23.4984C1014.28 23.4639 1014.19 23.4101 1014.11 23.34C1014.04 23.27 1013.98 23.1854 1013.94 23.0913C1013.9 22.9973 1013.87 22.8959 1013.87 22.7933C1013.87 22.6907 1013.89 22.5892 1013.94 22.495C1014.5 20.8931 1015.59 19.5302 1017.03 18.6296C1018.47 17.7289 1020.17 17.3438 1021.86 17.5372C1023.55 17.7306 1025.12 18.4911 1026.32 19.6942C1027.52 20.8973 1028.27 22.4718 1028.46 24.16C1028.48 24.3568 1028.43 24.5539 1028.3 24.7084C1028.18 24.863 1028 24.9624 1027.8 24.985L1027.71 25Z" fill="#F20009"/>
-            </g>
+            </g> -->
             <text id="season 1" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="16" letter-spacing="0em"><tspan x="276" y="31.7578">season 1</tspan></text>
             </g>
             <defs>
@@ -467,7 +467,14 @@
         <!-- buttons -->
         <rect style="cursor: pointer" @click="lifetimeData" x="540" y="-48" width="210px" height="48" fill="white" fill-opacity="0.0"></rect>
         <rect style="cursor: pointer" @click="seasonData" x="740" y="-48" width="210px" height="48" fill="white" fill-opacity="0.0"></rect>
-        <rect style="cursor: pointer" @click="refetchData" x="1460" y="-48" width="140px" height="48" fill="white" fill-opacity="0.0"></rect>
+        <!-- <foreignObject>
+            <b-tooltip label="Tooltip right"
+                position="is-right">
+                <b-button label="Right" type="is-dark" />
+            </b-tooltip>
+        </foreignObject> -->
+
+        <!-- <rect style="cursor: pointer" @click="refetchData" x="1460" y="-48" width="140px" height="48" fill="white" fill-opacity="0.0"></rect> -->
         </g>
         <defs>
         <filter id="filter0_b_106_3" x="518" y="-22" width="1102" height="891" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">

@@ -120,7 +120,7 @@
         </b-button>
         <b-button v-else @click="connectMetamask" :loading="steamLoader" class="center mm-btn">
             <img class="steam-logo" src="/img/mm_fox.svg"/>
-            Connect Metamask
+            {{ mmInstalled ? 'Connect Metamask' : 'Download Metamask Wallet' }}
         </b-button>
     </div>
 </template>
@@ -133,7 +133,8 @@
             return {
                 steamLoader: false,
                 localPlayerAlias: undefined,
-                useSteamData: false
+                useSteamData: false,
+                mmInstalled: false
             }
         },
         props: {
@@ -164,14 +165,18 @@
             this.localPlayerAlias = data
         },
         async connectMetamask() {
-            const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
-            const signer = provider.getSigner()
-            await provider.send("eth_requestAccounts", []);
-            const accounts = await provider.listAccounts()
-            const signature = await signer.signMessage("Welcome to my house! Enter freely. Go safely, and leave something of the happiness you bring")
-            // this.$router.go()
-            // this.$store.dispatch('connect', {signature, address: await signer.getAddress()})
-            this.registerPlayer(signature, await signer.getAddress())
+            if(this.mmInstalled) {
+                const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
+                const signer = provider.getSigner()
+                await provider.send("eth_requestAccounts", []);
+                const accounts = await provider.listAccounts()
+                const signature = await signer.signMessage("Welcome to my house! Enter freely. Go safely, and leave something of the happiness you bring")
+                // this.$router.go()
+                // this.$store.dispatch('connect', {signature, address: await signer.getAddress()})
+                this.registerPlayer(signature, await signer.getAddress())
+            } else {
+                window.open('https://metamask.io/download/', "_blank")
+            }
         },
         async registerPlayer(signature, address) {
             this.steamLoader = true
@@ -208,8 +213,11 @@
                 this.steamLoader = true
             )
             return res
-        }
+        },
       },
+        created() {
+            if(typeof window.ethereum !== 'undefined') this.mmInstalled = true
+        }
     }
 </script>
 
