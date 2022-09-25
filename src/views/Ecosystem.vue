@@ -16,16 +16,20 @@
 </script>
 
 <style scoped>
+    .body {
+        background: #090B0E !important;
+    }
     .eco-page {
         width: 100vw;
         /* height: 100vh; */
-        background: black;
+        /* height: 100vh; */
+        background: #090B0E;
     }
     .eco-wrapper {
-        padding-top: 12.5vh;
+        padding-top: 70px;
         width: 90%;
         margin: 0 auto;
-        max-width: 1600px;
-        margin-bottom: 10vh;
+        max-width: 1500px;
+        margin-bottom: 100px;
     }
 </style>

@@ -1,21 +1,21 @@
 <template>
   <div>
     <Loader v-if="isLoading"/>
-    <div v-else class="greetings">
+    <!-- <div v-else class="greetings"> -->
       <h3>
-        <center>
+        <!-- <center> -->
           <ConnectBox v-if="!isMetamask" :user="user" :signature="signature" :address="address" :isMetamask="$route.params.isMetamask" :avatar="user.avatar" :playerAlias="user.username"/>
           <ConnectBox v-else :isMetamask="$route.params.isMetamask" :playerAlias="user.username" :signature="this.$route.params.user"/>
-        </center>
+        <!-- </center> -->
       </h3>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
   
   <script>
     import axios from 'axios'
     import { ethers } from 'ethers'
-    import ConnectBox from '@/components/SVGs/ConnectBox.vue'
+    import ConnectBox from '@/components/ConnectBox.vue'
     import Loader from '@/components/Loader.vue'
     import { generateUsername } from "unique-username-generator"
     const lib = JsonUrl('lzw')
