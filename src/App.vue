@@ -1,15 +1,18 @@
 <template>
   <div id="app">
-    <div class="test-notice">
+    <!-- <div class="test-notice">
       <p>This is a test version on the Goerli Network. Feel free to test and report bugs at our <a href="
 https://t.me/invictuslords" target="_blank">Telegram</a></p>
-    </div>
+    </div> -->
     <Navbar/>
-    <div v-if="$store.state.scrollY < 200" class="notices is-bottom">
+    <div class="fixed left-0 top-16 z-10 h-full min-h-full">
+      <Sidebar v-if="isApp && isConnected"/>
+    </div>
+    <!-- <div v-if="$store.state.scrollY < 200" class="notices is-bottom">
       <div v-if="lastDistribution" class="toast is-small is-danger is-bottom-left countdown-div">
         <img class="rewards-toast" src="/img/von-reward.png"/> <p style="margin-left: 40px">Next Rewards distribution round in</p> 
         <p style="color: rgb(250, 255, 0); margin-left: 10px">{{countdown}}</p></div>
-    </div>
+    </div> -->
     <div class="app-body">
       <router-view></router-view>
     </div>
@@ -18,6 +21,7 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
 
 <script>
   import Navbar from '@/components/Navbar.vue'
+  import Sidebar from '@/components/Sidebar.vue'
   import axios from 'axios'
   import date from 'date-and-time'
   import dev from '../constants/dev.json'
@@ -31,7 +35,8 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
       }
     },
     components: {
-      Navbar
+      Navbar,
+      Sidebar
     },
     methods: {
       responsify() {
@@ -60,6 +65,11 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
           }
           return countdown
         } else return undefined
+      },
+      isApp() {
+        return (this.$route.name !== 'Home'
+        && this.$route.name !== 'Ecosystem'
+        && this.$route.name !== 'Minting')
       }
     },
     created() {
@@ -117,7 +127,6 @@ header {
   border: 3px solid rgb(250, 255, 0);
  }
 }
-
 
 .rewards-toast {
   position: absolute;

@@ -23,11 +23,12 @@
 
 <style>
     .card-wrapper {
-        height:480px;
-        width: 320px;
+        font-family: 'Inter';
+        height:470px;
+        width: 335px;
         /* background: red; */
         border-radius: 5px;
-        border: 2px solid #1E1E1E;
+        border: 1px solid #374151;
         display: inline-block;
         /* float: left; */
         margin: 20px;
@@ -37,11 +38,13 @@
         border-radius: 0 !important;
     }
     .card-body {
-        padding: 30px;
+        padding: 22px;
         white-space: pre-line;
     }
     .card-header {
-        color: #FF111F;
+        color: white;
+        font-weight: bold;
+        text-align: left;
         /* text-decoration: underline; */
         font-size: 18px;
         line-height: 130.8%;
