@@ -22,12 +22,17 @@ export default new Vuex.Store({
         candidateUsername: window.localStorage.getItem('candidateUsername'),
         candidateUseSteamData: window.localStorage.getItem('candidateUseSteamData'),
         inventory: [],
-        scrollY: 0
+        scrollY: 0,
+        clicked: 0
     },
     mutations: {
         sign(state, {signature, address}) {
             state.signature = signature
             state.address = address
+        },
+        clicked(state) {
+            if(state.clicked < 100) state.clicked += 1
+            else state.clicked = 0
         },
         setIntervalId(state, intervalId) {
             state.intervalId = intervalId
@@ -69,6 +74,7 @@ export default new Vuex.Store({
                     address: state.address
                 }
             })
+            console.log(res.data.playerDoc)
             commit('setProfile', res.data.playerDoc)
             // dispatch('fetchInventory')
         },

@@ -1,13 +1,8 @@
 <template>
-    <!-- <div class="leaderboard-wrapper">
-        <div class="loader-wrapper" v-if="!data">
-            <Loader/>
-        </div>
-        <div v-else class="leaderboard"> -->
     <div class="w-screen h-screen">
-        <!-- <div  class="h-16 top-60 absolute w-screen py-4 border-b border-invictus-gray-700"></div> -->
-        <div  class="h-16 top-16 absolute w-screen py-4 border-b border-invictus-gray-700"></div>
-        <div  class="container top-16 relative flex items-center py-4 mx-auto sm:px-10">
+        <Loader v-if="!data"/>
+        <div v-else class="h-16 top-12 absolute w-screen py-4 border-b border-invictus-gray-700"></div>
+        <div v-if="data" class="container -top-4 relative flex items-center py-4 mx-auto sm:px-10">
 
             <div class="w-full" >
                 <!-- breadcrumb -->
