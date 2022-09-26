@@ -6,7 +6,7 @@
             <Loader v-if="fetchingProfileLoader"/>
             <div class="w-full" v-else>
                 <!-- breadcrumb -->
-                <nav class="flex flex-grow mb-2 mt-1 p-2 z-40 w-full" aria-label="Breadcrumb">
+                <nav class="flex flex-grow mb-2 mt-1 py-2 z-40 w-full" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-3">
                         <li class="inline-flex items-center">
                         <a href="#" class="inline-flex items-center text-base font-medium text-invictus-gray-700 hover:text-invictus-gray-900 dark:text-invictus-gray-300 dark:hover:text-white">
@@ -50,12 +50,12 @@
                             <path d="M7.99063 10.5017C7.5592 10.4945 7.16964 10.1555 7.1054 9.73129C7.0272 9.21414 7.27888 8.78594 7.75194 8.61581C7.81137 8.59451 7.87682 8.53964 7.90473 8.48201C8.30175 7.66395 8.69251 6.84263 9.08495 6.02231C9.36696 5.433 9.64848 4.84369 9.93169 4.25489C10.0065 4.09929 10.1372 4.04442 10.2681 4.10731C10.4014 4.1712 10.4408 4.30074 10.3824 4.46636C10.1316 5.17819 9.88332 5.89127 9.63164 6.60285C9.3607 7.3693 9.0852 8.13399 8.81739 8.90144C8.79742 8.95882 8.80512 9.04401 8.83183 9.09938C9.14848 9.75308 8.69419 10.5135 7.99063 10.5017Z" fill="white"/>
                             <path d="M7.89268 7.76068C7.80702 7.93481 7.72545 8.1092 7.6345 8.27807C7.61597 8.31265 7.56424 8.33219 7.52382 8.34873C7.01202 8.55644 6.62583 9.2119 6.80774 9.90669C6.95259 10.4609 7.51443 10.8846 8.09384 10.844C8.92854 10.7854 9.47258 9.89992 9.18023 9.08411C9.1564 9.01771 9.16314 8.92852 9.18311 8.85836C9.22594 8.70778 9.28658 8.56296 9.34072 8.41287C9.66362 8.63361 9.93648 9.51507 9.6297 10.2727C9.26179 11.181 8.22233 11.6293 7.32603 11.2324C6.45042 10.8448 6.04474 9.86209 6.34864 8.95082C6.58685 8.23748 7.44032 7.58829 7.89268 7.76068Z" fill="white"/>
                             </svg>
-                            Rating {{ playerGameProfile.rating }}
+                            Rating {{ playerGameProfile.rating.toLocaleString() }}
                         </span>
                         
                         <span class="ml-3 bg-gray-100 text-gray-800 text-sm font-medium inline-flex items-center px-3 py-1.5 rounded mr-2 border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
                             <img aria-hidden="true" class="mr-2 w-5 h-5" src="/img/von-token.png" />
-                            Rewards {{ playerInfo.rewards }}
+                            Rewards {{ playerInfo.rewards.toLocaleString() }} $VON
                         </span>
                     </div>
                 </div>
@@ -86,10 +86,11 @@
                             </a>
                         </li>
                         <li class="mr-2">
-                            <a @click="switchTab(2)" type="button"                             
+                            <!-- <a @click="switchTab(2)" type="button"                             
                             :class="activeTab === 2 ? 'text-invictus-red-600 rounded-t-lg border-b-2 border-invictus-red-600 active dark:text-invictus-red-500 dark:border-invictus-red-500' 
                             : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'"
-                            class="cursor-pointer inline-flex p-4 rounded-t-lg border-b-2 group">
+                            class="cursor-pointer inline-flex p-4 rounded-t-lg border-b-2 group"> -->
+                            <a type="button" class="border-transparent cursor-not-allowed inline-flex p-4 rounded-t-lg border-b-2 group">
                                 <svg class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clipRule="evenodd" /></svg>
                                 Today
                             </a>
@@ -97,7 +98,7 @@
                     </ul>
                 </div>
                 <div class="py-5 min-h-fit">
-                    <div :class="activeTab === 0 ? '' : 'hidden'" class="flex flex-row w-full space-x-1 gap-2 sm:grid-cols-3 h-80" role="tabpanel">
+                    <div class="flex flex-row w-full space-x-1 gap-2 sm:grid-cols-3 h-80" role="tabpanel">
                         <div class="p-0 pt-3 bg-transparent rounded-lg dark:bg-transparent">
                             <div class="grid">
                                 <div class="mb-3 rounded-lg dark:bg-invictus-gray-700 ">
@@ -143,11 +144,29 @@
                                 <div class="flex items-center w-full justify-center p-5">
                                     <div class="w-1/2">
                                         <p class="text-sm font-medium text-gray-400">K/D</p>
-                                        <p class="text-2xl text-white font-bold">{{ playerGameProfile.gameInfo.kd.value }}</p>
+                                        <p class="text-2xl text-white font-bold">
+                                            <number
+                                            class="major-number"
+                                            ref="number1"
+                                            :from="0"
+                                            :to="playerGameData.kd.value "
+                                            :format="percentageFormat"
+                                            :duration="2"
+                                            easing="Power1.easeOut"/>
+                                            </p>
                                     </div>
                                     <div class="w-1/2">
                                         <p class="text-sm font-medium text-gray-400">Win %</p>
-                                        <p class="text-2xl text-white font-bold">{{ playerGameProfile.gameInfo.wlPercentage.value }}</p>
+                                        <p class="text-2xl text-white font-bold">
+                                            <number
+                                            class="major-number"
+                                            ref="number1"
+                                            :from="0"
+                                            :to="playerGameData.wlPercentage.value "
+                                            :format="percentageFormat"
+                                            :duration="2"
+                                            easing="Power1.easeOut"/>
+                                            </p>
                                     </div>
                                 </div>
                             </div>
@@ -156,11 +175,30 @@
                                 <div class="flex items-center w-full justify-center p-5">
                                     <div class="w-1/2">
                                         <p class="text-sm font-medium text-gray-400">MVPs</p>
-                                        <p class="text-2xl text-white font-bold">{{ playerGameProfile.gameInfo.mvp.value }}</p>
+                                        <p class="text-2xl text-white font-bold">
+                                            <!-- {{ playerGameData.mvp.value }} -->
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.mvp.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
+                                        </p>
                                     </div>
                                     <div class="w-1/2">
                                         <p class="text-sm font-medium text-gray-400">Matches Played</p>
-                                        <p class="text-2xl text-white font-bold">{{ playerGameProfile.gameInfo.matchesPlayed.value }}</p>
+                                        <p class="text-2xl text-white font-bold">
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.matchesPlayed.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +210,14 @@
                                             Score
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.score.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.score.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                     <div class="flex justify-between px-4 py-3 text-white font-light text-sm border-b dark:border-invictus-gray-900 w-full">
@@ -180,7 +225,14 @@
                                             Kills
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.kills.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.kills.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                     <div class="flex justify-between px-4 py-3 text-white font-light text-sm border-b dark:border-invictus-gray-900 w-full">
@@ -188,7 +240,14 @@
                                             Deaths
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.deaths.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.deaths.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                     <div class="flex justify-between px-4 py-3 text-white font-light text-sm border-b dark:border-invictus-gray-900 w-full">
@@ -196,7 +255,14 @@
                                             Shots Accuracy %
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.shotsAccuracy.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.shotsAccuracy.value"
+                                                :format="percentageFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                     <div class="flex justify-between px-4 py-3 text-white font-light text-sm border-b dark:border-invictus-gray-900 w-full">
@@ -204,7 +270,14 @@
                                             Bombs Planted
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.bombsPlanted.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.bombsPlanted.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                     <div class="flex justify-between px-4 py-3 text-white font-light text-sm border-b dark:border-invictus-gray-900 w-full">
@@ -212,7 +285,14 @@
                                             Bombs Defused
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.bombsDefused.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.bombsDefused.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                 </div>
@@ -224,11 +304,29 @@
                                 <div class="flex items-center w-full justify-center p-5">
                                     <div class="w-1/2">
                                         <p class="text-sm font-medium text-gray-400">Damage</p>
-                                        <p class="text-2xl text-white font-bold">{{ playerGameProfile.gameInfo.damage.value }}</p>
+                                        <p class="text-2xl text-white font-bold">
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.damage.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
+                                            </p>
                                     </div>
                                     <div class="w-1/2">
                                         <p class="text-sm font-medium text-gray-400">Headshots %</p>
-                                        <p class="text-2xl text-white font-bold">{{ playerGameProfile.gameInfo.headshotPct.value }}</p>
+                                        <p class="text-2xl text-white font-bold">
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.headshotPct.value"
+                                                :format="percentageFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
+                                            </p>
                                     </div>
                                 </div>
                             </div>
@@ -237,11 +335,29 @@
                                 <div class="flex items-center w-full justify-center p-5">
                                     <div class="w-1/2">
                                         <p class="text-sm font-medium text-gray-400">Time Played</p>
-                                        <p class="text-2xl text-white font-bold">{{ playerGameProfile.gameInfo.timePlayed.value }}</p>
+                                        <p class="text-2xl text-white font-bold">
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.timePlayed.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
+                                            </p>
                                     </div>
                                     <div class="w-1/2">
                                         <p class="text-sm font-medium text-gray-400">Matches Played</p>
-                                        <p class="text-2xl text-white font-bold">{{ playerGameProfile.gameInfo.matchesPlayed.value }}</p>
+                                        <p class="text-2xl text-white font-bold">
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.matchesPlayed.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
+                                            </p>
                                     </div>
                                 </div>
                             </div>
@@ -253,7 +369,14 @@
                                             Wins
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.wins.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.wins.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                     <div class="flex justify-between px-4 py-3 text-white font-light text-sm border-b dark:border-invictus-gray-900 w-full">
@@ -261,7 +384,14 @@
                                             Losses
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.losses.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.losses.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                     <div class="flex justify-between px-4 py-3 text-white font-light text-sm border-b dark:border-invictus-gray-900 w-full">
@@ -269,7 +399,14 @@
                                             Ties
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.ties.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.ties.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                     <div class="flex justify-between px-4 py-3 text-white font-light text-sm border-b dark:border-invictus-gray-900 w-full">
@@ -277,18 +414,19 @@
                                             Rounds Played
                                         </div>
                                         <div>
-                                            {{ playerGameProfile.gameInfo.roundsPlayed.value }}
+                                            <number
+                                                class="major-number"
+                                                ref="number1"
+                                                :from="0"
+                                                :to="playerGameData.roundsPlayed.value"
+                                                :format="integerFormat"
+                                                :duration="2"
+                                                easing="Power1.easeOut"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div :class="activeTab === 1 ? '' : 'hidden'" class="p-4 bg-gray-50 rounded-lg dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-                    </div>
-                    <div :class="activeTab === 2 ? '' : 'hidden'" class="p-4 bg-gray-50 rounded-lg dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
                     </div>
                 </div>
                 <!-- <ProfileBox 
@@ -321,7 +459,7 @@
                 isSeasonData: true,
                 isFetching: false,
                 rankings: undefined,
-                activeTab: 0
+                activeTab: 1
             }
         },
         methods: {
@@ -390,12 +528,48 @@
             },
             setSeasonDataFromChild (isSeasonData) {
                 this.isSeasonData = isSeasonData
-            }
+            },
+            // formats
+            commafy( num ) {
+                var str = num.toString().split('.');
+                if (str[0].length >= 5) {
+                    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+                }
+                if (str[1] && str[1].length >= 5) {
+                    str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+                }
+                return str.join('.');
+            },
+            integerFormat(number) {
+                if(number == NaN || number == undefined) return '-'
+                return this.commafy(number.toFixed(0))
+            },
+            floatFormat(number) {
+                if(number == NaN || number == undefined) return '-'
+                return number.toFixed(2)
+            },
+            percentageFormat(number) {
+                if(number == NaN || number == undefined) return '-'
+                return number.toFixed(2) + '%'
+            },
+            hashFormat(number) {
+                return '#' + this.toFixedNoRounding(number)
+            },
+            toFixedNoRounding(n) {
+                return n.toString().match(/^-?\d+(?:\d{0})?/)[0]
+            },
+            inHours(number) {
+                const hoursWmins = number / 60 / 60
+                const hours = this.toFixedNoRounding(hoursWmins)
+                let mins = (((hoursWmins - hours) * 60))
+                mins = this.toFixedNoRounding(mins)
+                return hours +'h,' + mins + 'm'
+            },
         },
         computed: {
             playerGameData() {
                 if(this.fetchingProfileLoader) return undefined
-                else return this.isSeasonData ? this.playerGameProfile.gameInfo : this.playerGameProfile.gameInfoLifetime
+                else return this.activeTab === 1 ? this.playerGameProfile.gameInfo : this.playerGameProfile.gameInfoLifetime
             },
             myRank() {
             let rank = '--'
