@@ -1,10 +1,10 @@
 <template>
     <div class="w-screen h-screen">
-        <div v-if="!fetchingProfileLoader" class="h-16 top-60 absolute w-screen py-4 border-b border-invictus-gray-700"></div>
-        <div v-if="!fetchingProfileLoader" class="h-16 top-16 absolute w-screen py-4 border-b border-invictus-gray-700"></div>
-        <div v-if="!fetchingProfileLoader" class="container top-16 relative flex items-center py-4 mx-auto sm:px-10">
-            <Loader v-if="fetchingProfileLoader"/>
-            <div class="w-full" v-else>
+        <Loader v-if="fetchingProfileLoader"/>
+        <div v-if="!fetchingProfileLoader" class="h-12 top-60 absolute w-screen py-4 border-b border-invictus-gray-700"></div>
+        <div v-if="!fetchingProfileLoader" class="h-12 top-16 absolute w-screen py-4 border-b border-invictus-gray-700"></div>
+        <div v-if="!fetchingProfileLoader" class="container -top-4 relative flex items-center py-4 mx-auto sm:px-10">
+            <div class="w-full">
                 <!-- breadcrumb -->
                 <nav class="flex flex-grow mb-2 mt-1 py-2 z-40 w-full" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -31,7 +31,6 @@
                         <div class="capitalize text-lg"> {{ playerInfo.playerAlias }} 
                         </div>
                         <div class="text-base uppercase text-gray-500 dark:text-gray-400"> {{ playerInfo.address.slice(0, 5) + '...' + playerInfo.address.slice(-6) }} </div>
-                        
                     </div>
                     <div>
                         <span class="ml-7 bg-gray-100 text-gray-800 text-sm font-medium inline-flex items-center px-3 py-1.5 rounded mr-2 border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">

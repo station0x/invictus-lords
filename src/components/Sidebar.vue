@@ -1,7 +1,7 @@
 <template>
     <div class="h-full w-16 block z-20" @mouseenter="toggleSidebar" @mouseleave="toggleSidebar">
         <aside class="h-full transition-all duration-800 ease-out"  :class="{ 'w-14': !isHovered, 'w-56': isHovered }" aria-label="Sidebar">
-            <div class="overflow-y-auto pt-6 overflow-hidden border-r border-invictus-gray-700 dark:border-invictus-gray-700py-4 px-2 bg-gray-50 rounded dark:bg-invictus-gray-900 h-full">
+            <div class="overflow-y-auto pt-2 overflow-hidden border-r border-invictus-gray-700 dark:border-invictus-gray-700py-4 px-2 bg-gray-50 rounded dark:bg-invictus-gray-900 h-full">
                 <ul class="space-y-2">
                     <li>
                         <a @click.prevent="openProfile" class="flex cursor-pointer items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -57,7 +57,7 @@
                 console.log(this.isHovered)
             },
             openLeaderboard() {
-                let routeData = this.$router.resolve({ name: 'Leaderboard' })
+                let routeData = this.$router.push({ name: 'Leaderboard' })
                 window.open(routeData.href, '_self')
             },
             openProfile() {

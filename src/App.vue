@@ -49,6 +49,9 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
       async distributeRewards() {
         const res = await axios.post('/api/rewards/distributeRewards')
         this.$router.go('/')
+      },
+      onClickApp() {
+        this.$store.commit("clicked")
       }
     },
     computed: {
@@ -81,9 +84,12 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
       this.fetchLastDistribution()
       this.$store.commit('changeWindowWidth', window.innerWidth)
       window.addEventListener("resize", this.responsify)
+      window.addEventListener('click', this.onClickApp)
+
     },
     destroyed() {
       window.removeEventListener("resize", this.responsify)
+      window.removeEventListener('click', this.onClickApp)
     }
   }
 </script>

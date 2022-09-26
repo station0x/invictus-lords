@@ -16,50 +16,56 @@
             <div class="hidden justify-between items-center w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
                 <ul class="flex flex-col p-4 mt-4 bg-invictus-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-invictus-gray-800 md:dark:bg-invictus-gray-900 dark:border-gray-700">
                 <li>
-                    <a href="#" class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Home</a>
+                    <a href="#" class="block py-2 pr-4 pl-3 text-white bg-invictus-gray-700 rounded md:bg-transparent md:text-invictus-gray-700 md:p-0 dark:text-white" aria-current="page">Home</a>
                 </li>
                 <li>
-                    <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                    <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-invictus-gray-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
                 </li>
                 <li>
-                    <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
+                    <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-invictus-gray-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
                 </li>
                 <li>
-                    <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                    <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-invictus-gray-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
                 </li>
                 </ul>
             </div>
             </div>
         </nav> -->
-        <header class="bg-bar border-normal z-[1000] flex h-16 w-full items-center justify-between border-b pl-2 pr-3  bg-bar backdrop-blur-lg">
+        <header class="z-[1000] flex h-16 w-full items-center justify-between border-b border-invictus-gray-700 pl-0 pr-5">
             <!-- Dropdown menu -->
-            <div id="userDropdownMenu" class="absolute right-5 top-[65px] z-10 w-44 border border-invictus-gray-600 bg-white rounded divide-y divide-invictus-gray-100 shadow dark:bg-invictus-gray-700 dark:divide-invictus-gray-600">
-                <div class="py-3 px-4 text-sm text-invictus-gray-900 dark:text-white">
-                <div class="font-medium ">Pro User</div>
-                <div class="truncate">name@flowbite.com</div>
+            <div :class="isDropdownOpen ? '' : 'hidden'" class="absolute right-5 top-[65px] z-10 w-[290px] border border-invictus-gray-600 bg-white rounded divide-y divide-invictus-gray-100 shadow dark:bg-invictus-gray-700 dark:divide-invictus-gray-600">
+                <div class="flex py-4 px-2 text-sm text-invictus-gray-900 dark:text-white">
+                    <img class="mt-0 ml-1 mr-2 w-10 h-10 rounded-full" :src="playerAvatar" alt="">
+                    <span class="relative -top-[3px] right-4 h-3 w-3">
+                        <span class="animate-ping absolute top-[5px] inline-flex h-2.5 w-2.5 rounded-full bg-[#99d52a] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#99d52a]"></span>
+                    </span>
+                    <div class="font-medium dark:text-white -ml-2 -mt-1">
+                        <div class="capitalize text-base"> {{ playerAlias }} 
+                        </div>
+                        <div class="mt-[3px] text-sm uppercase text-gray-500 dark:text-gray-400"> {{ lordAddress }}
+                            <button @click="openScanner" type="button" class="absolute right-0 text-invictus-gray-700 border border-invictus-gray-700 hover:bg-invictus-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-invictus-gray-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center mr-2 dark:border-invictus-gray-500 dark:text-invictus-gray-300 dark:hover:text-white dark:focus:ring-invictus-gray-800">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" /><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" /></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
                 <li>
-                    <a href="#" class="block py-2 px-4 hover:bg-invictus-gray-100 dark:hover:bg-invictus-gray-600 dark:hover:text-white">Dashboard</a>
+                    <a @click="openProfile" class="cursor-pointer block py-2 px-4 hover:bg-invictus-gray-100 dark:hover:bg-invictus-gray-600 dark:hover:text-white">Profile</a>
                 </li>
                 <li>
-                    <a href="#" class="block py-2 px-4 hover:bg-invictus-gray-100 dark:hover:bg-invictus-gray-600 dark:hover:text-white">Settings</a>
-                </li>
-                <li>
-                    <a href="#" class="block py-2 px-4 hover:bg-invictus-gray-100 dark:hover:bg-invictus-gray-600 dark:hover:text-white">Earnings</a>
+                    <a @click="logout" class="cursor-pointer block py-2 px-4 hover:bg-invictus-gray-100 dark:hover:bg-invictus-gray-600 dark:hover:text-white">Logout</a>
                 </li>
                 </ul>
-                <div class="py-1">
-                <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-invictus-gray-100 dark:hover:bg-invictus-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
-                </div>
             </div>
-            <nav :class=" (isApp && isConnected) ? 'px-4 lg:px-5' : 'px-4 lg:px-6'" class="flex items-center sm:pl-2 bg-white py-2 z-20 dark:bg-invictus-gray-900 border-b border-invictus-gray-200 dark:border-invictus-gray-700">
-                <div class="grid grid-cols-2 items-center mx-auto" :class=" (isApp && isConnected) ? '' : 'max-w-screen-xl'">
+            <nav :class=" (isApp && isConnected) ? 'px-4 lg:px-5' : 'px-4 lg:px-6'" class="flex items-center sm:pl-2 bg-white py-2 z-20 dark:bg-invictus-gray-900">
+                <div class="grid items-center mx-auto" :class=" (isApp && isConnected) ? '' : 'max-w-screen-xl'">
                     <!-- <a href="https://flowbite.com" class="flex items-center lg:justify-center lg:order-2">
                         <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
                         <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
                     </a> -->
-                    <div v-if="!isConnected" class="flex col-span-2 justify-end items-center lg:order-3 lg:col-span-1">
+                    <div v-if="!isConnected" class="flex col-span-2 whitespace-nowrap justify-end items-center lg:order-3 lg:col-span-1">
                         <a @click="auth" class="cursor-pointer text-gray-800 dark:text-white hover:bg-invictus-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 lg:py-2.5 mr-2 dark:border-invictus-gray-100 dark:hover:bg-invictus-gray-700 focus:outline-none dark:focus:ring-gray-800">
                             <svg v-if="authLoader" aria-hidden="true" role="status" class="inline mr-3 w-4 h-4 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
@@ -98,32 +104,57 @@
                                 </a>
                             </li>
                             <li v-if="!isConnected || !isApp">
-                                <a @click="$router.push('/')" v-if="$route.name === 'Home'" class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">Home</a>
-                                <a @click="$router.push('/')" v-else class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</a>
+                                <a @click="$router.push('/')" v-if="$route.name === 'Home'" class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-white bg-invictus-gray-700 rounded md:bg-transparent md:text-invictus-gray-700 md:p-0 dark:text-white">Home</a>
+                                <a @click="$router.push('/')" v-else class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-invictus-gray-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</a>
                             </li>
                             <li v-if="!isConnected || !isApp">
-                                <a @click="$router.push('/ecosystem')" v-if="$route.name === 'Ecosystem'" class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">Ecosystem</a>
-                                <a @click="$router.push('/ecosystem')" v-else class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Ecosystem</a>
+                                <a @click="$router.push('/ecosystem')" v-if="$route.name === 'Ecosystem'" class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-white bg-invictus-gray-700 rounded md:bg-transparent md:text-invictus-gray-700 md:p-0 dark:text-white">Ecosystem</a>
+                                <a @click="$router.push('/ecosystem')" v-else class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-invictus-gray-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Ecosystem</a>
                             </li>
                             <li v-if="!isConnected || !isApp">
-                                <a @click="$router.push('/minting')" v-if="$route.name === 'Minting'" class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">Minting</a>
-                                <a @click="$router.push('/minting')" v-else class="cursor-pointer block mt-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Minting</a>
+                                <a @click="$router.push('/minting')" v-if="$route.name === 'Minting'" class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-white bg-invictus-gray-700 rounded md:bg-transparent md:text-invictus-gray-700 md:p-0 dark:text-white">Minting</a>
+                                <a @click="$router.push('/minting')" v-else class="cursor-pointer block mt-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-invictus-gray-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Minting</a>
                             </li>
                             <li v-if="!isConnected || !isApp">
-                                <a @click="$router.push('/leaderboard')" v-if="$route.name === 'Leaderboard'" class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">Leaderboard</a>
-                                <a @click="$router.push('/leaderboard')" v-else class="cursor-pointer block mt-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Leaderboard</a>
+                                <a @click="$router.push('/leaderboard')" v-if="$route.name === 'Leaderboard'" class="cursor-pointer block mt-2 py-2 pr-4 pl-3 text-white bg-invictus-gray-700 rounded md:bg-transparent md:text-invictus-gray-700 md:p-0 dark:text-white">Leaderboard</a>
+                                <a @click="$router.push('/leaderboard')" v-else class="cursor-pointer block mt-2 pr-4 pl-3 text-gray-700 rounded hover:bg-invictus-gray-100 md:hover:bg-transparent md:hover:text-invictus-gray-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-invictus-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Leaderboard</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
-            <nav class="flex items-center space-x-3 lg:flex">
-                <button @click="toggleDropdown" id="userDropdownBtn" data-dropdown-toggle="dropdownAvatarName" type="button" class="flex col-span-2 justify-end items-center lg:order-3 lg:col-span-1 p-2 text-sm text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-invictus-gray-100 dark:bg-invictus-gray-700 dark:hover:bg-invictus-gray-700 dark:hover:text-white">
-                        <span class="sr-only">Open user menu</span>
-                        <img class="mr-2 w-8 h-8 rounded-full" :src="$store.state.profile.avatar" alt="user photo">
-                         {{ $store.state.profile.playerAlias }}
-                        <svg class="w-4 h-4 mx-1.5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                    </button>
+            <nav v-if="isConnected" class="flex items-center space-x-3 lg:flex">
+                <!-- <button type="button" class="flex col-span-2 justify-end items-center lg:order-3 lg:col-span-1 p-2 text-sm text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-invictus-gray-100 dark:bg-invictus-gray-700 dark:hover:bg-invictus-gray-700 dark:hover:text-white">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="mr-2 w-8 h-8 rounded-full" :src="$store.state.profile.avatar" alt="user photo">
+                        <p class="text-white text-base capitalize font-normal">{{ $store.state.profile.playerAlias.slice(0,9) + '...' }}</p>
+                    <svg class="w-4 h-4 mx-1.5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button> -->
+                <button type="button" class="py-2 ml-5 mr-1.5 flex col-span-2 justify-around items-center lg:order-3 lg:col-span-1 p-2 text-sm text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-invictus-gray-100 dark:bg-invictus-gray-700 dark:hover:bg-invictus-gray-700 dark:hover:text-white">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="mr-2 w-6 h-6 rounded-full" src="/img/von-token.png" alt="user photo">
+                        <p class="text-white text-sm capitalize font-light mr-1">{{ userBalance.toLocaleString() }} </p>
+                </button>
+                <form class="cursor-default; mr-5">   
+                    <label class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Your Email</label>
+                    <div class="relative">
+                        <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                            <img class="w-6 h-6" src="/img/von-reward.png"/>
+                        </div>
+                        <input type="search" :value="rewardsFormatted" readonly class="cursor-default block p-4 pl-10 h-11  text-sm text-gray-900 bg-invictus-gray-50 rounded-lg border border-gray-300 focus:ring-invictus-gray-500 focus:border-invictus-gray-500 dark:bg-invictus-gray-900 dark:border-invictus-gray-600 dark:text-white dark:focus:ring-invictus-gray-500">
+                        <button @click="claimAllRewards" type="button" class="text-white absolute right-1 bottom-1 bg-invictus-gray-700 hover:bg-invictus-gray-600 focus:ring-0 focus:outline-none focus:ring-invictus-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-invictus-gray-700 dark:hover:bg-invictus-gray-600 dark:focus:ring-invictus-gray-800">
+                            <svg v-if="claiming" aria-hidden="true" role="status" class="inline mr-3 w-4 h-4 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                            </svg>{{ claiming ? 'Claiming..' : 'Claim' }}</button>
+                    </div>
+                </form>
+                <button @click="toggleDropdown" type="button" class="py-2 flex col-span-2 justify-end items-center lg:order-3 lg:col-span-1 p-2 text-sm text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-invictus-gray-100 dark:bg-invictus-gray-700 dark:hover:bg-invictus-gray-700 dark:hover:text-white">
+                    <span class="sr-only">Open user menu</span>
+                    <img class=" w-6 h-6 rounded-full" :src="playerAvatar" alt="user photo">
+                        <p class="text-white text-sm capitalize font-normal">{{ playerAlias.slice(0,13) + '...' }}</p>
+                    <svg :class="isDropdownOpen ? 'rotate-180' : ''" class="w-4 h-4 mx-1.5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
             </nav>
         </header>
     </div>
@@ -163,34 +194,18 @@
         }, 
         methods: {
             toggleDropdown() {
-                // dropdown logic
-                // set the dropdown menu element
-                const targetEl = document.getElementById('userDropdownBtn');
-
-                // set the element that trigger the dropdown menu on click
-                const triggerEl = document.getElementById('userDropdownMenu');
-
-                // options with default values
-                const options = {
-                placement: 'bottom',
-                onHide: () => {
-                    console.log('dropdown has been hidden');
-                },
-                onShow: () => {
-                    console.log('dropdown has been shown');
+                if(this.isDropdownOpen) {
+                    this.isDropdownOpen = false
+                } else {
+                    this.isDropdownOpen = true
                 }
-                };
-                const dropdown = new Dropdown(targetEl, triggerEl, options)
-                if(this.isDropdownOpen) dropdown.hide()
-                else dropdown.show()
             },
             logout() {
                 this.$store.dispatch('disconnect')
-                // this.$router.push({name: 'Home'})
+                this.$router.push({name: 'Home'})
                 // this.$emit('close')
             },
             async claimAllRewards(amount) {
-                console.log(amount)
                 if(this.rewardsFormatted === 0) return false
                 this.claiming = true
                 try {
@@ -389,6 +404,9 @@
             },
             handleScroll () {
                 this.$store.commit('setScrollY', window.scrollY)
+            },
+            openScanner() {
+                window.open(CONSTANTS.chainInfo.chainExplorer + 'address/' + this.$store.state.address, "_blank")
             }
         },
         async beforeMount() {
@@ -404,10 +422,10 @@
                 return this.$store.state.address && this.$store.state.address.length > 0 ? true : false
             },
             lordAddress() {
-                return this.$store.state.address.slice(0, 5) + '...' + this.$store.state.address.slice(-4)
+                return this.$store.state.address ? this.$store.state.address.slice(0, 5) + '...' + this.$store.state.address.slice(-4) : '--'
             },
             rewardsFormatted() {
-                return this.$store.state.profile.rewards ? Number(this.$store.state.profile.rewards).toLocaleString() : 0
+                return this.$store.state.profile ? Number(this.$store.state.profile.rewards).toLocaleString() : 0
             },
             isFetched() {
                 if (!this.isConnected) return true
@@ -417,6 +435,10 @@
             playerAvatar() {
                 if(this.$store.state.profile === undefined) return '/img/blank.gif'
                 else return this.$store.state.profile.avatar
+            },
+            playerAlias() {
+                if(this.$store.state.profile === undefined) return ''
+                else return this.$store.state.profile.playerAlias
             },
             isFixed() {
                 return this.$store.state.scrollY > 50;
@@ -428,6 +450,14 @@
                 return (this.$route.name !== 'Home'
                 && this.$route.name !== 'Ecosystem'
                 && this.$route.name !== 'Minting')
+            },
+            clicks() {
+                return this.$store.state.clicked
+            }
+        },
+        watch: {
+            clicks() {
+                // if(this.isDropdownOpen) this.isDropdownOpen = false
             }
         }
     } 
