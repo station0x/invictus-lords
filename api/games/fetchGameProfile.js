@@ -58,7 +58,6 @@ module.exports = async (req, res) => {
             }
     } else {
         if(Date.now() > playerGameDoc.lastFetched + (CONSTANTS.api.refetchTimout * 1000)) {
-            console.log('api')
             // calculate seasons data
             const newPlayerGameDoc = {...playerGameDoc}
             try {
@@ -101,11 +100,10 @@ module.exports = async (req, res) => {
             })
             res.status(200).json({ succes: true, playerGameDoc, playerDoc, data: data.data.data })
             } catch(err) {
-                if(err.response.status === 451) res.status(451).json({ succes: false, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
+                if(err.response.status === 451) res.status(451).json({ succes: false, playerDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
                 else throw new Error('Unknown error occured')
             }
         } else {
-            console.log('db')
             res.status(200).json({ succes: true, playerGameDoc, playerDoc })
         }
     }

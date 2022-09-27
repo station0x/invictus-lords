@@ -26,7 +26,7 @@
         background: #090B0E;
     }
     .eco-wrapper {
-        padding-top: 70px;
+        padding-top: 30px;
         width: 90%;
         margin: 0 auto;
         max-width: 1500px;
