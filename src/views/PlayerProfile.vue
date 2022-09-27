@@ -1,9 +1,10 @@
 <template>
-    <div class="w-screen h-screen">
+    <div class="w-full h-full">
         <Loader v-if="fetchingProfileLoader"/>
-        <div v-if="!fetchingProfileLoader" class="h-12 top-60 absolute w-screen py-4 border-b border-invictus-gray-700"></div>
-        <div v-if="!fetchingProfileLoader" class="h-12 top-16 absolute w-screen py-4 border-b border-invictus-gray-700"></div>
-        <div v-if="!fetchingProfileLoader" class="container -top-4 relative flex items-center py-4 mx-auto sm:px-10">
+        <div v-if="!fetchingProfileLoader && playerGameProfile" class="h-12 top-60 absolute w-full py-4 border-b border-invictus-gray-700"></div>
+        <div v-if="!fetchingProfileLoader && !playerGameProfile" class="h-12 top-48 absolute w-full py-4 border-b border-invictus-gray-700"></div>
+        <div v-if="!fetchingProfileLoader" class="h-12 top-16 absolute w-full py-4 border-b border-invictus-gray-700"></div>
+        <div v-if="!fetchingProfileLoader" class="container -top-4 relative flex items-center py-4 mx-auto sm:px-14">
             <div class="w-full">
                 <!-- breadcrumb -->
                 <nav class="flex flex-grow mb-2 mt-1 py-2 z-40 w-full" aria-label="Breadcrumb">
@@ -38,7 +39,7 @@
                             <svg aria-hidden="true" class="mr-2 w-5 h-5" width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M5.0239 11.1607L4.81859 10.144L2.22974 8.67611C1.7 8.40876 1.32468 7.91016 1.21423 7.32696L0.460704 3.41002C0.238001 2.23411 1.13935 1.14555 2.33571 1.14555L3.42145 1.14533C3.63163 0.646931 4.12399 0.285706 4.71518 0.285706H13.2869C13.8773 0.285706 14.369 0.645834 14.5798 1.14307L15.6606 1.14285C16.857 1.14285 17.7584 2.2314 17.5357 3.40731L16.7889 7.32431C16.6784 7.90751 16.3031 8.4061 15.7733 8.67345L13.1845 10.1392L12.9782 11.1607C12.8461 11.8151 12.271 12.2857 11.6033 12.2857H10.8273C10.5653 12.2857 10.3646 12.5188 10.4034 12.7779L10.532 13.635C10.5635 13.8448 10.7437 14 10.9559 14H12.0524C12.1574 14 12.2587 14.0385 12.3371 14.1082L13.3014 14.9654C13.5959 15.2272 13.4108 15.7143 13.0167 15.7143H4.98543C4.59135 15.7143 4.40617 15.2272 4.70071 14.9654L5.66497 14.1082C5.74348 14.0385 5.8448 14 5.94971 14H7.04625C7.2584 14 7.43865 13.8448 7.47011 13.635L7.59868 12.7779C7.63751 12.5188 7.43685 12.2857 7.17482 12.2857H6.39877C5.73114 12.2857 5.15605 11.8151 5.0239 11.1607ZM2.33571 2.85983L3.52079 2.85959L4.38007 7.97222L3.00153 7.14559C2.94748 7.11825 2.90918 7.06742 2.89791 7.00785L2.14439 3.0909C2.12167 2.97091 2.21364 2.85983 2.33571 2.85983ZM15.6606 2.85713L14.4818 2.85737L13.6232 7.96665L15.0016 7.14285C15.0556 7.11559 15.0939 7.06468 15.1052 7.00519L15.852 3.0882C15.8747 2.96821 15.7828 2.85713 15.6606 2.85713ZM8.88714 7.21579C8.95828 7.17859 9.04314 7.17859 9.11428 7.21579L10.5578 7.97179C10.7375 8.06591 10.9469 7.91325 10.9126 7.71345L10.6373 6.11496C10.6236 6.03533 10.6501 5.95408 10.7081 5.89785L11.8733 4.76642C12.019 4.62491 11.9388 4.37772 11.7378 4.34862L10.1259 4.1153C10.0463 4.10377 9.97734 4.05383 9.94159 3.98173L9.22005 2.52532C9.13014 2.34385 8.87128 2.34385 8.78137 2.52532L8.05982 3.98173C8.02408 4.05383 7.95525 4.10377 7.87554 4.1153L6.26368 4.34862C6.0626 4.37772 5.98245 4.62491 6.12817 4.76642L7.29337 5.89785C7.35131 5.95408 7.37779 6.03533 7.36408 6.11496L7.08885 7.71345C7.05448 7.91325 7.26405 8.06591 7.44362 7.97179L8.88714 7.21579Z" fill="#D1D5DB"/>
                             </svg>
-                            Rank #{{ myRank }}
+                            Rank # {{ myRank }}
                         </span>
                         
                         <span class="ml-3 bg-gray-100 text-gray-800 text-sm font-medium inline-flex items-center px-3 py-1.5 rounded mr-2 border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
@@ -49,7 +50,7 @@
                             <path d="M7.99063 10.5017C7.5592 10.4945 7.16964 10.1555 7.1054 9.73129C7.0272 9.21414 7.27888 8.78594 7.75194 8.61581C7.81137 8.59451 7.87682 8.53964 7.90473 8.48201C8.30175 7.66395 8.69251 6.84263 9.08495 6.02231C9.36696 5.433 9.64848 4.84369 9.93169 4.25489C10.0065 4.09929 10.1372 4.04442 10.2681 4.10731C10.4014 4.1712 10.4408 4.30074 10.3824 4.46636C10.1316 5.17819 9.88332 5.89127 9.63164 6.60285C9.3607 7.3693 9.0852 8.13399 8.81739 8.90144C8.79742 8.95882 8.80512 9.04401 8.83183 9.09938C9.14848 9.75308 8.69419 10.5135 7.99063 10.5017Z" fill="white"/>
                             <path d="M7.89268 7.76068C7.80702 7.93481 7.72545 8.1092 7.6345 8.27807C7.61597 8.31265 7.56424 8.33219 7.52382 8.34873C7.01202 8.55644 6.62583 9.2119 6.80774 9.90669C6.95259 10.4609 7.51443 10.8846 8.09384 10.844C8.92854 10.7854 9.47258 9.89992 9.18023 9.08411C9.1564 9.01771 9.16314 8.92852 9.18311 8.85836C9.22594 8.70778 9.28658 8.56296 9.34072 8.41287C9.66362 8.63361 9.93648 9.51507 9.6297 10.2727C9.26179 11.181 8.22233 11.6293 7.32603 11.2324C6.45042 10.8448 6.04474 9.86209 6.34864 8.95082C6.58685 8.23748 7.44032 7.58829 7.89268 7.76068Z" fill="white"/>
                             </svg>
-                            Rating {{ playerGameProfile.rating.toLocaleString() }}
+                            Rating {{ playerGameProfile ? playerGameProfile.rating.toLocaleString() : '--' }}
                         </span>
                         
                         <span class="ml-3 bg-gray-100 text-gray-800 text-sm font-medium inline-flex items-center px-3 py-1.5 rounded mr-2 border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
@@ -58,7 +59,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="text-sm pt-1 font-medium text-center text-invictus-gray-500 dark:text-invictus-gray-400 dark:border-invictus-gray-700">
+                <div v-if="playerGameProfile" class="text-sm pt-1 font-medium text-center text-invictus-gray-500 dark:text-invictus-gray-400 dark:border-invictus-gray-700">
                     <ul class="flex flex-wrap -mb-px">
                         <li class="mr-2">
                             <a @click="switchTab(0)" type="button"
@@ -96,7 +97,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="py-5 min-h-fit">
+                <div v-if="playerGameProfile" class="py-5 min-h-fit">
                     <div class="flex flex-row w-full space-x-1 gap-2 sm:grid-cols-3 h-80" role="tabpanel">
                         <div class="p-0 pt-3 bg-transparent rounded-lg dark:bg-transparent">
                             <div class="grid">
@@ -439,6 +440,19 @@
                 /> -->
             </div>
         </div>
+        <section v-if="privateSteam" class="flex py-20 mt-4 pl-16 rounded-lg dark:bg-invictus-gray-800 bg:py-0 items-center relative gap-4 lg:gap-16 w-full max-w-[900px] lg:w-3/4 mx-auto justify-center">
+            <div class="flex w-2/3 items-center mx-auto px-4 md:px-8 xl:px-0 ">
+                <div class="w-full text-white">
+                <h1 class="text-3xl font-bold">Either {{ isMyprofile ?  'your' : 'the' }} profile is private or {{ isMyprofile ?  'you' : 'the player' }}  didn't play any matches yet!</h1>
+                <p v-if="isMyprofile" class="mt-4 text-normal text-gray-500">If you're already a CS:GO player make sure to make your profile public so the system can track your progress via Steam APIs. <br/><br/> If you're new to CS:GO just play couple of matches and come back here to see your progress.</p>
+                <button v-if="isMyprofile" @click="openVideo" type="button" class="text-white mt-5 bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-4 focus:outline-none focus:ring-invictus-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-invictus-red-800 dark:hover:bg-invictus-red-600 dark:focus:ring-invictus-red-800">
+                How to make your Steam profile public?</button>
+                </div>
+            </div>
+            <div class="flex w-1/3 items-center mx-auto px-4 md:px-8 xl:px-0">
+                <img class="w-2/3 bg:w-full" src="/img/lock.png"/>
+            </div>
+        </section>
     </div>
 </template>
 
@@ -458,7 +472,8 @@
                 isSeasonData: true,
                 isFetching: false,
                 rankings: undefined,
-                activeTab: 1
+                activeTab: 1,
+                privateSteam: false
             }
         },
         methods: {
@@ -486,27 +501,33 @@
                     this.playerInfo = res.data.playerDoc
                 } catch(err) {
                     if(err.response.status === 451) {
-                        this.$buefy.dialog.alert({
-                            title: 'Error',
-                            message: `${err.response.data.msg}`,
-                            type: 'is-danger',
-                            hasIcon: true,
-                            icon: 'times-circle',
-                            iconPack: 'fa',
-                            ariaRole: 'alertdialog',
-                            ariaModal: true,
-                            confirmText: 'How?',
-                            canCancel: ['escape', 'outside'],
-                            onConfirm: () => this.$buefy.modal.open({
-                                parent: this,
-                                component: SteamPublicGuide,
-                                canCancel: ['escape', 'button'],
-                                trapFocus: true
-                            })
-                        })
+                        console.log(err.response)
+                        this.privateSteam = true
+                        this.playerInfo = err.response.data.playerDoc
+                        // this.$buefy.dialog.alert({
+                        //     title: 'Error',
+                        //     message: `${err.response.data.msg}`,
+                        //     type: 'is-danger',
+                        //     hasIcon: true,
+                        //     icon: 'times-circle',
+                        //     iconPack: 'fa',
+                        //     ariaRole: 'alertdialog',
+                        //     ariaModal: true,
+                        //     confirmText: 'How?',
+                        //     canCancel: ['escape', 'outside'],
+                        //     onConfirm: () => this.$buefy.modal.open({
+                        //         parent: this,
+                        //         component: SteamPublicGuide,
+                        //         canCancel: ['escape', 'button'],
+                        //         trapFocus: true
+                        //     })
+                        // })
                     }
-                    if(!err.response.data.success) this.$router.push('/')
+                    // if(!err.response.data.success) this.$router.push('/')
                 }
+            },
+            openVideo() {
+                window.open('https://www.youtube.com/embed/nQqUtLvYtF4?start=25', '_blank')
             },
             async fetchRank() {
                 try {
@@ -568,7 +589,7 @@
         computed: {
             playerGameData() {
                 if(this.fetchingProfileLoader) return undefined
-                else return this.activeTab === 1 ? this.playerGameProfile.gameInfo : this.playerGameProfile.gameInfoLifetime
+                else if(this.playerGameProfile) return this.activeTab === 1 ? this.playerGameProfile.gameInfo : this.playerGameProfile.gameInfoLifetime
             },
             myRank() {
             let rank = '--'
@@ -580,6 +601,9 @@
                     })
                 }
                 return rank
+            },
+            isMyprofile() {
+                return this.playerInfo ? this.$store.state.address === this.playerInfo.address : undefined
             }
         },
         components: {

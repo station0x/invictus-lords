@@ -13,6 +13,17 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
         <img class="rewards-toast" src="/img/von-reward.png"/> <p style="margin-left: 40px">Next Rewards distribution round in</p> 
         <p style="color: rgb(250, 255, 0); margin-left: 10px">{{countdown}}</p></div>
     </div> -->
+    <div class="flex justify-end fixed -bottom-6 right-10 z-50 w-screen">
+          <div id="toast-danger" class="mb-16 flex flex-grow items-center p-4 w-full max-w-sm text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-invictus-gray-700 border dark:border-invictus-gray-500" role="alert">
+              <div class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 dark:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span class="sr-only">Error icon</span>
+              </div>
+              <div class="mx-3 text-sm font-normal">
+                Next Rewards distribution round in {{countdown}}
+              </div>
+          </div>
+        </div>
     <div class="app-body">
       <router-view></router-view>
     </div>
@@ -49,9 +60,6 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
       async distributeRewards() {
         const res = await axios.post('/api/rewards/distributeRewards')
         this.$router.go('/')
-      },
-      onClickApp() {
-        this.$store.commit("clicked")
       }
     },
     computed: {
@@ -84,12 +92,9 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
       this.fetchLastDistribution()
       this.$store.commit('changeWindowWidth', window.innerWidth)
       window.addEventListener("resize", this.responsify)
-      window.addEventListener('click', this.onClickApp)
-
     },
     destroyed() {
       window.removeEventListener("resize", this.responsify)
-      window.removeEventListener('click', this.onClickApp)
     }
   }
 </script>

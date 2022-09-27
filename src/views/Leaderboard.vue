@@ -1,5 +1,5 @@
 <template>
-    <div class="w-screen h-screen">
+    <div class="w-full h-full">
         <Loader v-if="!data"/>
         <div v-else class="h-16 top-12 absolute w-screen py-4 border-b border-invictus-gray-700"></div>
         <div v-if="data" class="container -top-4 relative flex items-center py-4 mx-auto sm:px-10">
@@ -156,7 +156,7 @@ export default {
             }
         },
         openProfile(address) {
-            let routeData = this.$router.resolve({ name: 'Lord Profile', params: { playerAddress: address, game: 'csgo' } })
+            let routeData = this.$router.push({ name: 'Lord Profile', params: { playerAddress: address, game: 'csgo' } })
             window.open(routeData.href, '_self')
         },
         async rewardsMinted() {
