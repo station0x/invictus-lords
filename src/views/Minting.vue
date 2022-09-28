@@ -192,8 +192,9 @@
                     this.balance = ethers.utils.formatEther(b)
                 })
             } else {
-                // this.connectMetamask()
+                this.connectMetamask()
             }
+            console.log(parseInt(window.ethereum.chainId))
             if(parseInt(window.ethereum.chainId) == 1) {
                 this.isEthereum = true
                 console.log(window.ethereum.chainId)
