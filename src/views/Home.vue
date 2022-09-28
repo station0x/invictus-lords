@@ -207,15 +207,15 @@
             <h2 class="hidden lg:flex mb-10 text-5xl tracking-tight font-bold text-gray-900 dark:text-white">Invictus Lords Vampires</h2>
             <div class="flex flex-col lg:flex-row justify-between gap-3">
               <!-- <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">Invictus Lords is on a mission to liberate gamers from gaming industry exploitation through tokenization of effort and decentralization of assets. Join the movement.</p> -->
-              <a href="#" class="block lg:w-1/3 p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
+              <a class="block lg:w-1/3 p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Dao Governance Token</h5>
                 <p class="pb-3 font-normal text-gray-700 dark:text-gray-400">Holders will be eligible for governance token air-drops. </p>
               </a>
-              <a href="#" class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
+              <a class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">$ VON Rewards boost</h5>  
                 <p class="pb-3 font-normal text-gray-700 dark:text-gray-400">NFTs boost VON rewards by multipliers 5%, 10% and 15%. </p>
               </a>
-              <a href="#" class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
+              <a class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Native passive yeild</h5>
                 <p class="pb-3 font-normal text-gray-700 dark:text-gray-400">Natively yeild a percentage of 10% passive income to all holders each day. </p>
               </a>
