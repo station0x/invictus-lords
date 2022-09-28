@@ -111,26 +111,31 @@
         },
         async registerPlayer(signature, address) {
             this.steamLoader = true
-            const res = await axios.get('/api/player/registerPlayer', {
-                params: {
-                    signature: signature,
-                    providerType: "steam",
-                    hash: this.user.steamHash,
-                    avatar: this.user.avatar,
-                    playerAlias: this.localPlayerAlias,
-                    useSteamName: this.useSteamData
-                }
-            }).then( res => {
-                this.$store.dispatch('connect', {signature, address})
-                this.$store.dispatch('fetchProfile')
-                this.$router.push({
-                    name: 'Lord Profile',
+            try {
+                const res = await axios.get('/api/player/registerPlayer', {
                     params: {
-                        playerAddress: this.$store.state.address,
-                        game: 'csgo'
+                        signature: signature,
+                        providerType: "steam",
+                        hash: this.user.steamHash,
+                        avatar: this.user.avatar,
+                        playerAlias: this.localPlayerAlias,
+                        useSteamName: this.useSteamData
                     }
                 })
-            }).finally(() => { this.steamLoader = false })
+            } catch(error) {
+                this.$emit('error', error.response.data.msg)
+                return false
+            }
+            this.$store.dispatch('connect', {signature, address})
+            this.$store.dispatch('fetchProfile')
+            this.$router.push({
+                name: 'Lord Profile',
+                params: {
+                    playerAddress: this.$store.state.address,
+                    game: 'csgo'
+                }
+            })
+            this.steamLoader = false
             return res
         },
         async auth() {

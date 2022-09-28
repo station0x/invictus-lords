@@ -458,9 +458,7 @@
 </template>
 
 <script>
-    import ProfileBox from '@/components/SVGs/ProfileBox.vue'
     import Loader from '@/components/Loader.vue'
-    import SteamPublicGuide from '@/components/SteamPublicGuide.vue'
     import { ethers } from 'ethers'
     import axios from 'axios'
 
@@ -608,9 +606,7 @@
             }
         },
         components: {
-            ProfileBox,
-            Loader,
-            SteamPublicGuide
+            Loader
         },
         async created() {
             if(ethers.utils.isAddress(this.$route.params.playerAddress)) {
