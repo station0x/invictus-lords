@@ -96,8 +96,8 @@
                             <div class="flex">
                                 <button class="cursor-default flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-invictus-gray-100 border-t border-l border-b border-gray-300 rounded-l-l dark:bg-invictus-gray-700 rounded-l-lg dark:text-white dark:border-invictus-gray-600" type="button">Embryos</button>
                                 <div class="relative w-full">
-                                    <input type="number" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-invictus-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-red-700 focus:border-red-500 dark:bg-invictus-gray-700 dark:border-l-invictus-gray-600  dark:border-invictus-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-red-500" placeholder="Embryos number" required>
-                                    <button type="button" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-red-700 rounded-r-lg border border-red-700 hover:bg-red-800 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-500 dark:focus:ring-red-800">
+                                    <input v-model="purchaseAmount" type="number" min="0" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-invictus-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-red-700 focus:border-red-500 dark:bg-invictus-gray-700 dark:border-l-invictus-gray-600  dark:border-invictus-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-red-500" placeholder="Embryos number" required>
+                                    <button @click="purchaseAmount = maxAmount" type="button" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-red-700 rounded-r-lg border border-red-700 hover:bg-red-800 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-500 dark:focus:ring-red-800">
                                         Max
                                     </button>
                                 </div>
@@ -142,7 +142,8 @@
                 isEthereum: false,
                 showMinter: false,
                 mmLoader: false,
-                balance: undefined
+                balance: undefined,
+                purchaseAmount: undefined
             }
         },
         methods: {
@@ -194,7 +195,6 @@
             } else {
                 this.connectMetamask()
             }
-            console.log(parseInt(window.ethereum.chainId))
             if(parseInt(window.ethereum.chainId) == 1) {
                 this.isEthereum = true
                 console.log(window.ethereum.chainId)
@@ -221,6 +221,9 @@
         computed: {
             isConnected() {
                 return this.$store.state.address && this.$store.state.address.length > 0 ? true : false
+            },
+            maxAmount() {
+                return this.balance && this.balance !== 0 ? Math.floor(this.balance/0.1) : 0
             }
         }
     }
