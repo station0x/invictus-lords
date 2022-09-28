@@ -3,12 +3,11 @@ import App from './App.vue'
 import router from './router'
 import VueGtag from 'vue-gtag'
 import store from './store'
-import Buefy from 'buefy'
 import VueNumber from 'vue-number-animation'
 import Hotjar from 'vue-hotjar'
-// import 'buefy/dist/buefy.css'
-import '../src/assets/scss/main.scss'
-import './assets/main.css'
+// tailwind
+import './style.css'
+import 'flowbite'
 
 Vue.prototype.ethereum = window.ethereum
 
@@ -18,7 +17,6 @@ Vue.use (Hotjar, {
   snippetVersion: 6
 })
 
-Vue.use(Buefy)
 Vue.use(VueNumber)
 Vue.use(VueGtag, {
   config: { id: "G-8N6VLD41K5" },

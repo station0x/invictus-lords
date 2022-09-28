@@ -1,21 +1,21 @@
 <template>
   <div>
     <Loader v-if="isLoading"/>
-    <div v-else class="greetings">
+    <!-- <div v-else class="greetings"> -->
       <h3>
-        <center>
+        <!-- <center> -->
           <ConnectBox v-if="!isMetamask" :user="user" :signature="signature" :address="address" :isMetamask="$route.params.isMetamask" :avatar="user.avatar" :playerAlias="user.username"/>
           <ConnectBox v-else :isMetamask="$route.params.isMetamask" :playerAlias="user.username" :signature="this.$route.params.user"/>
-        </center>
+        <!-- </center> -->
       </h3>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
   
   <script>
     import axios from 'axios'
     import { ethers } from 'ethers'
-    import ConnectBox from '@/components/SVGs/ConnectBox.vue'
+    import ConnectBox from '@/components/ConnectBox.vue'
     import Loader from '@/components/Loader.vue'
     import { generateUsername } from "unique-username-generator"
     const lib = JsonUrl('lzw')
@@ -68,7 +68,7 @@
         this.isMetamask = parseInt(this.$route.params.isMetamask) ? true : false
         if(this.isMetamask) {
           try {
-            const address = ethers.utils.verifyMessage("Welcome to my house! Enter freely. Go safely, and leave something of the happiness you bring", ethers.utils.splitSignature(this.$route.params.user))
+            const address = ethers.utils.verifyMessage("Dear Lords! I'm confirming my ownership. (Read-only transaction)", ethers.utils.splitSignature(this.$route.params.user))
             const validAddress = ethers.utils.isAddress(address)
             this.user.username = generateUsername("-") + "#" +  Math.floor(1000 + Math.random() * 9000)
             if(!validAddress) this.$router.push('/')
@@ -88,7 +88,7 @@
             const candidateSignature = this.$store.state.candidateSignature
             const candidateUsername = this.$store.state.candidateUsername
             const candidateUseSteamData = this.$store.state.candidateUseSteamData
-            const address = ethers.utils.verifyMessage("Welcome to my house! Enter freely. Go safely, and leave something of the happiness you bring", ethers.utils.splitSignature(candidateSignature))
+            const address = ethers.utils.verifyMessage("Dear Lords! I'm confirming my ownership. (Read-only transaction)", ethers.utils.splitSignature(candidateSignature))
             await this.registerPlayer(candidateSignature, address, candidateUsername, candidateUseSteamData)
             this.$store.dispatch('unregisterCandidate')
           } else {

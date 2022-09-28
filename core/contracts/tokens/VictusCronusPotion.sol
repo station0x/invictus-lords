@@ -58,7 +58,7 @@ contract VictusCronusPotion {
     }
 
     function mint(address to, uint amount) public {
-        require(msg.sender == ERC20Minter || msg.sender == operator, "ONLY MINTER OR OPERATOR");
+        require(msg.sender == ERC20Minter, "ONLY MINTER");
         _mint(to, amount);
     }
 

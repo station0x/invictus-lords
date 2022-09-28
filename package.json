@@ -13,11 +13,11 @@
     "@metamask/detect-provider": "^1.2.0",
     "alchemy-sdk": "^2.0.4",
     "axios": "^0.27.2",
-    "buefy": "^0.9.21",
     "date-and-time": "^2.4.1",
     "debounce": "^1.2.1",
     "eth-rpc-errors": "^4.0.3",
     "ethers": "^5.7.0",
+    "flowbite": "^1.5.3",
     "json-url": "^3.0.0",
     "mongodb": "^4.2.0",
     "object-hash": "^3.0.0",
@@ -26,16 +26,19 @@
     "vue": "^2.7.7",
     "vue-dragscroll": "3.0.1",
     "vue-gtag": "^1.16.1",
+    "vue-hotjar": "^1.4.0",
     "vue-number-animation": "^1.1.2",
     "vue-router": "^3.5.3",
-    "vuex": "^3.6.2",
-    "vue-hotjar": "^1.4.0"
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vitejs/plugin-legacy": "^2.0.0",
     "@vitejs/plugin-vue2": "^1.1.2",
+    "autoprefixer": "^10.4.12",
+    "postcss": "^8.4.16",
     "sass": "^1.54.5",
     "sass-loader": "^13.0.2",
+    "tailwindcss": "^3.1.8",
     "terser": "^5.14.2",
     "vite": "^3.0.2"
   }
