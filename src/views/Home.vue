@@ -259,9 +259,6 @@
 </template>
 <script>
   import axios from 'axios'
-  import Synthesis from '@/components/SVGs/Synthesis.vue'
-  import Building from '@/components/SVGs/Building.vue'
-  import NFTSection from '@/components/SVGs/NFTSection.vue'
   import Card from '@/components/Card.vue'
   import Footer from  '@/components/Footer.vue'
   import { dragscroll } from 'vue-dragscroll' // single component using directive
@@ -350,9 +347,6 @@
         },
     },
     components: { 
-      Synthesis,
-      Building,
-      NFTSection,
       Card,
       Footer
     },
@@ -487,6 +481,7 @@
     width: 120vw;
     left: -15vw;
     position: absolute;
+    -webkit-overflow-scrolling: touch;
   }
   .card-item {
     display: inline;

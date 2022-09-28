@@ -5,6 +5,7 @@ import VueGtag from 'vue-gtag'
 import store from './store'
 import VueNumber from 'vue-number-animation'
 import Hotjar from 'vue-hotjar'
+import VueCarousel from 'vue-carousel'
 // tailwind
 import './style.css'
 import 'flowbite'
@@ -16,7 +17,7 @@ Vue.use (Hotjar, {
   isProduction: true,
   snippetVersion: 6
 })
-
+Vue.use(VueCarousel)
 Vue.use(VueNumber)
 Vue.use(VueGtag, {
   config: { id: "G-8N6VLD41K5" },

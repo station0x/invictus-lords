@@ -27,7 +27,10 @@ module.exports = async (req, res) => {
     const players = db.collection("players")
     const steam = db.collection("steamEntries")
     const playerDocByAddress = (await players.find({address}).limit(1).toArray())[0]
-    if(playerDocByAddress) throw new Error('Address already registered')
+    if(playerDocByAddress) {
+        res.status(500).json({ msg: 'Player address alreay registered! Connect another wallet address or Login with Metamask' })
+        return true
+    }
 
     const steamData = (await steam.find({steamHash: providerIdHash}).limit(1).toArray())[0]
     console.log(steamData)
@@ -36,7 +39,10 @@ module.exports = async (req, res) => {
     const playerDocById = (await players.find({[`${providerType}`]:`${providerId}`}).limit(1).toArray())[0]
     console.log(playerDocById)
     console.log({[`${providerType}`]:`${providerId}`})
-    if(playerDocById) throw new Error('Player already registered with this provider ID')
+    if(playerDocById) {
+        res.status(500).json({ msg: 'This steam account is already register, Login instead.' })
+        return true
+    }
     if(!playerAlias)  {
         playerAlias = steamData.user.username
     } else if(useSteamName === 'true') {
