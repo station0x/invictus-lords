@@ -25,10 +25,11 @@
     .card-wrapper {
         font-family: 'Inter';
         height:470px;
-        width: 335px;
-        /* background: red; */
+        min-width: 250px;
+        max-width: 330px;
+        background: rgb(14 19 24);
         border-radius: 5px;
-        border: 1px solid #374151;
+        border: 1px solid rgb(31 41 55);
         display: inline-block;
         /* float: left; */
         margin: 20px;
