@@ -1,83 +1,236 @@
 <template>
   <div>
-    <div class="landing-one">
-      <div class="center-wrapper">
-        <img class="center" src="/img/logo-large.png" style="user-select: none;"/>
-          <h1 class="one-text" style="font-size: 28px">Play everyday games</h1>
-          <h1 class="one-text" style="font-size: 52px">And earn <span style="color: #FF111F">$VON</span></h1>
-          <h1 class="one-text" style="margin-top: 10px; font-family: 'Evogria';font-size: 23; color: #FAFF00;">Earn rewards by playing</h1>
-          <img
-            class="center"
-            src="/img/games.png"
-            width="450px"
-            style="margin-top: 20px; margin-bottom: 20px;"
-          >
-          <b-button style="transform: scale(0.8)" v-if="!this.$store.state.address" @click="auth" :loading="steamLoader" class="center steam-btn">
-            <img class="steam-logo" src="/img/steam-logo.svg"/>
+    <section class="bg-white dark:bg-invictus-gray-900 -landing-section">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-28 lg:px-12">
+        <a href="#" class="inline-flex justify-between items-center md:text-xs sm:font-light md:py-0 py-1 px-1 pr-4 mt-10 mb-7 text-sm text-gray-700 bg-invictus-gray-100 rounded-full dark:bg-invictus-gray-800 dark:text-white hover:bg-invictus-gray-200 dark:hover:bg-invictus-gray-700" role="alert">
+            <span class="text-xs bg-invictus-gray-300 rounded-full text-gray-800 px-4 py-1.5 mr-3 font-bold">Beta</span> <span class="text-sm font-medium">This is a test version on the Goerli Network. share your feedback</span> 
+            <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+        </a>
+        <h1 class="mb-4 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Earn <span class="text-invictus-red-900">$VON</span> for playing <br/> everyday games</h1>
+        <!-- <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.</p> -->
+        <div class="flex flex-col mt-20 mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+          <!-- <button class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+            <span class="text-base font-medium relative px-8 py-4 transition-all ease-in duration-75 bg-white dark:bg-invictus-gray-900 rounded-md group-hover:bg-opacity-0">
+                Signup with Steam
+            </span>
+          </button> -->
+          <!-- <button class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+            <span class="text-base font-medium relative px-8 py-4 transition-all ease-in duration-75 bg-white dark:bg-invictus-gray-900 rounded-md group-hover:bg-opacity-0">
+              <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
+                Signup with Steam
+            </span>
+          </button> -->
+          <div></div>
+          <button v-if="!$store.state.address" @click="auth" type="button" class="text-gray-900 bg-white hover:bg-invictus-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-light rounded-lg text-normal px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-invictus-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-invictus-gray-700 mr-2 mb-2">
+            <svg v-if="steamLoader" aria-hidden="true" role="status" class="inline mr-3 w-4 h-4 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <svg v-else aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_13748_71727)">
+            <path d="M10.6312 0.222229C5.40921 0.222229 1.13123 4.20401 0.724716 9.26423L6.05281 11.4427C6.50427 11.1373 7.04966 10.9585 7.6364 10.9585C7.68899 10.9585 7.74135 10.9607 7.79326 10.9631L10.1627 7.5669C10.1627 7.55067 10.1627 7.5349 10.1627 7.5189C10.1627 5.47467 11.8443 3.81156 13.9117 3.81156C15.9789 3.81156 17.6604 5.47467 17.6604 7.5189C17.6604 9.56312 15.9789 11.2265 13.9117 11.2265C13.8831 11.2265 13.8548 11.2265 13.8265 11.2242L10.4472 13.6087C10.4494 13.652 10.4506 13.6962 10.4506 13.7402C10.4506 15.2749 9.18831 16.5229 7.63663 16.5229C6.2746 16.5229 5.13573 15.5616 4.87775 14.2885L1.06719 12.7316C2.24696 16.8578 6.08045 19.8829 10.6312 19.8829C16.1216 19.8829 20.5721 15.4816 20.5721 10.0529C20.5721 4.62334 16.1213 0.222229 10.6312 0.222229" fill="white"/>
+            <path d="M6.95416 15.1382L5.73303 14.6393C5.94944 15.0849 6.32382 15.458 6.8209 15.6629C7.8955 16.1056 9.13438 15.6013 9.58225 14.5378C9.7991 14.0236 9.80045 13.4558 9.58539 12.9402C9.37079 12.4244 8.96584 12.0222 8.44517 11.8076C7.92854 11.5949 7.37505 11.6027 6.88876 11.7842L8.15011 12.3C8.9427 12.6267 9.31753 13.5267 8.98719 14.3104C8.65753 15.0944 7.74674 15.4651 6.95416 15.1382" fill="#FBFBFB"/>
+            <path d="M16.4092 7.51889C16.4092 6.15689 15.2888 5.04867 13.9112 5.04867C12.5339 5.04867 11.4133 6.15689 11.4133 7.51889C11.4133 8.88111 12.5339 9.98889 13.9112 9.98889C15.2888 9.98889 16.4092 8.88089 16.4092 7.51889ZM12.0389 7.51467C12.0389 6.48978 12.8791 5.65911 13.9155 5.65911C14.9519 5.65911 15.7921 6.48978 15.7921 7.51467C15.7921 8.53956 14.9519 9.37022 13.9155 9.37022C12.8791 9.37022 12.0389 8.53933 12.0389 7.51467" fill="#FBFBFB"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_13748_71727">
+            <rect width="20" height="20" fill="white" transform="translate(0.5)"/>
+            </clipPath>
+            </defs>
+            </svg>
             Sign up with Steam
-          </b-button>
-      </div>
+          </button>
+          <button v-if="!$store.state.address"  @click="connectMetamask" type="button" class="text-gray-900 bg-white hover:bg-invictus-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-light rounded-lg text-normal px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-invictus-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-invictus-gray-700 mr-2 mb-2">
+            <svg v-if="mmLoader" aria-hidden="true" role="status" class="inline mr-3 w-4 h-4 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+            </svg>
+            <svg v-else aria-hidden="true" class="mr-2 -ml-1 w-6 h-5" viewBox="0 0 2405 2501" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_1512_1323)"> <path d="M2278.79 1730.86L2133.62 2221.69L1848.64 2143.76L2278.79 1730.86Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M1848.64 2143.76L2123.51 1767.15L2278.79 1730.86L1848.64 2143.76Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M2065.2 1360.79L2278.79 1730.86L2123.51 1767.15L2065.2 1360.79ZM2065.2 1360.79L2202.64 1265.6L2278.79 1730.86L2065.2 1360.79Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1890.29 1081.17L2285.34 919.338L2265.7 1007.99L1890.29 1081.17ZM2253.21 1114.48L1890.29 1081.17L2265.7 1007.99L2253.21 1114.48Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2253.21 1114.48L2202.64 1265.6L1890.29 1081.17L2253.21 1114.48ZM2332.34 956.82L2265.7 1007.99L2285.34 919.338L2332.34 956.82ZM2253.21 1114.48L2265.7 1007.99L2318.65 1052.01L2253.21 1114.48Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1542.24 2024.17L1641 2055.7L1848.64 2143.75L1542.24 2024.17Z" fill="#E2761B" stroke="#E2761B" stroke-width="5.94955"/> <path d="M2202.64 1265.6L2253.21 1114.48L2296.64 1147.8L2202.64 1265.6ZM2202.64 1265.6L1792.71 1130.55L1890.29 1081.17L2202.64 1265.6Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1987.86 617.696L1890.29 1081.17L1792.71 1130.55L1987.86 617.696Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2285.34 919.338L1890.29 1081.17L1987.86 617.696L2285.34 919.338Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1987.86 617.696L2400.16 570.1L2285.34 919.338L1987.86 617.696Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2202.64 1265.6L2065.2 1360.79L1792.71 1130.55L2202.64 1265.6Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M2382.31 236.33L2400.16 570.1L1987.86 617.696L2382.31 236.33Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2382.31 236.33L1558.3 835.45L1547.59 429.095L2382.31 236.33Z" fill="#E2761B" stroke="#E2761B" stroke-width="5.94955"/> <path d="M934.789 380.309L1547.59 429.095L1558.3 835.449L934.789 380.309Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1792.71 1130.55L1558.3 835.449L1987.86 617.696L1792.71 1130.55Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1792.71 1130.55L2065.2 1360.79L1682.65 1403.04L1792.71 1130.55Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M1682.65 1403.04L1558.3 835.449L1792.71 1130.55L1682.65 1403.04Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M1987.86 617.696L1558.3 835.45L2382.31 236.33L1987.86 617.696Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M940.144 2134.24L1134.69 2337.11L869.939 2096.16L940.144 2134.24Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M1848.64 2143.75L1940.86 1793.33L2123.51 1767.15L1848.64 2143.75Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M151.234 1157.92L487.978 803.917L194.666 1115.67L151.234 1157.92Z" fill="#E2761B" stroke="#E2761B" stroke-width="5.94955"/> <path d="M2123.51 1767.15L1940.86 1793.33L2065.2 1360.79L2123.51 1767.15ZM1558.3 835.449L1230.48 824.74L934.789 380.309L1558.3 835.449Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M2065.2 1360.79L1940.86 1793.33L1930.74 1582.12L2065.2 1360.79Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M1682.65 1403.04L2065.2 1360.79L1930.74 1582.12L1682.65 1403.04Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1230.48 824.74L1558.3 835.449L1682.65 1403.04L1230.48 824.74Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1230.48 824.74L345.784 6.08252L934.79 380.309L1230.48 824.74ZM934.195 2258.58L165.513 2496.56L12.0146 1910.53L934.195 2258.58Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M265.465 1304.27L555.803 1076.41L799.14 1132.93L265.465 1304.27Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M799.139 1132.93L555.803 1076.41L686.098 538.567L799.139 1132.93Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M194.666 1115.67L555.803 1076.41L265.465 1304.27L194.666 1115.67Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1930.74 1582.12L1780.81 1506.56L1682.65 1403.04L1930.74 1582.12Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M194.666 1115.67L169.083 980.618L555.803 1076.41L194.666 1115.67Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1749.88 1676.72L1780.81 1506.56L1930.74 1582.12L1749.88 1676.72Z" fill="#233447" stroke="#233447" stroke-width="5.94955"/> <path d="M1940.86 1793.33L1749.88 1676.72L1930.74 1582.12L1940.86 1793.33Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M555.803 1076.41L169.082 980.618L137.55 866.982L555.803 1076.41ZM686.098 538.567L555.803 1076.41L137.55 866.982L686.098 538.567ZM686.098 538.567L1230.48 824.74L799.139 1132.93L686.098 538.567Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M799.14 1132.93L1230.48 824.74L1422.65 1411.96L799.14 1132.93ZM1422.65 1411.96L826.508 1399.47L799.14 1132.93L1422.65 1411.96Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M265.465 1304.27L799.14 1132.93L826.508 1399.47L265.465 1304.27ZM1682.65 1403.04L1422.65 1411.96L1230.48 824.74L1682.65 1403.04Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1780.81 1506.56L1749.88 1676.72L1682.65 1403.04L1780.81 1506.56Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M345.784 6.08252L1230.48 824.74L686.098 538.567L345.784 6.08252Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M12.0146 1910.53L758.088 1879.59L934.195 2258.58L12.0146 1910.53Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M934.194 2258.58L758.088 1879.59L1124.58 1861.75L934.194 2258.58Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1749.88 1676.72L1940.86 1793.33L2046.16 2041.42L1749.88 1676.72ZM826.508 1399.47L12.0146 1910.53L265.465 1304.27L826.508 1399.47ZM758.088 1879.59L12.0146 1910.53L826.508 1399.47L758.088 1879.59ZM1682.65 1403.04L1731.43 1580.33L1495.83 1594.02L1682.65 1403.04ZM1495.83 1594.02L1422.65 1411.96L1682.65 1403.04L1495.83 1594.02Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1134.69 2337.11L934.194 2258.58L1631.48 2375.79L1134.69 2337.11Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M265.465 1304.27L151.234 1157.91L194.666 1115.67L265.465 1304.27Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1710.61 2288.92L1631.48 2375.79L934.194 2258.58L1710.61 2288.92Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="5.94955"/> <path d="M1748.09 2075.93L934.194 2258.58L1124.58 1861.75L1748.09 2075.93Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M934.194 2258.58L1748.09 2075.93L1710.61 2288.92L934.194 2258.58Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="5.94955"/> <path d="M137.55 866.982L110.777 409.462L686.098 538.567L137.55 866.982ZM194.665 1115.67L115.536 1035.35L169.082 980.618L194.665 1115.67Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1289.38 1529.76L1422.65 1411.96L1403.61 1699.92L1289.38 1529.76Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1422.65 1411.96L1289.38 1529.76L1095.43 1630.31L1422.65 1411.96Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M2046.16 2041.42L2009.87 2014.65L1749.88 1676.72L2046.16 2041.42Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1095.43 1630.31L826.508 1399.47L1422.65 1411.96L1095.43 1630.31Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1403.61 1699.92L1422.65 1411.96L1495.83 1594.02L1403.61 1699.92Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M89.3589 912.199L137.55 866.982L169.083 980.618L89.3589 912.199Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1403.61 1699.92L1095.43 1630.31L1289.38 1529.76L1403.61 1699.92Z" fill="#233447" stroke="#233447" stroke-width="5.94955"/> <path d="M686.098 538.567L110.777 409.462L345.784 6.08252L686.098 538.567Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1631.48 2375.79L1664.2 2465.03L1134.69 2337.12L1631.48 2375.79Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M1124.58 1861.75L1095.43 1630.31L1403.61 1699.92L1124.58 1861.75Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M826.508 1399.47L1095.43 1630.31L1124.58 1861.75L826.508 1399.47Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M1495.83 1594.02L1731.43 1580.33L2009.87 2014.65L1495.83 1594.02ZM826.508 1399.47L1124.58 1861.75L758.088 1879.59L826.508 1399.47Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1495.83 1594.02L1788.55 2039.64L1403.61 1699.92L1495.83 1594.02Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M1403.61 1699.92L1788.55 2039.64L1748.09 2075.93L1403.61 1699.92Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1748.09 2075.93L1124.58 1861.75L1403.61 1699.92L1748.09 2075.93ZM2009.87 2014.65L1788.55 2039.64L1495.83 1594.02L2009.87 2014.65Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M2068.18 2224.07L1972.99 2415.05L1664.2 2465.03L2068.18 2224.07ZM1664.2 2465.03L1631.48 2375.79L1710.61 2288.92L1664.2 2465.03Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M1710.61 2288.92L1768.92 2265.72L1664.2 2465.03L1710.61 2288.92ZM1664.2 2465.03L1768.92 2265.72L2068.18 2224.07L1664.2 2465.03Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M2009.87 2014.65L2083.05 2059.27L1860.54 2086.04L2009.87 2014.65Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M1860.54 2086.04L1788.55 2039.64L2009.87 2014.65L1860.54 2086.04ZM1834.96 2121.15L2105.66 2088.42L2068.18 2224.07L1834.96 2121.15Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M2068.18 2224.07L1768.92 2265.72L1834.96 2121.15L2068.18 2224.07ZM1768.92 2265.72L1710.61 2288.92L1748.09 2075.93L1768.92 2265.72ZM1748.09 2075.93L1788.55 2039.64L1860.54 2086.04L1748.09 2075.93ZM2083.05 2059.27L2105.66 2088.42L1834.96 2121.15L2083.05 2059.27Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M1834.96 2121.15L1860.54 2086.04L2083.05 2059.27L1834.96 2121.15ZM1748.09 2075.93L1834.96 2121.15L1768.92 2265.72L1748.09 2075.93Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M1860.54 2086.04L1834.96 2121.15L1748.09 2075.93L1860.54 2086.04Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> </g> <defs> <clipPath id="clip0_1512_1323"> <rect width="2404" height="2500" fill="white" transform="translate(0.519043 0.132812)"/> </clipPath> </defs> </svg>
+            Connect Wallet
+          </button>
+          <button v-if="$store.state.address"  @click="openProfile" type="button" class="text-gray-900 bg-white hover:bg-invictus-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-light rounded-lg text-normal px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-invictus-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-invictus-gray-700 mr-2 mb-2">
+            <svg class="inline mr-3 w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            Open my profile
+          </button>
+            <!-- <a href="#" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-invictus-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-invictus-gray-700 dark:focus:ring-gray-800">
+                <svg aria-hidden="true" class="mr-2 -ml-1 w-6 h-5" viewBox="0 0 2405 2501" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_1512_1323)"> <path d="M2278.79 1730.86L2133.62 2221.69L1848.64 2143.76L2278.79 1730.86Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M1848.64 2143.76L2123.51 1767.15L2278.79 1730.86L1848.64 2143.76Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M2065.2 1360.79L2278.79 1730.86L2123.51 1767.15L2065.2 1360.79ZM2065.2 1360.79L2202.64 1265.6L2278.79 1730.86L2065.2 1360.79Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1890.29 1081.17L2285.34 919.338L2265.7 1007.99L1890.29 1081.17ZM2253.21 1114.48L1890.29 1081.17L2265.7 1007.99L2253.21 1114.48Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2253.21 1114.48L2202.64 1265.6L1890.29 1081.17L2253.21 1114.48ZM2332.34 956.82L2265.7 1007.99L2285.34 919.338L2332.34 956.82ZM2253.21 1114.48L2265.7 1007.99L2318.65 1052.01L2253.21 1114.48Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1542.24 2024.17L1641 2055.7L1848.64 2143.75L1542.24 2024.17Z" fill="#E2761B" stroke="#E2761B" stroke-width="5.94955"/> <path d="M2202.64 1265.6L2253.21 1114.48L2296.64 1147.8L2202.64 1265.6ZM2202.64 1265.6L1792.71 1130.55L1890.29 1081.17L2202.64 1265.6Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1987.86 617.696L1890.29 1081.17L1792.71 1130.55L1987.86 617.696Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2285.34 919.338L1890.29 1081.17L1987.86 617.696L2285.34 919.338Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1987.86 617.696L2400.16 570.1L2285.34 919.338L1987.86 617.696Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2202.64 1265.6L2065.2 1360.79L1792.71 1130.55L2202.64 1265.6Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M2382.31 236.33L2400.16 570.1L1987.86 617.696L2382.31 236.33Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2382.31 236.33L1558.3 835.45L1547.59 429.095L2382.31 236.33Z" fill="#E2761B" stroke="#E2761B" stroke-width="5.94955"/> <path d="M934.789 380.309L1547.59 429.095L1558.3 835.449L934.789 380.309Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1792.71 1130.55L1558.3 835.449L1987.86 617.696L1792.71 1130.55Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1792.71 1130.55L2065.2 1360.79L1682.65 1403.04L1792.71 1130.55Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M1682.65 1403.04L1558.3 835.449L1792.71 1130.55L1682.65 1403.04Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M1987.86 617.696L1558.3 835.45L2382.31 236.33L1987.86 617.696Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M940.144 2134.24L1134.69 2337.11L869.939 2096.16L940.144 2134.24Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M1848.64 2143.75L1940.86 1793.33L2123.51 1767.15L1848.64 2143.75Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M151.234 1157.92L487.978 803.917L194.666 1115.67L151.234 1157.92Z" fill="#E2761B" stroke="#E2761B" stroke-width="5.94955"/> <path d="M2123.51 1767.15L1940.86 1793.33L2065.2 1360.79L2123.51 1767.15ZM1558.3 835.449L1230.48 824.74L934.789 380.309L1558.3 835.449Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M2065.2 1360.79L1940.86 1793.33L1930.74 1582.12L2065.2 1360.79Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M1682.65 1403.04L2065.2 1360.79L1930.74 1582.12L1682.65 1403.04Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1230.48 824.74L1558.3 835.449L1682.65 1403.04L1230.48 824.74Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1230.48 824.74L345.784 6.08252L934.79 380.309L1230.48 824.74ZM934.195 2258.58L165.513 2496.56L12.0146 1910.53L934.195 2258.58Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M265.465 1304.27L555.803 1076.41L799.14 1132.93L265.465 1304.27Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M799.139 1132.93L555.803 1076.41L686.098 538.567L799.139 1132.93Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M194.666 1115.67L555.803 1076.41L265.465 1304.27L194.666 1115.67Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1930.74 1582.12L1780.81 1506.56L1682.65 1403.04L1930.74 1582.12Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M194.666 1115.67L169.083 980.618L555.803 1076.41L194.666 1115.67Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1749.88 1676.72L1780.81 1506.56L1930.74 1582.12L1749.88 1676.72Z" fill="#233447" stroke="#233447" stroke-width="5.94955"/> <path d="M1940.86 1793.33L1749.88 1676.72L1930.74 1582.12L1940.86 1793.33Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M555.803 1076.41L169.082 980.618L137.55 866.982L555.803 1076.41ZM686.098 538.567L555.803 1076.41L137.55 866.982L686.098 538.567ZM686.098 538.567L1230.48 824.74L799.139 1132.93L686.098 538.567Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M799.14 1132.93L1230.48 824.74L1422.65 1411.96L799.14 1132.93ZM1422.65 1411.96L826.508 1399.47L799.14 1132.93L1422.65 1411.96Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M265.465 1304.27L799.14 1132.93L826.508 1399.47L265.465 1304.27ZM1682.65 1403.04L1422.65 1411.96L1230.48 824.74L1682.65 1403.04Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1780.81 1506.56L1749.88 1676.72L1682.65 1403.04L1780.81 1506.56Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M345.784 6.08252L1230.48 824.74L686.098 538.567L345.784 6.08252Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M12.0146 1910.53L758.088 1879.59L934.195 2258.58L12.0146 1910.53Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M934.194 2258.58L758.088 1879.59L1124.58 1861.75L934.194 2258.58Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1749.88 1676.72L1940.86 1793.33L2046.16 2041.42L1749.88 1676.72ZM826.508 1399.47L12.0146 1910.53L265.465 1304.27L826.508 1399.47ZM758.088 1879.59L12.0146 1910.53L826.508 1399.47L758.088 1879.59ZM1682.65 1403.04L1731.43 1580.33L1495.83 1594.02L1682.65 1403.04ZM1495.83 1594.02L1422.65 1411.96L1682.65 1403.04L1495.83 1594.02Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1134.69 2337.11L934.194 2258.58L1631.48 2375.79L1134.69 2337.11Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M265.465 1304.27L151.234 1157.91L194.666 1115.67L265.465 1304.27Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1710.61 2288.92L1631.48 2375.79L934.194 2258.58L1710.61 2288.92Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="5.94955"/> <path d="M1748.09 2075.93L934.194 2258.58L1124.58 1861.75L1748.09 2075.93Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M934.194 2258.58L1748.09 2075.93L1710.61 2288.92L934.194 2258.58Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="5.94955"/> <path d="M137.55 866.982L110.777 409.462L686.098 538.567L137.55 866.982ZM194.665 1115.67L115.536 1035.35L169.082 980.618L194.665 1115.67Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1289.38 1529.76L1422.65 1411.96L1403.61 1699.92L1289.38 1529.76Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1422.65 1411.96L1289.38 1529.76L1095.43 1630.31L1422.65 1411.96Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M2046.16 2041.42L2009.87 2014.65L1749.88 1676.72L2046.16 2041.42Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1095.43 1630.31L826.508 1399.47L1422.65 1411.96L1095.43 1630.31Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1403.61 1699.92L1422.65 1411.96L1495.83 1594.02L1403.61 1699.92Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M89.3589 912.199L137.55 866.982L169.083 980.618L89.3589 912.199Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1403.61 1699.92L1095.43 1630.31L1289.38 1529.76L1403.61 1699.92Z" fill="#233447" stroke="#233447" stroke-width="5.94955"/> <path d="M686.098 538.567L110.777 409.462L345.784 6.08252L686.098 538.567Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1631.48 2375.79L1664.2 2465.03L1134.69 2337.12L1631.48 2375.79Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M1124.58 1861.75L1095.43 1630.31L1403.61 1699.92L1124.58 1861.75Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M826.508 1399.47L1095.43 1630.31L1124.58 1861.75L826.508 1399.47Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M1495.83 1594.02L1731.43 1580.33L2009.87 2014.65L1495.83 1594.02ZM826.508 1399.47L1124.58 1861.75L758.088 1879.59L826.508 1399.47Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1495.83 1594.02L1788.55 2039.64L1403.61 1699.92L1495.83 1594.02Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M1403.61 1699.92L1788.55 2039.64L1748.09 2075.93L1403.61 1699.92Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1748.09 2075.93L1124.58 1861.75L1403.61 1699.92L1748.09 2075.93ZM2009.87 2014.65L1788.55 2039.64L1495.83 1594.02L2009.87 2014.65Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M2068.18 2224.07L1972.99 2415.05L1664.2 2465.03L2068.18 2224.07ZM1664.2 2465.03L1631.48 2375.79L1710.61 2288.92L1664.2 2465.03Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M1710.61 2288.92L1768.92 2265.72L1664.2 2465.03L1710.61 2288.92ZM1664.2 2465.03L1768.92 2265.72L2068.18 2224.07L1664.2 2465.03Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M2009.87 2014.65L2083.05 2059.27L1860.54 2086.04L2009.87 2014.65Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M1860.54 2086.04L1788.55 2039.64L2009.87 2014.65L1860.54 2086.04ZM1834.96 2121.15L2105.66 2088.42L2068.18 2224.07L1834.96 2121.15Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M2068.18 2224.07L1768.92 2265.72L1834.96 2121.15L2068.18 2224.07ZM1768.92 2265.72L1710.61 2288.92L1748.09 2075.93L1768.92 2265.72ZM1748.09 2075.93L1788.55 2039.64L1860.54 2086.04L1748.09 2075.93ZM2083.05 2059.27L2105.66 2088.42L1834.96 2121.15L2083.05 2059.27Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M1834.96 2121.15L1860.54 2086.04L2083.05 2059.27L1834.96 2121.15ZM1748.09 2075.93L1834.96 2121.15L1768.92 2265.72L1748.09 2075.93Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M1860.54 2086.04L1834.96 2121.15L1748.09 2075.93L1860.54 2086.04Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> </g> <defs> <clipPath id="clip0_1512_1323"> <rect width="2404" height="2500" fill="white" transform="translate(0.519043 0.132812)"/> </clipPath> </defs> </svg>
+                Connect Metamask
+            </a>   -->
+        </div>
+        <!-- <button type="button" class="text-gray-900 bg-white hover:bg-invictus-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-invictus-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-invictus-gray-700 mr-2 mb-2">
+  <svg aria-hidden="true" class="mr-2 -ml-1 w-6 h-5" viewBox="0 0 2405 2501" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_1512_1323)"> <path d="M2278.79 1730.86L2133.62 2221.69L1848.64 2143.76L2278.79 1730.86Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M1848.64 2143.76L2123.51 1767.15L2278.79 1730.86L1848.64 2143.76Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M2065.2 1360.79L2278.79 1730.86L2123.51 1767.15L2065.2 1360.79ZM2065.2 1360.79L2202.64 1265.6L2278.79 1730.86L2065.2 1360.79Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1890.29 1081.17L2285.34 919.338L2265.7 1007.99L1890.29 1081.17ZM2253.21 1114.48L1890.29 1081.17L2265.7 1007.99L2253.21 1114.48Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2253.21 1114.48L2202.64 1265.6L1890.29 1081.17L2253.21 1114.48ZM2332.34 956.82L2265.7 1007.99L2285.34 919.338L2332.34 956.82ZM2253.21 1114.48L2265.7 1007.99L2318.65 1052.01L2253.21 1114.48Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1542.24 2024.17L1641 2055.7L1848.64 2143.75L1542.24 2024.17Z" fill="#E2761B" stroke="#E2761B" stroke-width="5.94955"/> <path d="M2202.64 1265.6L2253.21 1114.48L2296.64 1147.8L2202.64 1265.6ZM2202.64 1265.6L1792.71 1130.55L1890.29 1081.17L2202.64 1265.6Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1987.86 617.696L1890.29 1081.17L1792.71 1130.55L1987.86 617.696Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2285.34 919.338L1890.29 1081.17L1987.86 617.696L2285.34 919.338Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1987.86 617.696L2400.16 570.1L2285.34 919.338L1987.86 617.696Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2202.64 1265.6L2065.2 1360.79L1792.71 1130.55L2202.64 1265.6Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M2382.31 236.33L2400.16 570.1L1987.86 617.696L2382.31 236.33Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M2382.31 236.33L1558.3 835.45L1547.59 429.095L2382.31 236.33Z" fill="#E2761B" stroke="#E2761B" stroke-width="5.94955"/> <path d="M934.789 380.309L1547.59 429.095L1558.3 835.449L934.789 380.309Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1792.71 1130.55L1558.3 835.449L1987.86 617.696L1792.71 1130.55Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1792.71 1130.55L2065.2 1360.79L1682.65 1403.04L1792.71 1130.55Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M1682.65 1403.04L1558.3 835.449L1792.71 1130.55L1682.65 1403.04Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M1987.86 617.696L1558.3 835.45L2382.31 236.33L1987.86 617.696Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M940.144 2134.24L1134.69 2337.11L869.939 2096.16L940.144 2134.24Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M1848.64 2143.75L1940.86 1793.33L2123.51 1767.15L1848.64 2143.75Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M151.234 1157.92L487.978 803.917L194.666 1115.67L151.234 1157.92Z" fill="#E2761B" stroke="#E2761B" stroke-width="5.94955"/> <path d="M2123.51 1767.15L1940.86 1793.33L2065.2 1360.79L2123.51 1767.15ZM1558.3 835.449L1230.48 824.74L934.789 380.309L1558.3 835.449Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M2065.2 1360.79L1940.86 1793.33L1930.74 1582.12L2065.2 1360.79Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M1682.65 1403.04L2065.2 1360.79L1930.74 1582.12L1682.65 1403.04Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1230.48 824.74L1558.3 835.449L1682.65 1403.04L1230.48 824.74Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1230.48 824.74L345.784 6.08252L934.79 380.309L1230.48 824.74ZM934.195 2258.58L165.513 2496.56L12.0146 1910.53L934.195 2258.58Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M265.465 1304.27L555.803 1076.41L799.14 1132.93L265.465 1304.27Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M799.139 1132.93L555.803 1076.41L686.098 538.567L799.139 1132.93Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M194.666 1115.67L555.803 1076.41L265.465 1304.27L194.666 1115.67Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1930.74 1582.12L1780.81 1506.56L1682.65 1403.04L1930.74 1582.12Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M194.666 1115.67L169.083 980.618L555.803 1076.41L194.666 1115.67Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1749.88 1676.72L1780.81 1506.56L1930.74 1582.12L1749.88 1676.72Z" fill="#233447" stroke="#233447" stroke-width="5.94955"/> <path d="M1940.86 1793.33L1749.88 1676.72L1930.74 1582.12L1940.86 1793.33Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M555.803 1076.41L169.082 980.618L137.55 866.982L555.803 1076.41ZM686.098 538.567L555.803 1076.41L137.55 866.982L686.098 538.567ZM686.098 538.567L1230.48 824.74L799.139 1132.93L686.098 538.567Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M799.14 1132.93L1230.48 824.74L1422.65 1411.96L799.14 1132.93ZM1422.65 1411.96L826.508 1399.47L799.14 1132.93L1422.65 1411.96Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M265.465 1304.27L799.14 1132.93L826.508 1399.47L265.465 1304.27ZM1682.65 1403.04L1422.65 1411.96L1230.48 824.74L1682.65 1403.04Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1780.81 1506.56L1749.88 1676.72L1682.65 1403.04L1780.81 1506.56Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M345.784 6.08252L1230.48 824.74L686.098 538.567L345.784 6.08252Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M12.0146 1910.53L758.088 1879.59L934.195 2258.58L12.0146 1910.53Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M934.194 2258.58L758.088 1879.59L1124.58 1861.75L934.194 2258.58Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1749.88 1676.72L1940.86 1793.33L2046.16 2041.42L1749.88 1676.72ZM826.508 1399.47L12.0146 1910.53L265.465 1304.27L826.508 1399.47ZM758.088 1879.59L12.0146 1910.53L826.508 1399.47L758.088 1879.59ZM1682.65 1403.04L1731.43 1580.33L1495.83 1594.02L1682.65 1403.04ZM1495.83 1594.02L1422.65 1411.96L1682.65 1403.04L1495.83 1594.02Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1134.69 2337.11L934.194 2258.58L1631.48 2375.79L1134.69 2337.11Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M265.465 1304.27L151.234 1157.91L194.666 1115.67L265.465 1304.27Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1710.61 2288.92L1631.48 2375.79L934.194 2258.58L1710.61 2288.92Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="5.94955"/> <path d="M1748.09 2075.93L934.194 2258.58L1124.58 1861.75L1748.09 2075.93Z" fill="#E4761B" stroke="#E4761B" stroke-width="5.94955"/> <path d="M934.194 2258.58L1748.09 2075.93L1710.61 2288.92L934.194 2258.58Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="5.94955"/> <path d="M137.55 866.982L110.777 409.462L686.098 538.567L137.55 866.982ZM194.665 1115.67L115.536 1035.35L169.082 980.618L194.665 1115.67Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1289.38 1529.76L1422.65 1411.96L1403.61 1699.92L1289.38 1529.76Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1422.65 1411.96L1289.38 1529.76L1095.43 1630.31L1422.65 1411.96Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M2046.16 2041.42L2009.87 2014.65L1749.88 1676.72L2046.16 2041.42Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1095.43 1630.31L826.508 1399.47L1422.65 1411.96L1095.43 1630.31Z" fill="#CD6116" stroke="#CD6116" stroke-width="5.94955"/> <path d="M1403.61 1699.92L1422.65 1411.96L1495.83 1594.02L1403.61 1699.92Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M89.3589 912.199L137.55 866.982L169.083 980.618L89.3589 912.199Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1403.61 1699.92L1095.43 1630.31L1289.38 1529.76L1403.61 1699.92Z" fill="#233447" stroke="#233447" stroke-width="5.94955"/> <path d="M686.098 538.567L110.777 409.462L345.784 6.08252L686.098 538.567Z" fill="#763D16" stroke="#763D16" stroke-width="5.94955"/> <path d="M1631.48 2375.79L1664.2 2465.03L1134.69 2337.12L1631.48 2375.79Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M1124.58 1861.75L1095.43 1630.31L1403.61 1699.92L1124.58 1861.75Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M826.508 1399.47L1095.43 1630.31L1124.58 1861.75L826.508 1399.47Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M1495.83 1594.02L1731.43 1580.33L2009.87 2014.65L1495.83 1594.02ZM826.508 1399.47L1124.58 1861.75L758.088 1879.59L826.508 1399.47Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1495.83 1594.02L1788.55 2039.64L1403.61 1699.92L1495.83 1594.02Z" fill="#E4751F" stroke="#E4751F" stroke-width="5.94955"/> <path d="M1403.61 1699.92L1788.55 2039.64L1748.09 2075.93L1403.61 1699.92Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M1748.09 2075.93L1124.58 1861.75L1403.61 1699.92L1748.09 2075.93ZM2009.87 2014.65L1788.55 2039.64L1495.83 1594.02L2009.87 2014.65Z" fill="#F6851B" stroke="#F6851B" stroke-width="5.94955"/> <path d="M2068.18 2224.07L1972.99 2415.05L1664.2 2465.03L2068.18 2224.07ZM1664.2 2465.03L1631.48 2375.79L1710.61 2288.92L1664.2 2465.03Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M1710.61 2288.92L1768.92 2265.72L1664.2 2465.03L1710.61 2288.92ZM1664.2 2465.03L1768.92 2265.72L2068.18 2224.07L1664.2 2465.03Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="5.94955"/> <path d="M2009.87 2014.65L2083.05 2059.27L1860.54 2086.04L2009.87 2014.65Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M1860.54 2086.04L1788.55 2039.64L2009.87 2014.65L1860.54 2086.04ZM1834.96 2121.15L2105.66 2088.42L2068.18 2224.07L1834.96 2121.15Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M2068.18 2224.07L1768.92 2265.72L1834.96 2121.15L2068.18 2224.07ZM1768.92 2265.72L1710.61 2288.92L1748.09 2075.93L1768.92 2265.72ZM1748.09 2075.93L1788.55 2039.64L1860.54 2086.04L1748.09 2075.93ZM2083.05 2059.27L2105.66 2088.42L1834.96 2121.15L2083.05 2059.27Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M1834.96 2121.15L1860.54 2086.04L2083.05 2059.27L1834.96 2121.15ZM1748.09 2075.93L1834.96 2121.15L1768.92 2265.72L1748.09 2075.93Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> <path d="M1860.54 2086.04L1834.96 2121.15L1748.09 2075.93L1860.54 2086.04Z" fill="#161616" stroke="#161616" stroke-width="5.94955"/> </g> <defs> <clipPath id="clip0_1512_1323"> <rect width="2404" height="2500" fill="white" transform="translate(0.519043 0.132812)"/> </clipPath> </defs> </svg>
+  Connect with MetaMask
+</button> -->
+        <div class="mb-30 px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-lg lg:px-36">
+            <span class="font-semibold text-gray-500 uppercase">EARN REWARDS BY PLAYING</span>
+            <div class="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between">
+                <!-- <a href="#" class="mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
+                    <svg class="h-8" viewBox="0 0 132 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M39.4555 5.17846C38.9976 3.47767 37.6566 2.13667 35.9558 1.67876C32.8486 0.828369 20.4198 0.828369 20.4198 0.828369C20.4198 0.828369 7.99099 0.828369 4.88379 1.64606C3.21571 2.10396 1.842 3.47767 1.38409 5.17846C0.566406 8.28567 0.566406 14.729 0.566406 14.729C0.566406 14.729 0.566406 21.2051 1.38409 24.2796C1.842 25.9804 3.183 27.3214 4.88379 27.7793C8.0237 28.6297 20.4198 28.6297 20.4198 28.6297C20.4198 28.6297 32.8486 28.6297 35.9558 27.812C37.6566 27.3541 38.9976 26.0131 39.4555 24.3123C40.2732 21.2051 40.2732 14.7618 40.2732 14.7618C40.2732 14.7618 40.3059 8.28567 39.4555 5.17846Z" fill="currentColor"/>
+                        <path d="M16.4609 8.77612V20.6816L26.7966 14.7289L16.4609 8.77612Z" fill="white"/>
+                        <path d="M64.272 25.0647C63.487 24.5413 62.931 23.7237 62.6039 22.5789C62.2768 21.4669 62.1133 19.9623 62.1133 18.1307V15.6122C62.1133 13.7479 62.3095 12.2434 62.6693 11.0986C63.0618 9.95386 63.6505 9.13618 64.4355 8.61286C65.2532 8.08954 66.2998 7.82788 67.6081 7.82788C68.8837 7.82788 69.9304 8.08954 70.7153 8.61286C71.5003 9.13618 72.0564 9.98657 72.4161 11.0986C72.7759 12.2107 72.9722 13.7152 72.9722 15.6122V18.1307C72.9722 19.995 72.8086 21.4669 72.4488 22.6116C72.0891 23.7237 71.533 24.5741 70.7481 25.0974C69.9631 25.6207 68.8837 25.8824 67.5427 25.8824C66.169 25.8496 65.057 25.588 64.272 25.0647ZM68.6875 22.3172C68.9164 21.7612 69.0146 20.8127 69.0146 19.5371V14.1077C69.0146 12.8648 68.9164 11.949 68.6875 11.3603C68.4585 10.7715 68.0988 10.5099 67.5427 10.5099C67.0194 10.5099 66.6269 10.8043 66.4307 11.3603C66.2017 11.949 66.1036 12.8648 66.1036 14.1077V19.5371C66.1036 20.8127 66.2017 21.7612 66.4307 22.3172C66.6269 22.8733 67.0194 23.1676 67.5754 23.1676C68.0987 23.1676 68.4585 22.906 68.6875 22.3172Z" fill="currentColor"/>
+                        <path d="M124.649 18.1634V19.0465C124.649 20.1586 124.682 21.009 124.748 21.565C124.813 22.121 124.944 22.5462 125.173 22.7752C125.369 23.0368 125.696 23.1677 126.154 23.1677C126.743 23.1677 127.135 22.9387 127.364 22.4808C127.593 22.0229 127.691 21.2706 127.724 20.1913L131.093 20.3875C131.125 20.5511 131.125 20.7473 131.125 21.009C131.125 22.6117 130.7 23.8218 129.817 24.6068C128.934 25.3918 127.691 25.7843 126.089 25.7843C124.159 25.7843 122.818 25.1628 122.033 23.9527C121.248 22.7425 120.855 20.8782 120.855 18.327V15.2852C120.855 12.6686 121.248 10.7715 122.066 9.56136C122.883 8.35119 124.257 7.76245 126.187 7.76245C127.528 7.76245 128.574 8.02411 129.294 8.51472C130.013 9.00534 130.504 9.79032 130.798 10.8042C131.093 11.8509 131.223 13.29 131.223 15.1216V18.098H124.649V18.1634ZM125.14 10.837C124.944 11.0986 124.813 11.4911 124.748 12.0471C124.682 12.6032 124.649 13.4536 124.649 14.5983V15.8412H127.528V14.5983C127.528 13.4863 127.495 12.6359 127.43 12.0471C127.364 11.4584 127.201 11.0659 127.004 10.837C126.808 10.608 126.481 10.4772 126.089 10.4772C125.631 10.4445 125.336 10.5753 125.14 10.837Z" fill="currentColor"/>
+                        <path d="M54.7216 17.8362L50.2734 1.71143H54.1656L55.7356 9.0052C56.1281 10.8041 56.4224 12.3414 56.6187 13.617H56.7168C56.8476 12.7011 57.142 11.1966 57.5999 9.0379L59.2353 1.71143H63.1274L58.6138 17.8362V25.5552H54.7543V17.8362H54.7216Z" fill="currentColor"/>
+                        <path d="M85.6299 8.15479V25.5878H82.5554L82.2283 23.4619H82.1302C81.3125 25.0645 80.0369 25.8822 78.3688 25.8822C77.2241 25.8822 76.3737 25.4897 75.8177 24.7375C75.2617 23.9852 75 22.8077 75 21.1723V8.15479H78.9249V20.9434C78.9249 21.7284 79.023 22.2844 79.1865 22.6115C79.3501 22.9385 79.6444 23.1021 80.0369 23.1021C80.364 23.1021 80.6911 23.004 81.0181 22.775C81.3452 22.5788 81.5742 22.3171 81.705 21.99V8.15479H85.6299Z" fill="currentColor"/>
+                        <path d="M105.747 8.15479V25.5878H102.673L102.346 23.4619H102.247C101.43 25.0645 100.154 25.8822 98.4861 25.8822C97.3413 25.8822 96.4909 25.4897 95.9349 24.7375C95.3788 23.9852 95.1172 22.8077 95.1172 21.1723V8.15479H99.0421V20.9434C99.0421 21.7284 99.1402 22.2844 99.3038 22.6115C99.4673 22.9385 99.7617 23.1021 100.154 23.1021C100.481 23.1021 100.808 23.004 101.135 22.775C101.462 22.5788 101.691 22.3171 101.822 21.99V8.15479H105.747Z" fill="currentColor"/>
+                        <path d="M96.2907 4.88405H92.3986V25.5552H88.5718V4.88405H84.6797V1.71143H96.2907V4.88405Z" fill="currentColor"/>
+                        <path d="M118.731 10.935C118.502 9.82293 118.11 9.03795 117.587 8.54734C117.063 8.05672 116.311 7.79506 115.395 7.79506C114.676 7.79506 113.989 7.99131 113.367 8.41651C112.746 8.809 112.255 9.36502 111.928 10.0192H111.896V0.828369H108.102V25.5552H111.34L111.732 23.9199H111.83C112.125 24.5086 112.582 24.9665 113.204 25.3263C113.825 25.6533 114.479 25.8496 115.232 25.8496C116.573 25.8496 117.521 25.2281 118.143 24.018C118.764 22.8078 119.091 20.8781 119.091 18.2942V15.5467C119.059 13.5516 118.96 12.0143 118.731 10.935ZM115.134 18.0325C115.134 19.3081 115.068 20.2893 114.97 21.0089C114.872 21.7285 114.676 22.2518 114.447 22.5461C114.185 22.8405 113.858 23.004 113.466 23.004C113.138 23.004 112.844 22.9386 112.582 22.7751C112.321 22.6116 112.092 22.3826 111.928 22.0882V12.2106C112.059 11.7527 112.288 11.3602 112.615 11.0331C112.942 10.7387 113.302 10.5752 113.662 10.5752C114.054 10.5752 114.381 10.7387 114.578 11.0331C114.807 11.3602 114.937 11.8835 115.036 12.6031C115.134 13.3553 115.166 14.402 115.166 15.743V18.0325H115.134Z" fill="currentColor"/>
+                    </svg>                        
+                </a> -->
+                <div class="mx-auto mt-0 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
+                  <img src="/img/logos.png" class="w-2/4 mx-auto" alt="mockup" style="transform: scale(1.6)"/>
+                  <!-- <img src="/img/logos-sm.png" class="md:visible w-full" alt="mockup" style="transform: scale(2.7)"/>               -->
+                </div>
+                <!-- <a href="#" class="mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
+                    <svg class="h-11" viewBox="0 0 120 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.058 40.5994C31.0322 40.5994 39.9286 31.7031 39.9286 20.7289C39.9286 9.75473 31.0322 0.858398 20.058 0.858398C9.08385 0.858398 0.1875 9.75473 0.1875 20.7289C0.1875 31.7031 9.08385 40.5994 20.058 40.5994Z" fill="currentColor"/>
+                        <path d="M33.3139 20.729C33.3139 19.1166 32.0101 17.8362 30.4211 17.8362C29.6388 17.8362 28.9272 18.1442 28.4056 18.6424C26.414 17.2196 23.687 16.2949 20.6518 16.1765L21.9796 9.96387L26.2951 10.8885C26.3429 11.9793 27.2437 12.8567 28.3584 12.8567C29.4965 12.8567 30.4211 11.9321 30.4211 10.7935C30.4211 9.65536 29.4965 8.73071 28.3584 8.73071C27.5522 8.73071 26.8406 9.20497 26.5086 9.89271L21.6954 8.87303C21.553 8.84917 21.4107 8.87303 21.3157 8.94419C21.1972 9.01535 21.1261 9.13381 21.1026 9.27613L19.6321 16.1999C16.5497 16.2949 13.7753 17.2196 11.7599 18.6662C11.2171 18.1478 10.495 17.8589 9.74439 17.86C8.13201 17.86 6.85156 19.1639 6.85156 20.7529C6.85156 21.9383 7.56272 22.9341 8.55897 23.3849C8.51123 23.6691 8.48781 23.9538 8.48781 24.2623C8.48781 28.7197 13.6807 32.348 20.083 32.348C26.4852 32.348 31.6781 28.7436 31.6781 24.2623C31.6781 23.9776 31.6543 23.6691 31.607 23.3849C32.6028 22.9341 33.3139 21.9144 33.3139 20.729ZM13.4434 22.7918C13.4434 21.6536 14.368 20.729 15.5066 20.729C16.6447 20.729 17.5694 21.6536 17.5694 22.7918C17.5694 23.9299 16.6447 24.855 15.5066 24.855C14.368 24.8784 13.4434 23.9299 13.4434 22.7918ZM24.9913 28.2694C23.5685 29.6921 20.8653 29.7872 20.083 29.7872C19.2768 29.7872 16.5736 29.6683 15.1742 28.2694C14.9612 28.0559 14.9612 27.7239 15.1742 27.5105C15.3877 27.2974 15.7196 27.2974 15.9331 27.5105C16.8343 28.4117 18.7314 28.7197 20.083 28.7197C21.4346 28.7197 23.355 28.4117 24.2324 27.5105C24.4459 27.2974 24.7778 27.2974 24.9913 27.5105C25.1809 27.7239 25.1809 28.0559 24.9913 28.2694ZM24.6116 24.8784C23.4735 24.8784 22.5488 23.9538 22.5488 22.8156C22.5488 21.6775 23.4735 20.7529 24.6116 20.7529C25.7502 20.7529 26.6748 21.6775 26.6748 22.8156C26.6748 23.9299 25.7502 24.8784 24.6116 24.8784Z" fill="white"/>
+                        <path d="M108.412 16.6268C109.8 16.6268 110.926 15.5014 110.926 14.1132C110.926 12.725 109.8 11.5996 108.412 11.5996C107.024 11.5996 105.898 12.725 105.898 14.1132C105.898 15.5014 107.024 16.6268 108.412 16.6268Z" fill="currentColor"/>
+                        <path d="M72.5114 24.8309C73.7446 24.8309 74.4557 23.9063 74.4084 23.0051C74.385 22.5308 74.3373 22.2223 74.29 21.9854C73.5311 18.7133 70.8756 16.2943 67.7216 16.2943C63.9753 16.2943 60.9401 19.6853 60.9401 23.8586C60.9401 28.0318 63.9753 31.4228 67.7216 31.4228C70.0694 31.4228 71.753 30.5693 72.9622 29.2177C73.5549 28.5538 73.4365 27.5341 72.7249 27.036C72.1322 26.6329 71.3972 26.7752 70.8517 27.2256C70.3302 27.6765 69.3344 28.5772 67.7216 28.5772C65.825 28.5772 64.2126 26.941 63.8568 24.7832H72.5114V24.8309ZM67.6981 19.1637C69.4051 19.1637 70.8756 20.4915 71.421 22.3173H63.9752C64.5207 20.468 65.9907 19.1637 67.6981 19.1637ZM61.0824 17.7883C61.0824 17.0771 60.5609 16.5078 59.897 16.3894C57.8338 16.0813 55.8895 16.8397 54.7752 18.2391V18.049C54.7752 17.1717 54.0636 16.6267 53.3525 16.6267C52.5697 16.6267 51.9297 17.2667 51.9297 18.049V29.6681C51.9297 30.427 52.4985 31.0908 53.2574 31.1381C54.0875 31.1854 54.7752 30.5454 54.7752 29.7154V23.7162C54.7752 21.0608 56.7668 18.8791 59.5173 19.1876H59.802C60.5131 19.1399 61.0824 18.5233 61.0824 17.7883ZM109.834 19.306C109.834 18.5233 109.194 17.8833 108.412 17.8833C107.629 17.8833 106.989 18.5233 106.989 19.306V29.7154C106.989 30.4981 107.629 31.1381 108.412 31.1381C109.194 31.1381 109.834 30.4981 109.834 29.7154V19.306ZM88.6829 11.4338C88.6829 10.651 88.0429 10.011 87.2602 10.011C86.4779 10.011 85.8379 10.651 85.8379 11.4338V17.7648C84.8655 16.7924 83.6562 16.3182 82.2096 16.3182C78.4632 16.3182 75.4281 19.7091 75.4281 23.8824C75.4281 28.0557 78.4632 31.4466 82.2096 31.4466C83.6562 31.4466 84.8893 30.9485 85.8613 29.9761C85.9797 30.6405 86.5729 31.1381 87.2602 31.1381C88.0429 31.1381 88.6829 30.4981 88.6829 29.7154V11.4338ZM82.2334 28.6245C80.0518 28.6245 78.2971 26.5145 78.2971 23.8824C78.2971 21.2742 80.0518 19.1399 82.2334 19.1399C84.4151 19.1399 86.1698 21.2504 86.1698 23.8824C86.1698 26.5145 84.3912 28.6245 82.2334 28.6245ZM103.527 11.4338C103.527 10.651 102.887 10.011 102.104 10.011C101.322 10.011 100.681 10.651 100.681 11.4338V17.7648C99.7093 16.7924 98.5 16.3182 97.0534 16.3182C93.307 16.3182 90.2719 19.7091 90.2719 23.8824C90.2719 28.0557 93.307 31.4466 97.0534 31.4466C98.5 31.4466 99.7327 30.9485 100.705 29.9761C100.824 30.6405 101.416 31.1381 102.104 31.1381C102.887 31.1381 103.527 30.4981 103.527 29.7154V11.4338ZM97.0534 28.6245C94.8717 28.6245 93.1174 26.5145 93.1174 23.8824C93.1174 21.2742 94.8717 19.1399 97.0534 19.1399C99.235 19.1399 100.99 21.2504 100.99 23.8824C100.99 26.5145 99.235 28.6245 97.0534 28.6245ZM117.042 29.7392V19.1637H118.299C118.963 19.1637 119.556 18.6656 119.603 17.9779C119.651 17.2428 119.058 16.6267 118.347 16.6267H117.042V14.6347C117.042 13.8758 116.474 13.2119 115.715 13.1646C114.885 13.1173 114.197 13.7573 114.197 14.5874V16.6501H113.011C112.348 16.6501 111.755 17.1483 111.708 17.836C111.66 18.571 112.253 19.1876 112.964 19.1876H114.173V29.7631C114.173 30.5454 114.814 31.1854 115.596 31.1854C116.426 31.1381 117.042 30.5216 117.042 29.7392Z" fill="currentColor"/>
+                    </svg>                                                   
+                </a>          -->
+            </div>
+        </div> 
+        <div class="pt-16 -ml-4 mx-auto text-center absolute left-1/2">
+          <svg class="animate-bounce mx-auto flex flex-wrap justify-center items-center w-6 h-6 text-invictus-gray-200 shrink-0" fill="currentColor" stroke="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+        </div>
     </div>
-    <div class="landing-two" style="min-height: 800px;">
-      <div class="svg-wrapper" style="transform: scale(1.15)">
-        <Synthesis style="margin-top: 80px"/>
-      </div>
+</section>
+<section class="bg-white dark:bg-invictus-gray-900 px-10 py-16">
+    <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-20">
+        <div class="grid items-center gap-8 mb-8 lg:mb-16 lg:gap-12 lg:grid-cols-12">
+            <div class="col-span-6 text-center sm:mb-6 lg:text-left lg:mb-0">
+                <h1 class="mb-4 text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-5xl xl:text-6xl dark:text-white">Building the new <br/> Play & Enjoy to Earn</h1>
+                <p class="max-w-xl mx-auto mb-6 font-light text-gray-500 lg:mx-0 xl:mb-8 md:text-lg xl:text-xl dark:text-gray-400">
+                  No compromisations! It's time for players to end playbour. Our Manifesto clues players to their real-value in the gaming industry.  
+                </p>
+                <button @click="connectMetamask" type="button" class="text-white bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-4 focus:outline-none focus:ring-invictus-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-invictus-red-800 dark:hover:bg-invictus-red-600 dark:focus:ring-invictus-red-800">
+                  <svg class="inline mr-3 w-6 h-6 text-white" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11.2812 10.7396C11.2812 13.8818 8.75579 16.4291 5.6407 16.4291C2.52561 16.4291 0 13.8812 0 10.7396C0 7.59787 2.52542 5.0498 5.6407 5.0498C8.75598 5.0498 11.2812 7.59729 11.2812 10.7396Z" fill="white"/>
+                  <path d="M17.469 10.7395C17.469 13.6973 16.2063 16.096 14.6487 16.096C13.091 16.096 11.8283 13.6973 11.8283 10.7395C11.8283 7.78175 13.0908 5.38306 14.6485 5.38306C16.2061 5.38306 17.4688 7.78098 17.4688 10.7395" fill="white"/>
+                  <path d="M20 10.7395C20 13.389 19.556 15.5381 19.0081 15.5381C18.4602 15.5381 18.0164 13.3895 18.0164 10.7395C18.0164 8.08951 18.4604 5.94098 19.0081 5.94098C19.5558 5.94098 20 8.08932 20 10.7395Z" fill="white"/>
+                  </svg>
+                The Gamer Manifesto</button>
+           
+            </div>
+            <div class="flex col-span-6 align-middle justify-center">
+                <img src="/img/girl-in-action.png" class="dark:hidden" alt="mockup">
+                <img src="/img/girl-in-action.png" class="hidden dark:block" alt="mockup dark">
+            </div>
+        </div>
+        <div class="grid gap-8 sm:gap-12 md:grid-cols-3">
+            <div class="flex justify-center">
+                <svg class="w-8 h-8 mr-3 text-invictus-red-900 dark:text-primary-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                <div>
+                    <h3 class="mb-1 text-lg font-semibold leading-tight text-gray-900 dark:text-white">Track your in-game progress</h3>
+                    <p class="font-light text-gray-500 dark:text-gray-400">Invictus Lords tracks your progress using game provider APIs; No software required, no extra steps. Relax, play and come back to check your progress.</p>
+                </div>
+            </div>
+            <div class="flex justify-center">
+              <svg class="w-8 h-8 mr-3 text-invictus-red-900 dark:text-primary-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                <div>
+                    <h3 class="mb-1 text-lg font-semibold leading-tight text-gray-900 dark:text-white">Compete with others</h3>
+                    <p class="font-light text-gray-500 dark:text-gray-400">Obtain your place in leaderboard by competing, higher ranking means more rewards.</p>
+                </div>
+            </div>
+            <div class="flex justify-center">
+              <svg class="w-8 h-8 mr-3 text-invictus-red-900 dark:text-primary-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                <div>
+                    <h3 class="mb-1 text-lg font-semibold leading-tight text-gray-900 dark:text-white">Claim your rewards daily</h3>
+                    <p class="font-light text-gray-500 dark:text-gray-400">100,000 VON rewards are distributed daily among the leaderboards of all games. Players can redeem their rewards on the Ethereum network via Metamask.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="landing-two" style="">
-      <div class="svg-wrapper" style="transform: scale(0.75);">
-        <Building/>
+</section>
+<section class="bg-white dark:bg-invictus-gray-900 py-10 px-10">
+  <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+      <div class="max-w-screen-md mb-8 lg:mb-16">
+          <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Built right from the beginning</h2>
+          <p class="font-light text-gray-500 dark:text-gray-400 sm:text-xl">Fair, decentralized and controlled economy, governed by you.</p>
       </div>
-    </div>
-    <div class="landing-two" style="">
-      <div class="svg-wrapper" style="transform: scale(0.9)">
-        <svg viewBox="0 0 1240 465" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g id="Group 80">
-          <text id="Subheading" fill="#F20009" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="16" letter-spacing="0em"><tspan x="528.102" y="18.7578">BY Players, for Players&#10;</tspan></text>
-          <text id="Heading" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="38" letter-spacing="-0.02em"><tspan x="359.158" y="74.0498">Built right from thebegining</tspan></text>
-          <text id="Supporting text" fill="#696969" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="20" letter-spacing="0em"><tspan x="290.164" y="114.273">Fair, decentralized and controlled economy for you, governed by you.</tspan></text>
-          <g id="Group 69">
-          <text id="Text" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="22" letter-spacing="0em"><tspan x="78.1436" y="271.751">Controlled inflation </tspan></text>
-          <text id="Supporting text_2" fill="#696969" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="16" letter-spacing="0em"><tspan x="35.1016" y="305.277">Unlike the majority of current P2E games. </tspan><tspan x="24.5078" y="327.277">VON token inflation is controlled and is fixed </tspan><tspan x="20.125" y="349.277">to 100K daily and is halving each 6 months (6 </tspan><tspan x="25.4062" y="371.277">seasons). No insiders allocations. The token </tspan><tspan x="47.2969" y="393.277">belongs to the players only. No hyper-</tspan><tspan x="138.258" y="415.277">inflation lords.</tspan></text>
-          <path id="Icon" d="M186 214.459V204.459M192 214.459V198.459M198 214.459V208.459" stroke="#F20009" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-          <g id="Group 68">
-          <text id="Text_2" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="22" letter-spacing="0em"><tspan x="557.599" y="271.751">DAO in mind</tspan></text>
-          <g id="Supporting text_3">
-          <text fill="#696969" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="16" letter-spacing="0em"><tspan x="467.18" y="305.277">Invictus Lords is a movement to liberate </tspan><tspan x="456.789" y="327.277">players from </tspan><tspan x="625.555" y="327.277">by giving them back </tspan><tspan x="476.594" y="349.277">their fair share of value. Its built to be </tspan><tspan x="456.414" y="371.277">completely decentralized and governed by </tspan><tspan x="456.812" y="393.277">players themselves. System is designed to </tspan><tspan x="457.477" y="415.277">generate profits that go to a decentralized </tspan><tspan x="448.883" y="437.277">treasury that DAO can allocate from, in order </tspan><tspan x="480.148" y="459.277">to maintain and govern the platform. </tspan></text>
-          <text fill="#F20009" xml:space="preserve" style="white-space: pre; cursor: pointer" font-family="Inter" font-size="16" letter-spacing="0em"><tspan x="555.164" y="327.277" @click="openWiki()">playbour </tspan></text>
-          </g>
-          <path id="Vector" d="M627.811 207.598C627.906 207.598 628 207.526 628 207.419L628 206.487C628 206.398 627.943 206.344 627.868 206.326C627.377 206.219 625.755 205.825 624.717 205.592C624.245 203.406 622.302 201.758 619.924 201.579V200.039H622.094C622.264 200.039 622.396 199.913 622.396 199.752V198.301C622.396 198.14 622.264 198.014 622.094 198.014L619.887 198.014V197.835C619.887 197.62 619.698 197.459 619.49 197.459C619.283 197.459 619.094 197.638 619.094 197.835V201.579C616.717 201.758 614.755 203.406 614.302 205.592C613.245 205.825 611.623 206.201 611.132 206.308C611.057 206.326 611 206.398 611 206.487V207.419C611 207.509 611.075 207.598 611.189 207.598H612.377L612.377 213.115H611.189C611.094 213.115 611 213.187 611 213.295V214.262C611 214.369 611.094 214.459 611.189 214.459H627.792C627.905 214.459 628 214.369 628 214.262V213.295C628 213.187 627.905 213.098 627.792 213.098H626.622V207.598L627.811 207.598ZM620.396 207.598H621.698V213.115H620.396V207.598ZM618.585 213.115H617.283V207.598H618.585V213.115ZM614.17 207.598H615.472V213.115H614.17V207.598ZM624.811 213.115H623.509V207.598H624.811V213.115Z" fill="#F20009"/>
-          </g>
-          <g id="Group 67">
-          <text id="Text_3" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="22" letter-spacing="0em"><tspan x="948.463" y="271.751">Ethereum secured</tspan></text>
-          <text id="Supporting text_4" fill="#696969" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="16" letter-spacing="0em"><tspan x="903.422" y="305.277">Invictus Lords is built on Ethereum. No </tspan><tspan x="923.977" y="327.277">shitchains, unsecure networks or </tspan><tspan x="935.555" y="349.277">permissioned chains. Bringing </tspan><tspan x="892.086" y="371.277">decentralization to traditional gamers. No </tspan><tspan x="879.859" y="393.277">single authority controlling your hard-earned </tspan><tspan x="986.805" y="415.277">assets anymore.</tspan></text>
-          <g id="Group">
-          <path id="Vector_2" d="M1048.11 196.554L1053.82 206.031L1048.11 209.407V196.554Z" stroke="#F20009" stroke-linecap="round" stroke-linejoin="round"/>
-          <path id="Vector_3" d="M1047.25 209.32L1041.69 206.031L1047.25 196.798V203.135V209.32Z" stroke="#F20009" stroke-linecap="round" stroke-linejoin="round"/>
-          <path id="Vector_4" d="M1048.17 211.81L1052.74 209.109L1048.17 215.551V211.81Z" stroke="#F20009" stroke-linecap="round" stroke-linejoin="round"/>
-          <path id="Vector_5" d="M1042.77 209.109L1047.25 211.76V215.433L1042.77 209.109Z" stroke="#F20009" stroke-linecap="round" stroke-linejoin="round"/>
-          <path id="Vector_6" d="M1048.25 203.912L1053.43 206.263L1048.25 209.32V203.912Z" stroke="#F20009" stroke-linecap="round" stroke-linejoin="round"/>
-          <path id="Vector_7" d="M1047.25 203.912V209.32L1042.08 206.263L1047.25 203.912Z" stroke="#F20009" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-          </g>
-          </g>
-        </svg>
+      <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 xl:gap-12 md:space-y-0">
+          <div>
+            <div class="flex justify-center items-center mb-4 w-10 h-10 lg:h-16 lg:w-16">
+                  <svg class="w-16 h-16 text-teal-600 dark:text-teal-300 lg:w-36 lg:h-36" width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0.3125" width="64" height="64" rx="8" fill="#FEECDC"/>
+                  <path d="M16.0125 20V19.5H15.5125C15.0086 19.5 14.5253 19.2998 14.169 18.9435C13.8127 18.5871 13.6125 18.1039 13.6125 17.6C13.6125 17.096 13.8127 16.6128 14.169 16.2564C14.5253 15.9001 15.0086 15.7 15.5125 15.7H49.1125C49.6164 15.7 50.0997 15.9001 50.456 16.2564C50.8123 16.6128 51.0125 17.096 51.0125 17.6C51.0125 18.1039 50.8123 18.5871 50.456 18.9435C50.0997 19.2998 49.6164 19.5 49.1125 19.5H48.6125V20V39.1999C48.6125 40.3404 48.1595 41.4341 47.353 42.2405C46.5466 43.0469 45.4529 43.5 44.3125 43.5H38.1061H36.899L37.7525 44.3535L40.8524 47.4534C41.1968 47.8114 41.3872 48.2901 41.3829 48.787C41.3786 49.2851 41.1788 49.7617 40.8265 50.114C40.4742 50.4662 39.9977 50.6661 39.4995 50.6704C39.0027 50.6747 38.5241 50.4843 38.166 50.14L32.666 44.64L32.3125 44.2864L31.9589 44.64L26.4557 50.1432L26.4557 50.1431L26.4496 50.1494C26.2744 50.3309 26.0647 50.4756 25.8329 50.5752C25.6011 50.6748 25.3518 50.7272 25.0995 50.7294C24.8472 50.7316 24.597 50.6835 24.3635 50.588C24.13 50.4924 23.9179 50.3513 23.7395 50.1729C23.5611 49.9945 23.42 49.7824 23.3245 49.5489C23.2289 49.3154 23.1809 49.0652 23.1831 48.8129C23.1853 48.5606 23.2377 48.3113 23.3373 48.0795C23.4368 47.8477 23.5816 47.6381 23.763 47.4628L23.7631 47.4628L23.7692 47.4567L26.8724 44.3535L27.726 43.5H26.5189H20.3125C19.1721 43.5 18.0783 43.0469 17.2719 42.2405C16.4655 41.4341 16.0125 40.3404 16.0125 39.1999V20ZM39.8683 22.7435L39.8683 22.7435L39.8621 22.7496L32.3125 30.2992L29.5628 27.5496L29.5628 27.5495C29.019 27.0059 28.2815 26.7005 27.5125 26.7005C26.7435 26.7005 26.006 27.0059 25.4622 27.5495L25.4621 27.5496L20.6651 32.3466C20.3896 32.6135 20.1698 32.9324 20.0184 33.2848C19.8665 33.6386 19.7865 34.0192 19.7831 34.4042C19.7798 34.7893 19.8531 35.1712 19.9989 35.5276C20.1448 35.884 20.3601 36.2078 20.6324 36.4801C20.9047 36.7523 21.2285 36.9677 21.5849 37.1135C21.9413 37.2593 22.3231 37.3327 22.7082 37.3293C23.0933 37.326 23.4738 37.246 23.8276 37.094C24.18 36.9426 24.4989 36.7228 24.7658 36.4474L27.5125 33.7007L30.2621 36.4503L30.2622 36.4504C30.806 36.994 31.5435 37.2994 32.3125 37.2994C33.0815 37.2994 33.819 36.994 34.3628 36.4504L34.3628 36.4503L43.9628 26.8503L43.6093 26.4967L43.9689 26.8441C44.4972 26.2972 44.7895 25.5646 44.7829 24.8042C44.7763 24.0439 44.4713 23.3165 43.9336 22.7788C43.3959 22.2411 42.6686 21.9362 41.9082 21.9296C41.1478 21.9229 40.4153 22.2152 39.8683 22.7435Z" fill="#FF8A4C" stroke="#FF5A1F"/>
+                  </svg>              
+            </div>
+              <h3 class="mb-2 text-xl font-semibold dark:text-white">Controlled Inflation</h3>
+              <p class="font-medium text-base text-gray-500 dark:text-gray-400">Unlike the majority of current P2E games. VON token inflation is controlled and is fixed to 100K daily. It's halving each 6 months (6 seasons). No insiders allocations. The token belongs to the players only. No hyper-inflation lords.</p>
+          </div>
+          <div>
+              <div class="flex justify-center items-center mb-4 w-10 h-10 lg:h-16 lg:w-16">
+                  <!-- <svg class="w-5 h-5 text-purple-600 dark:text-purple-300 lg:w-8 lg:h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"></path></svg> -->
+                  <svg class="w-16 h-16 text-purple-600 dark:text-purple-300 lg:w-36 lg:h-36" width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0.3125" width="64" height="64" rx="8" fill="#A5A6F6"/>
+                  <path d="M55.7796 36.1277H55.7795L52.423 36.1283L51.9231 36.1284V36.6283V52.1561V52.6561H52.4231H55.7259C55.7528 52.6561 55.7773 52.6668 55.7945 52.6831C55.8115 52.6993 55.8119 52.711 55.8119 52.7125V55.4436C55.8119 55.4445 55.8118 55.4491 55.808 55.4561C55.8054 55.4608 55.8013 55.4665 55.7945 55.473C55.7773 55.4893 55.7528 55.5 55.7259 55.5H8.85551C8.85065 55.4975 8.84296 55.4925 8.83479 55.4842C8.81474 55.464 8.81251 55.4469 8.81251 55.4436V52.7183C8.81578 52.7158 8.82072 52.7128 8.82713 52.7104C8.83496 52.7074 8.84157 52.7066 8.84539 52.7066H12.2013H12.7013L12.7013 52.2066L12.7017 36.6282L12.7017 36.1282H12.2017H8.84539C8.83225 36.1282 8.82564 36.1258 8.82308 36.1247C8.82002 36.1234 8.81761 36.1217 8.81557 36.1196C8.81418 36.1182 8.81317 36.1168 8.8125 36.1157V33.492C8.8125 33.4811 8.81425 33.4738 8.81587 33.4694C9.39684 33.3419 10.5454 33.0799 11.8992 32.7711C13.7741 32.3435 16.0428 31.826 17.7429 31.4514L18.0592 31.3817L18.1249 31.0646C19.3543 25.1312 24.6946 20.6226 31.2043 20.132L31.6667 20.0971V19.6334V9.06234C31.6667 8.80621 31.951 8.5 32.2857 8.5C32.6362 8.5 32.9046 8.77062 32.9046 9.06234V9.56828V10.0683L33.4046 10.0683L39.6372 10.0679C39.8652 10.0679 39.9897 10.2224 39.9897 10.3773V14.4741C39.9897 14.629 39.8652 14.7834 39.6372 14.7834H33.511H33.011V15.2834V19.6333V20.097L33.4734 20.1318C39.9799 20.6221 45.2716 25.1286 46.5536 31.0685L46.6211 31.3809L46.9329 31.4509C48.5187 31.8068 50.6242 32.3046 52.4301 32.7316C53.9077 33.081 55.1846 33.3829 55.8121 33.5209L55.8125 36.116C55.8092 36.1185 55.8043 36.1215 55.7979 36.1239C55.79 36.1269 55.7834 36.1277 55.7796 36.1277ZM34.8432 36.1277H34.3432V36.6277V52.2061V52.7061H34.8432H38.5192H39.0192V52.2061V36.6277V36.1277H38.5192H34.8432ZM29.7291 52.7061H30.2291V52.2061V36.6277V36.1277H29.7291H26.0532H25.5532V36.6277V52.2061V52.7061H26.0532H29.7291ZM17.2632 36.1277H16.7632V36.6277V52.2061V52.7061H17.2632H20.9391H21.4391V52.2061V36.6277V36.1277H20.9391H17.2632ZM47.3093 52.7061H47.8093V52.2061V36.6277V36.1277H47.3093H43.6334H43.1334V36.6277V52.2061V52.7061H43.6334H47.3093Z" fill="#5D5FEF" stroke="#2426B8"/>
+                  </svg>
+              </div>
+              <h3 class="mb-2 text-xl font-semibold dark:text-white">Dao in Mind</h3>
+              <p class="font-medium text-base text-gray-500 dark:text-gray-400">Invictus Lords is a movement to liberate players from playbour by giving them back their fair share of value. Its built to be completely decentralized and governed by players themselves. System is designed to generate profits that go to a decentralized treasury that DAO can allocate from, in order to maintain and govern the platform. </p>
+
+          </div>
+          <div>
+            <div class="flex justify-center items-center mb-4 w-10 h-10 lg:h-16 lg:w-16">
+                  <svg class="w-16 h-16 text-teal-600 dark:text-teal-300 lg:w-36 lg:h-36" width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0.3125" width="64" height="64" rx="8" fill="#A4CAFE"/>
+                  <g clip-path="url(#clip0_13753_68544)">
+                  <path d="M32.1821 55.7363V43.826L17.4485 35.21L32.1821 55.7363Z" fill="#88AAF1" stroke="#1616B4" stroke-linejoin="round"/>
+                  <path d="M32.2309 55.7363V43.826L46.9644 35.21L32.2309 55.7363Z" fill="#88AAF1" stroke="#1616B4" stroke-linejoin="round"/>
+                  <path d="M32.1821 40.8656V25.6648L17.2795 32.338L32.1821 40.8656Z" fill="#88AAF1" stroke="#1616B4" stroke-linejoin="round"/>
+                  <path d="M32.2308 40.8656V25.6648L47.1334 32.338L32.2308 40.8656Z" fill="#88AAF1" stroke="#1616B4" stroke-linejoin="round"/>
+                  <path d="M17.2795 32.3379L32.182 8.26379V25.6647L17.2795 32.3379Z" fill="#88AAF1" stroke="#1616B4" stroke-linejoin="round"/>
+                  <path d="M47.1334 32.3379L32.2309 8.26379V25.6647L47.1334 32.3379Z" fill="#88AAF1" stroke="#1616B4" stroke-linejoin="round"/>
+                  </g>
+                  <defs>
+                  <clipPath id="clip0_13753_68544">
+                  <rect width="48" height="48" fill="white" transform="translate(8.3125 8)"/>
+                  </clipPath>
+                  </defs>
+                  </svg>                    
+              </div>
+              <h3 class="mb-2 text-xl font-semibold dark:text-white">Ethereum Secured</h3>
+              <p class=" font-medium text-base text-gray-500 dark:text-gray-400">Invictus Lords is built on Ethereum. No shitchains, unsecure networks or permissioned chains. Bringing decentralization to traditional gamers. No single authority controlling your hard-earned assets anymore.</p>
+
+          </div>
       </div>
+  </div>
+</section>
+<section class=" bg-white dark:bg-invictus-gray-900">
+  <h2 class="text-center mx-auto lg:hidden lg:mb-10 text-5xl tracking-tight font-bold text-gray-900 dark:text-white">Invictus Lords Vampires</h2>
+    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-12 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+        <img class="basis-2/4 dark:hidden w-full mx-auto"  src="/img/lords.gif" alt="dashboard image">
+        <img class="basis-2/4 dark:block w-full mx-auto" src="/img/lords.gif" alt="dashboard image">
+        <div class="basis-2/4 mt-4 md:mt-0">
+            <h2 class="hidden lg:flex mb-10 text-5xl tracking-tight font-bold text-gray-900 dark:text-white">Invictus Lords Vampires</h2>
+            <div class="flex flex-col lg:flex-row justify-between gap-3">
+              <!-- <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">Invictus Lords is on a mission to liberate gamers from gaming industry exploitation through tokenization of effort and decentralization of assets. Join the movement.</p> -->
+              <a href="#" class="block lg:w-1/3 p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Dao Governance Token</h5>
+                <p class="pb-3 font-normal text-gray-700 dark:text-gray-400">Holders will be eligible for governance token air-drops. </p>
+              </a>
+              <a href="#" class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">$ VON Rewards boost</h5>  
+                <p class="pb-3 font-normal text-gray-700 dark:text-gray-400">NFTs boost VON rewards by multipliers 5%, 10% and 15%. </p>
+              </a>
+              <a href="#" class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Native passive yeild</h5>
+                <p class="pb-3 font-normal text-gray-700 dark:text-gray-400">Natively yeild a percentage of 10% passive income to all holders each day. </p>
+              </a>
+            </div>
+        </div>
     </div>
-    <div class="landing-two" style="min-height: 1000px;">
-      <div class="svg-wrapper" style="transform: scale(1.05);">
-        <NFTSection style="margin-top: 200px"/>
-      </div>
-    </div>
-    
-    <div class="landing-two scrollable-cards">
+</section>
+<section class="bg-white dark:bg-invictus-gray-900 pb-14">
+  <div class="scrollable-cards">
       <div style="">
         <center>
-          <h1 style="color: white; font-size: 25px">HOW TO</h1>
-          <h1 style="color: red; font-size: 32px; margin-top: -8px; margin-bottom: 30px;">JOIN THE MOVE</h1>
+          <h1 class="-mb-0 py-10 text-2xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-4xl dark:text-white">Join the movement</h1>
         </center>
         <div class="svg-wrapper" style="transform: scale(.9);">
-          <ul v-dragscroll class="cards">
+          <ul v-dragscroll class="cards px-20 lg:px-32">
             <li class="card-item" v-for="(card, index) in cards">
               <Card :title="card.title" :body="card.body" :img="`/img/cards/${index+1}.png`"/>
             </li>
@@ -85,50 +238,23 @@
         </div>
       </div>
     </div>
-    <div class="landing-two" style="min-height: 420px;">
-        <div class="svg-wrapper" style="transform: scale(.9);">
-          <svg viewBox="0 0 1164 194" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g id="Group 84">
-            <rect id="Rectangle 54" width="1164" height="194" rx="6" fill="#0A0A0A"/>
-            <g id="Ecosystem and tokenomics" filter="url(#filter0_d_334_2)">
-            <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="32" font-style="italic" letter-spacing="0em"><tspan x="237.719" y="91.0156"> and </tspan><tspan x="70" y="130.016">tokenomics</tspan></text>
-            <text fill="#FF111F" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="32" font-style="italic" letter-spacing="0em"><tspan x="70" y="91.0156">Ecosystem</tspan></text>
-            </g>
-            <text id="Invictus Lords is on a mission to liberate gamers from gaming industry exploitation through tokenization of effort and decentralization of assets. Join the movement." fill="#696969" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="16" letter-spacing="0em"><tspan x="397" y="71.3182">Invictus Lords is on a mission to liberate gamers </tspan><tspan x="397" y="92.3182">from gaming industry exploitation through </tspan><tspan x="397" y="113.318">tokenization of effort and decentralization of </tspan><tspan x="397" y="134.318">assets. Join the movement.</tspan></text>
-            <g id="signup-with-steam">
-            <g id="Rectangle 1">
-            <rect x="860" y="69" width="238" height="56" rx="12" fill="#FF111F"/>
-            <rect x="860" y="69" width="238" height="56" rx="12" fill="url(#paint0_radial_334_2)" fill-opacity="0.2"/>
-            </g>
-            <g id="Group 2">
-            <text id="ReAD MORE" @click="$router.push('/ecosystem')" fill="white" xml:space="preserve" style="white-space: pre" font-family="Evogria" font-size="16" letter-spacing="0em"><tspan x="938" y="103.758" style="cursor: pointer">Know More</tspan></text>
-            </g>
-            </g>
-            </g>
-            <defs>
-            <filter id="filter0_d_334_2" x="67.3125" y="64.5625" width="242.328" height="73.4375" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-            <feOffset dy="4"/>
-            <feGaussianBlur stdDeviation="2"/>
-            <feComposite in2="hardAlpha" operator="out"/>
-            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_334_2"/>
-            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_334_2" result="shape"/>
-            </filter>
-            <radialGradient id="paint0_radial_334_2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(979 97) rotate(90) scale(28 119)">
-            <stop stop-color="#E4761B"/>
-            <stop offset="1" stop-color="#00D7D5" stop-opacity="0"/>
-            </radialGradient>
-            </defs>
-            </svg>
+</section>
+<section class="bg-white dark:bg-invictus-gray-800">
+    <div class="gap-8 items-center pt-8 lg:pb-0 px-10 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+      <div class="mt-4 md:mt-0">
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Ecosystem & Tokenomics</h2>
+            <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">Invictus Lords is on a mission to liberate gamers from gaming industry exploitation through tokenization of effort and decentralization of assets. Join the movement.</p>
+            <a @click="$router.push('/ecosystem')" class="cursor-pointer inline-flex items-center text-invictus-red-900 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-0 py-2.5 text-center dark:focus:ring-primary-900">
+                Know More
+                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </a>
         </div>
-      </div>
-      <div class="footer">
-        <div class="footer-ele">
-          <Footer/>
-        </div>
-      </div>
+        <img class="w-full dark:hidden absolute" src="/img/squad.png" alt="dashboard image">
+        <img class="w-full hidden dark:block" src="/img/squad.png" alt="dashboard image">
+    </div>
+</section>
+
+<Footer/>
   </div>
 </template>
 <script>
@@ -137,19 +263,22 @@
   import Building from '@/components/SVGs/Building.vue'
   import NFTSection from '@/components/SVGs/NFTSection.vue'
   import Card from '@/components/Card.vue'
-  import Footer from  '@/components/SVGs/Footer.vue'
+  import Footer from  '@/components/Footer.vue'
   import { dragscroll } from 'vue-dragscroll' // single component using directive
+  import { ethers } from 'ethers'
+
   export default {
     name: "app",
     data() {
         return {
             steamLoader: false,
+            mmLoader: false,
             data: "",
             user: {},
             cards: [
               { title: 'Create new account', body: 'A first step to start play, enjoy & earn is to sign up with your steam account, and connecting your metamask wallet.'},
               { title: 'Pick your favourite games', body: 'After signing up, the next step is  to pick as many as you want of your favoured games available on the platform.  '},
-              { title: 'Tracking your progress', body: 'The system estimates your score according to your competence, performance & winning rates for each game.'},
+              { title: 'Track your progress', body: 'The system estimates your score according to your competence, performance & winning rates for each game.'},
               { title: 'Climb the ranks', body: 'Prove yourself and compete with others, attain your rank in leaderboard. the higher your rating is, the more you gain.'},
               { title: 'Earn your rewards', body: 'You will get rewarded daily depending of your attained rank in the leaderboard of your linked games.'}
             ]
@@ -165,7 +294,60 @@
         },
         openWiki() {
           window.open('https://en.wikipedia.org/wiki/Playbour', '_blank')
-        }
+        },
+        openProfile() {
+          this.$router.push({
+              name: 'Lord Profile',
+              params: {
+                  playerAddress: this.$store.state.address,
+                  game: 'csgo'
+              }
+          })
+        },
+        async connectMetamask() {
+            this.mmLoader = true   
+            const provider = new ethers.providers.Web3Provider(window.ethereum, "any")
+            const signer = provider.getSigner()
+            await provider.send("eth_requestAccounts", []);
+            const accounts = await provider.listAccounts()
+            try {
+                const signature = await signer.signMessage("Dear Lords! I'm confirming my ownership. (Read-only transaction)")
+                const address = await signer.getAddress()
+                const res = await axios.get('/api/player/isRegisteredPlayer', {
+                    params:{
+                        signature: signature
+                    }
+                }).then(res => {
+                    if(res.data.success) {
+                        this.$store.dispatch('connect', {signature, address})
+                        this.$store.dispatch('fetchProfile')
+                        // this.$buefy.toast.open('Welcome back my Lord!')
+                        this.openProfile()
+                    } else {
+                        // this.$store.dispatch('connect', {signature, address})
+                        this.$router.push({
+                            name: 'Register',
+                            params: {
+                                isMetamask: "1",
+                                user: signature
+                            }
+                        })
+                    }
+                })
+                return res
+            } catch(err) {
+                this.mmLoader = false
+            } finally {
+                this.mmLoader = false
+            }
+        },
+        async auth() {
+            this.authLoader = true;
+            const res = await axios.get("/api/auth/steam/getRedirect", {})
+                .then(res => window.open(res.data.redirectUrl, "_self"))
+                .finally(this.steamLoader = true);
+            return res;
+        },
     },
     components: { 
       Synthesis,
@@ -304,8 +486,6 @@
     cursor: grab;
     width: 120vw;
     left: -15vw;
-    padding-right: 300px;
-    padding-left: 300px;
     position: absolute;
   }
   .card-item {
@@ -315,6 +495,10 @@
     height: 55vh !important;
   }
 }
-
-
+.-landing-section {
+  background-image: url('/img/characters.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 </style>

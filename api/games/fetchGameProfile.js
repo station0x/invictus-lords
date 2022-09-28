@@ -50,6 +50,8 @@ module.exports = async (req, res) => {
             }
             await gameCollection.insertOne(gameProfile)
             const createdProfile = (await gameCollection.find({personaId}).limit(1).toArray())[0]
+            // reduce rating digits for showing purposes only
+            createdProfile.rating = createdProfile.rating/100
             res.status(200).json({ succes: true, playerGameDoc: createdProfile, playerDoc })
             }
             catch(err) {
@@ -58,7 +60,6 @@ module.exports = async (req, res) => {
             }
     } else {
         if(Date.now() > playerGameDoc.lastFetched + (CONSTANTS.api.refetchTimout * 1000)) {
-            console.log('api')
             // calculate seasons data
             const newPlayerGameDoc = {...playerGameDoc}
             try {
@@ -99,13 +100,17 @@ module.exports = async (req, res) => {
             await gameCollection.updateOne({personaId}, {
                 $set:newPlayerGameDoc
             })
+
+            // reduce rating digits for showing purposes only
+            playerGameDoc.rating = playerGameDoc.rating/100
             res.status(200).json({ succes: true, playerGameDoc, playerDoc, data: data.data.data })
             } catch(err) {
-                if(err.response.status === 451) res.status(451).json({ succes: false, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
+                if(err.response.status === 451) res.status(451).json({ succes: false, playerDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
                 else throw new Error('Unknown error occured')
             }
         } else {
-            console.log('db')
+            // reduce rating digits for showing purposes only
+            playerGameDoc.rating = playerGameDoc.rating/100
             res.status(200).json({ succes: true, playerGameDoc, playerDoc })
         }
     }

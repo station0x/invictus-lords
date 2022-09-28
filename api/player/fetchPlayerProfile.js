@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
         ], provider);
         const userClaimed = Number(ethers.utils.formatEther(await Contract.UserClaimed(address)))
         const claimableRewards = playerDoc.rewards - userClaimed
-        newPlayerDoc.rewards = claimableRewards
+        newPlayerDoc.rewards = claimableRewards < 0 ? 0 : claimableRewards
         res.status(200).json({ success: true, playerDoc: newPlayerDoc })
     }
 }
