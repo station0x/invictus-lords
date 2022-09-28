@@ -170,7 +170,7 @@
                 const signer = provider.getSigner()
                 await provider.send("eth_requestAccounts", []);
                 const accounts = await provider.listAccounts()
-                const signature = await signer.signMessage("Welcome to my house! Enter freely. Go safely, and leave something of the happiness you bring")
+                const signature = await signer.signMessage("Dear Lords! I'm confirming my ownership. (Read-only transaction)")
                 // this.$router.go()
                 // this.$store.dispatch('connect', {signature, address: await signer.getAddress()})
                 this.registerPlayer(signature, await signer.getAddress())
