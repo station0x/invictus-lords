@@ -1,10 +1,10 @@
 <template>
     <div class="w-full h-full">
         <Loader v-if="fetchingProfileLoader"/>
-        <div v-if="!fetchingProfileLoader && playerGameProfile" class="h-12 top-60 absolute w-full py-4 border-b border-invictus-gray-700"></div>
+        <div v-if="!fetchingProfileLoader && playerGameProfile" class="h-12 top-[338px] lg:top-60 absolute w-full py-4 border-b border-invictus-gray-700"></div>
         <div v-if="!fetchingProfileLoader && !playerGameProfile" class="h-12 top-48 absolute w-full py-4 border-b border-invictus-gray-700"></div>
         <div v-if="!fetchingProfileLoader" class="h-12 top-16 absolute w-full py-4 border-b border-invictus-gray-700"></div>
-        <div v-if="!fetchingProfileLoader" class="container -top-4 relative flex items-center py-4 mx-auto sm:px-14">
+        <div v-if="!fetchingProfileLoader" class="container -top-4 relative flex items-center py-4 mx-auto md:px-14">
             <div class="w-full">
                 <!-- breadcrumb -->
                 <nav class="flex flex-grow mb-2 mt-1 py-2 z-40 w-full" aria-label="Breadcrumb">
@@ -26,15 +26,16 @@
                     </ol>
                 </nav>
                 <!-- card -->
-                <div class="flex items-center space-x-4 py-4 mt-3 mb-3">
+                <div class="flex flex-col lg:flex-row items-center space-x-4 py-4 mt-3 mb-3">
                     <img class="w-16 h-16 rounded-full" :src="playerInfo.avatar" alt="">
                     <div class="font-medium dark:text-white">
                         <div class="capitalize text-lg"> {{ playerInfo.playerAlias }} 
                         </div>
-                        <div class="text-base uppercase text-gray-500 dark:text-gray-400"> {{ playerInfo.address.slice(0, 5) + '...' + playerInfo.address.slice(-6) }} </div>
+                        <div class="hidden lg:flex text-base uppercase text-gray-500 dark:text-gray-400"> {{ playerInfo.address.slice(0, 5) + '...' + playerInfo.address.slice(-6) }} </div>
+                        <div class="lg:hidden text-base uppercase text-gray-500 dark:text-gray-400"> {{ playerInfo.address.slice(0, 14) + '...' + playerInfo.address.slice(-6) }} </div>
                     </div>
-                    <div>
-                        <span class="ml-7 bg-gray-100 text-gray-800 text-sm font-medium inline-flex items-center px-3 py-1.5 rounded mr-2 border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
+                    <div class="mt-7 -mb-4 lg:mt-0">
+                        <span class="mx-0.5 lg-ml-7 lg:mr-2 bg-gray-100 text-gray-800 text-xs lg:text-sm font-medium inline-flex items-center px-3 py-1.5 rounded border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
                             <!-- <svg aria-hidden="true" class="mr-1 w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg> -->
                             <svg aria-hidden="true" class="mr-2 w-5 h-5" width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M5.0239 11.1607L4.81859 10.144L2.22974 8.67611C1.7 8.40876 1.32468 7.91016 1.21423 7.32696L0.460704 3.41002C0.238001 2.23411 1.13935 1.14555 2.33571 1.14555L3.42145 1.14533C3.63163 0.646931 4.12399 0.285706 4.71518 0.285706H13.2869C13.8773 0.285706 14.369 0.645834 14.5798 1.14307L15.6606 1.14285C16.857 1.14285 17.7584 2.2314 17.5357 3.40731L16.7889 7.32431C16.6784 7.90751 16.3031 8.4061 15.7733 8.67345L13.1845 10.1392L12.9782 11.1607C12.8461 11.8151 12.271 12.2857 11.6033 12.2857H10.8273C10.5653 12.2857 10.3646 12.5188 10.4034 12.7779L10.532 13.635C10.5635 13.8448 10.7437 14 10.9559 14H12.0524C12.1574 14 12.2587 14.0385 12.3371 14.1082L13.3014 14.9654C13.5959 15.2272 13.4108 15.7143 13.0167 15.7143H4.98543C4.59135 15.7143 4.40617 15.2272 4.70071 14.9654L5.66497 14.1082C5.74348 14.0385 5.8448 14 5.94971 14H7.04625C7.2584 14 7.43865 13.8448 7.47011 13.635L7.59868 12.7779C7.63751 12.5188 7.43685 12.2857 7.17482 12.2857H6.39877C5.73114 12.2857 5.15605 11.8151 5.0239 11.1607ZM2.33571 2.85983L3.52079 2.85959L4.38007 7.97222L3.00153 7.14559C2.94748 7.11825 2.90918 7.06742 2.89791 7.00785L2.14439 3.0909C2.12167 2.97091 2.21364 2.85983 2.33571 2.85983ZM15.6606 2.85713L14.4818 2.85737L13.6232 7.96665L15.0016 7.14285C15.0556 7.11559 15.0939 7.06468 15.1052 7.00519L15.852 3.0882C15.8747 2.96821 15.7828 2.85713 15.6606 2.85713ZM8.88714 7.21579C8.95828 7.17859 9.04314 7.17859 9.11428 7.21579L10.5578 7.97179C10.7375 8.06591 10.9469 7.91325 10.9126 7.71345L10.6373 6.11496C10.6236 6.03533 10.6501 5.95408 10.7081 5.89785L11.8733 4.76642C12.019 4.62491 11.9388 4.37772 11.7378 4.34862L10.1259 4.1153C10.0463 4.10377 9.97734 4.05383 9.94159 3.98173L9.22005 2.52532C9.13014 2.34385 8.87128 2.34385 8.78137 2.52532L8.05982 3.98173C8.02408 4.05383 7.95525 4.10377 7.87554 4.1153L6.26368 4.34862C6.0626 4.37772 5.98245 4.62491 6.12817 4.76642L7.29337 5.89785C7.35131 5.95408 7.37779 6.03533 7.36408 6.11496L7.08885 7.71345C7.05448 7.91325 7.26405 8.06591 7.44362 7.97179L8.88714 7.21579Z" fill="#D1D5DB"/>
@@ -42,7 +43,7 @@
                             Rank # {{ myRank }}
                         </span>
                         
-                        <span class="ml-3 bg-gray-100 text-gray-800 text-sm font-medium inline-flex items-center px-3 py-1.5 rounded mr-2 border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
+                        <span class="mx-0.5 lg-ml-7 lg:mr-2 bg-gray-100 text-gray-800 text-xs lg:text-sm font-medium inline-flex items-center px-3 py-1.5 rounded border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
                             <svg aria-hidden="true" class="mr-2 w-5 h-5" width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.84496 3.74576C7.84496 4.23835 7.84256 4.73119 7.84665 5.22379C7.84761 5.34481 7.80695 5.38915 7.6888 5.40143C6.14356 5.56179 5.03672 6.38787 4.36781 7.83458C4.00279 8.62408 3.93109 9.4667 4.08484 10.3289C4.22945 11.1394 4.58701 11.835 5.13056 12.4305C5.27108 12.5846 5.27205 12.649 5.12912 12.7981C4.50303 13.451 3.87599 14.1032 3.24846 14.7547C3.11251 14.896 3.0396 14.8952 2.90509 14.7517C2.20562 14.0043 1.67458 13.1459 1.32015 12.1677C1.00687 11.302 0.839637 10.4063 0.865383 9.48474C0.940696 6.784 2.07809 4.69211 4.25279 3.22034C5.10169 2.64607 6.04395 2.31859 7.04323 2.16801C7.25714 2.13569 7.47393 2.12441 7.68977 2.10712C7.83053 2.09585 7.84304 2.10913 7.84352 2.2552C7.84424 2.75206 7.84376 3.24891 7.84376 3.74576C7.84424 3.74576 7.84448 3.74576 7.84496 3.74576Z" fill="white"/>
                             <path d="M13.5816 9.72727C13.1605 9.72727 12.7397 9.72752 12.3186 9.72727C12.0503 9.72727 12.0116 9.68944 12.0025 9.41408C11.9707 8.46898 11.669 7.62962 11.0929 6.89775C11.0778 6.87846 11.0643 6.85666 11.0462 6.84062C10.9582 6.76295 10.968 6.70156 11.0511 6.61688C11.7286 5.92334 12.4016 5.22504 13.0761 4.52849C13.1803 4.42101 13.1937 4.42101 13.2938 4.53651C13.9933 5.34305 14.5097 6.25833 14.8242 7.29764C15.0354 7.99568 15.1413 8.70952 15.1581 9.43939C15.1632 9.65887 15.098 9.72677 14.8925 9.72702C14.4555 9.72777 14.0186 9.72727 13.5816 9.72727Z" fill="white"/>
@@ -53,14 +54,14 @@
                             Rating {{ playerGameProfile ? playerGameProfile.rating.toLocaleString() : '--' }}
                         </span>
                         
-                        <span class="ml-3 bg-gray-100 text-gray-800 text-sm font-medium inline-flex items-center px-3 py-1.5 rounded mr-2 border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
+                        <span class="mx-0.5 lg-ml-7 lg:mr-2 bg-gray-100 text-gray-800 text-xs lg:text-sm font-medium inline-flex items-center px-3 py-1.5 rounded border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
                             <img aria-hidden="true" class="mr-2 w-5 h-5" src="/img/von-token.png" />
                             Rewards {{ playerInfo.rewards.toLocaleString() }} $VON
                         </span>
                     </div>
                 </div>
                 <div v-if="playerGameProfile" class="text-sm pt-1 font-medium text-center text-invictus-gray-500 dark:text-invictus-gray-400 dark:border-invictus-gray-700">
-                    <ul class="flex flex-wrap -mb-px">
+                    <ul class="flex flex-wrap -mb-px justify-center lg:justify-start">
                         <li class="mr-2">
                             <a @click="switchTab(0)" type="button"
                             :class="activeTab === 0 ? 'text-invictus-red-600 rounded-t-lg border-b-2 border-invictus-red-600 active dark:text-invictus-red-500 dark:border-invictus-red-500' 
@@ -98,7 +99,7 @@
                     </ul>
                 </div>
                 <div v-if="playerGameProfile" class="py-5 min-h-fit">
-                    <div class="flex flex-row w-full space-x-1 gap-2 sm:grid-cols-3 h-80" role="tabpanel">
+                    <div class="flex flex-col lg:flex-row w-full space-x-1 gap-2 sm:grid-cols-3 h-80" role="tabpanel">
                         <div class="p-0 pt-3 bg-transparent rounded-lg dark:bg-transparent">
                             <div class="grid">
                                 <div class="mb-3 rounded-lg dark:bg-invictus-gray-700 ">
@@ -138,7 +139,7 @@
                                 </div>
                             </div>                         
                         </div>
-                        <div class="w-1/3 p-0 pt-3 bg-transparent rounded-lg dark:bg-transparent">
+                        <div class="w-full lg:w-1/3 p-0 pt-3 bg-transparent rounded-lg dark:bg-transparent">
                             <div class="mb-3 rounded-lg dark:bg-invictus-gray-700">
                                 <p class="text-sm font-normal dark:text-gray-400 pt-4 pl-4">Skill</p>
                                 <div class="flex items-center w-full justify-center p-5">
@@ -298,7 +299,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="w-1/3 p-0 pt-3 bg-transparent rounded-lg dark:bg-transparent">
+                        <div class="w-full lg:w-1/3 p-0 pt-3 bg-transparent rounded-lg dark:bg-transparent">
                             <div class="mb-3 rounded-lg dark:bg-invictus-gray-700">
                                 <p class="text-sm font-normal dark:text-gray-400 pt-4 pl-4">Lethality</p>
                                 <div class="flex items-center w-full justify-center p-5">

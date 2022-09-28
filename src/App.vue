@@ -5,7 +5,7 @@
 https://t.me/invictuslords" target="_blank">Telegram</a></p>
     </div> -->
     <Navbar/>
-    <div class="fixed left-0 top-16 z-10 h-full min-h-full">
+    <div class="hidden md:flex fixed left-0 top-16 z-10 h-full min-h-full">
       <Sidebar v-if="isApp && isConnected"/>
     </div>
     <!-- <div v-if="$store.state.scrollY < 200" class="notices is-bottom">
@@ -13,26 +13,28 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
         <img class="rewards-toast" src="/img/von-reward.png"/> <p style="margin-left: 40px">Next Rewards distribution round in</p> 
         <p style="color: rgb(250, 255, 0); margin-left: 10px">{{countdown}}</p></div>
     </div> -->
-    <div class="flex justify-end fixed -bottom-6 right-10 z-50 w-screen">
-          <div id="toast-danger" class="mb-16 flex flex-grow items-center p-4 w-full max-w-sm text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-invictus-gray-700 border dark:border-invictus-gray-500" role="alert">
-              <div class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 dark:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  <span class="sr-only">Error icon</span>
-              </div>
-              <div class="mx-3 text-sm font-normal">
-                Next Rewards distribution round in {{countdown}}
-              </div>
+    <div v-if="$store.state.scrollY < 200" class="flex justify-end fixed -bottom-6 right-10 z-50 w-screen">
+      <div id="toast-danger" class="mb-24 lg:mb-16 flex flex-grow items-center p-2 lg:p-4 max-w-xs lg:w-full lg:max-w-sm text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-invictus-gray-700 border dark:border-invictus-gray-500" role="alert">
+          <div class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 dark:text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span class="sr-only">Error icon</span>
           </div>
-        </div>
+          <div class="mx-3 text-xs lg:text-sm font-light">
+            Next Rewards distribution round in {{countdown}}
+          </div>
+      </div>
+    </div>
     <div class="app-body">
       <router-view></router-view>
     </div>
+    <MobileSidebar class="lg:hidden"/>
   </div>
 </template>
 
 <script>
   import Navbar from '@/components/Navbar.vue'
   import Sidebar from '@/components/Sidebar.vue'
+  import MobileSidebar from '@/components/MobileSidebar.vue'
   import axios from 'axios'
   import date from 'date-and-time'
   import dev from '../constants/dev.json'
@@ -47,7 +49,8 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
     },
     components: {
       Navbar,
-      Sidebar
+      Sidebar,
+      MobileSidebar
     },
     methods: {
       responsify() {
