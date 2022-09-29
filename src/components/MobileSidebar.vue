@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-invictus-gray-900 border-t border-invictus-gray-700 z-100 w-screen h-16 bottom-0 fixed flex flex-row justify-center">
+    <div class="bg-invictus-gray-900 z-50 border-t border-invictus-gray-700 z-100 w-screen h-16 bottom-0 fixed flex flex-row justify-center">
         <ul class="mx-auto flex h-14 w-full max-w-lg items-center gap-1 pt-4">
             <!-- <li class="flex-row flex-grow justify-center cursor-pointer text-gray-900 py-2 w-16 w-min-16 dark:text-white">
                 <svg class="block flex-shrink-0 w-6 h-6 mx-auto text-gray-00 transition duration-75 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white" 

@@ -2,7 +2,7 @@
   <div>
     <section class="bg-white dark:bg-invictus-gray-900 -landing-section">
     <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-28 lg:px-12">
-        <a href="#" class="inline-flex justify-between items-center md:text-xs sm:font-light md:py-0 py-1 px-1 pr-4 mt-10 mb-7 text-sm text-gray-700 bg-invictus-gray-100 rounded-full dark:bg-invictus-gray-800 dark:text-white hover:bg-invictus-gray-200 dark:hover:bg-invictus-gray-700" role="alert">
+        <a href="https://t.me/invictuslords" target="_blank" class="inline-flex justify-between items-center md:text-xs sm:font-light md:py-0 py-1 px-1 pr-4 mt-10 mb-7 text-sm text-gray-700 bg-invictus-gray-100 rounded-full dark:bg-invictus-gray-800 dark:text-white hover:bg-invictus-gray-200 dark:hover:bg-invictus-gray-700" role="alert">
             <span class="text-xs bg-invictus-gray-300 rounded-full text-gray-800 px-4 py-1.5 mr-3 font-bold">Beta</span> <span class="text-sm font-medium">This is a test version on the Goerli Network. share your feedback</span> 
             <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
         </a>
@@ -207,15 +207,15 @@
             <h2 class="hidden lg:flex mb-10 text-5xl tracking-tight font-bold text-gray-900 dark:text-white">Invictus Lords Vampires</h2>
             <div class="flex flex-col lg:flex-row justify-between gap-3">
               <!-- <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">Invictus Lords is on a mission to liberate gamers from gaming industry exploitation through tokenization of effort and decentralization of assets. Join the movement.</p> -->
-              <a href="#" class="block lg:w-1/3 p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
+              <a class="block lg:w-1/3 p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Dao Governance Token</h5>
                 <p class="pb-3 font-normal text-gray-700 dark:text-gray-400">Holders will be eligible for governance token air-drops. </p>
               </a>
-              <a href="#" class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
+              <a class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">$ VON Rewards boost</h5>  
                 <p class="pb-3 font-normal text-gray-700 dark:text-gray-400">NFTs boost VON rewards by multipliers 5%, 10% and 15%. </p>
               </a>
-              <a href="#" class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
+              <a class="block p-6 lg:w-1/3 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-invictus-gray-100 dark:bg-invictus-gray-800 dark:border-gray-800 dark:hover:bg-invictus-gray-700">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Native passive yeild</h5>
                 <p class="pb-3 font-normal text-gray-700 dark:text-gray-400">Natively yeild a percentage of 10% passive income to all holders each day. </p>
               </a>
@@ -223,21 +223,25 @@
         </div>
     </div>
 </section>
-<section class="bg-white dark:bg-invictus-gray-900 pb-14">
-  <div class="scrollable-cards">
-      <div style="">
-        <center>
-          <h1 class="-mb-0 py-10 text-2xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-4xl dark:text-white">Join the movement</h1>
-        </center>
-        <div class="svg-wrapper" style="transform: scale(.9);">
-          <ul v-dragscroll class="cards px-20 lg:px-32">
-            <li class="card-item" v-for="(card, index) in cards">
-              <Card :title="card.title" :body="card.body" :img="`/img/cards/${index+1}.png`"/>
-            </li>
-          </ul>
-        </div>
-      </div>
+<!-- <section class="bg-white dark:bg-invictus-gray-900 pb-14 flex ">
+    <center>
+      <h1 class="-mb-0 py-10 text-2xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-4xl dark:text-white">Join the movement</h1>
+    </center>
+    <div class="svg-wrapper" style="transform: scale(.9);">
+      <ul v-dragscroll class="cards px-20 lg:px-32">
+        <li class="card-item" v-for="(card, index) in cards">
+          <Card :title="card.title" :body="card.body" :img="`/img/cards/${index+1}.png`"/>
+        </li>
+      </ul>
     </div>
+</section> -->
+<section class="p-10 w-full cursor-grab  w-screen">
+    <h1 class="text-white text-4xl font-extrabold text-center"> Join the movement</h1>
+    <carousel :loop="true" class="py-5 mx-auto" :paginationEnabled="false" :perPageCustom="[[768, 3], [1024, 4], [500, 1.2]]">
+        <slide v-for="(card, index) in cards" :key="index">
+            <Card :title="card.title" :body="card.body" :img="`/img/cards/${index+1}.png`"/>
+        </slide>
+    </carousel>
 </section>
 <section class="bg-white dark:bg-invictus-gray-800">
     <div class="gap-8 items-center pt-8 lg:pb-0 px-10 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
@@ -259,13 +263,12 @@
 </template>
 <script>
   import axios from 'axios'
-  import Synthesis from '@/components/SVGs/Synthesis.vue'
-  import Building from '@/components/SVGs/Building.vue'
-  import NFTSection from '@/components/SVGs/NFTSection.vue'
   import Card from '@/components/Card.vue'
   import Footer from  '@/components/Footer.vue'
   import { dragscroll } from 'vue-dragscroll' // single component using directive
   import { ethers } from 'ethers'
+  import { Carousel, Slide } from 'vue-carousel'
+
 
   export default {
     name: "app",
@@ -350,9 +353,6 @@
         },
     },
     components: { 
-      Synthesis,
-      Building,
-      NFTSection,
       Card,
       Footer
     },
@@ -487,12 +487,13 @@
     width: 120vw;
     left: -15vw;
     position: absolute;
+    -webkit-overflow-scrolling: touch;
   }
   .card-item {
     display: inline;
   }
   .scrollable-cards {
-    height: 55vh !important;
+    /* height: 55vh !important; */
   }
 }
 .-landing-section {
