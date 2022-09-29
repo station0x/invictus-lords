@@ -24,6 +24,7 @@
     "openid": "^2.0.10",
     "unique-username-generator": "^1.1.1",
     "vue": "^2.7.7",
+    "vue-carousel": "^0.18.0",
     "vue-dragscroll": "3.0.1",
     "vue-gtag": "^1.16.1",
     "vue-hotjar": "^1.4.0",

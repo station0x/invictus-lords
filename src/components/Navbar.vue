@@ -4,15 +4,20 @@
             <!-- Dropdown menu -->
             <div :class="isDropdownOpen ? '' : 'hidden'" class="absolute right-5 top-[65px] z-10 w-[290px] border border-invictus-gray-600 bg-white rounded divide-y divide-invictus-gray-100 shadow dark:bg-invictus-gray-700 dark:divide-invictus-gray-600">
                 <div @click="zeroClicks" class="flex py-4 px-2 text-sm text-invictus-gray-900 dark:text-white">
-                    <img class="mt-0 ml-1 mr-2 w-10 h-10 rounded-full" :src="playerAvatar" alt="">
-                    <span class="relative -top-[3px] right-4 h-3 w-3">
+                    <img v-if="$store.state.isPlayer" class="mt-0 ml-1 mr-2 w-10 h-10 rounded-full" :src="playerAvatar" alt="">
+                    <span v-if="$store.state.isPlayer" class="relative -top-[3px] right-4 h-3 w-3">
                         <span class="animate-ping absolute top-[5px] inline-flex h-2.5 w-2.5 rounded-full bg-[#99d52a] opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#99d52a]"></span>
                     </span>
                     <div class="font-medium dark:text-white -ml-2 -mt-1">
-                        <div class="capitalize text-base"> {{ playerAlias }} 
+                        <div v-if="$store.state.isPlayer" class="capitalize text-base"> {{ playerAlias }} 
                         </div>
-                        <div class="mt-[3px] text-sm uppercase text-gray-500 dark:text-gray-400"> {{ lordAddress }}
+                        <div :class="$store.state.isPlayer ? 'hidden' : ''" class="mt-[3px] ml-5 text-sm uppercase text-gray-500 dark:text-gray-400"> {{ guestAddress }}
+                            <button @click="openScanner" type="button" class="absolute right-0 text-invictus-gray-700 border border-invictus-gray-700 hover:bg-invictus-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-invictus-gray-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center mr-2 dark:border-invictus-gray-500 dark:text-invictus-gray-300 dark:hover:text-white dark:focus:ring-invictus-gray-800">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" /><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" /></svg>
+                            </button>
+                        </div>
+                        <div :class="$store.state.isPlayer ? '' : 'hidden'" class="mt-[3px] text-sm uppercase text-gray-500 dark:text-gray-400"> {{ lordAddress }}
                             <button @click="openScanner" type="button" class="absolute right-0 text-invictus-gray-700 border border-invictus-gray-700 hover:bg-invictus-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-invictus-gray-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center mr-2 dark:border-invictus-gray-500 dark:text-invictus-gray-300 dark:hover:text-white dark:focus:ring-invictus-gray-800">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" /><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" /></svg>
                             </button>
@@ -20,7 +25,7 @@
                     </div>
                 </div>
                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
-                <li>
+                <li v-if="$store.state.isPlayer">
                     <a @click="openProfile" class="cursor-pointer block py-2 px-4 hover:bg-invictus-gray-100 dark:hover:bg-invictus-gray-600 dark:hover:text-white">Profile</a>
                 </li>
                 <li>
@@ -122,8 +127,10 @@
                 </form>
                 <button @click="toggleDropdown" type="button" class="pl-4 lg:pl-3 py-2 flex col-span-2 justify-end items-center lg:order-3 lg:col-span-1 p-2 text-sm text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-invictus-gray-100 dark:bg-invictus-gray-700 dark:hover:bg-invictus-gray-700 dark:hover:text-white">
                     <span class="sr-only">Open user menu</span>
-                    <img class="w-6 h-6 mr-2 rounded-full" :src="playerAvatar" alt="user photo">
-                        <p class="hidden md:flex text-white text-sm capitalize font-normal">{{ playerAlias.slice(0,13) + '...' }}</p>
+                    <img v-if="$store.state.isPlayer" class="w-6 h-6 mr-2 rounded-full" :src="playerAvatar" alt="user photo"/>
+                    <p v-else class="md:hidden text-white text-sm capitalize font-normal">{{ guestAddress.slice(0,9) + '...' }}</p>
+                    <p v-if="$store.state.isPlayer" class="hidden md:flex text-white text-sm capitalize font-normal">{{ playerAlias.slice(0,13) + '...' }}</p>
+                    <p v-else class="hidden md:flex text-white text-sm capitalize font-normal">{{ guestAddress.slice(0,9) + '...' }}</p>
                     <svg :class="isDropdownOpen ? 'rotate-180' : ''" class="hidden md:flex w-4 h-4 mx-1.5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                 </button>
             </nav>
@@ -502,6 +509,9 @@
             },
             lordAddress() {
                 return this.$store.state.address ? this.$store.state.address.slice(0, 5) + '...' + this.$store.state.address.slice(-4) : '--'
+            },
+            guestAddress() {
+                return this.$store.state.address ? this.$store.state.address.slice(0, 12) + '...' + this.$store.state.address.slice(-4) : '--'
             },
             rewardsFormatted() {
                 return this.$store.state.profile ? Number(this.$store.state.profile.rewards).toLocaleString() : 0

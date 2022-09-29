@@ -23,12 +23,16 @@ export default new Vuex.Store({
         candidateUseSteamData: window.localStorage.getItem('candidateUseSteamData'),
         inventory: [],
         scrollY: 0,
-        clicked: 0
+        clicked: 0,
+        isPlayer: undefined
     },
     mutations: {
         sign(state, {signature, address}) {
             state.signature = signature
             state.address = address
+        },
+        isPlayer(state, isPlayer) {
+            state.isPlayer = isPlayer
         },
         clicked(state, n) {
             if(n === 0) state.clicked = n
@@ -76,6 +80,7 @@ export default new Vuex.Store({
                 }
             })
             commit('setProfile', res.data.playerDoc)
+            commit('isPlayer', true)
             // dispatch('fetchInventory')
         },
         connect({commit, dispatch}, {signature, address}) {
