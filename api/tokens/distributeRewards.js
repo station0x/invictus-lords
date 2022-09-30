@@ -32,6 +32,7 @@ module.exports = async (req, res) => {
         playerDocs.forEach(player => {
             player.playerWeight = player.rating/playerTotalRatings
             player.playerReward = player.playerWeight * CONSTANTS.economicPolicy.dailyRewards
+            console.log(player.playerReward)
         })
 
         // bulk update player docs

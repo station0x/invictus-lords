@@ -11,6 +11,8 @@ const RegisterPlayer = () => import('@/views/RegisterPlayer.vue')
 const NotFound = () => import('@/views/NotFound.vue')
 const PlayerProfile = () => import('@/views/PlayerProfile.vue')
 const Leaderboard = () => import('@/views/Leaderboard.vue')
+const Ecosystem = () => import('@/views/Ecosystem.vue')
+const Minting = () => import('@/views/Minting.vue')
 
 // const Login = () => import('@/views/Login')
 // const RedeemAccessKey = () => import('@/views/RedeemAccessKey')
@@ -30,7 +32,8 @@ const routes = [
   { path: '/new-lord/:isMetamask/:user?', component: RegisterPlayer, name: 'Register', meta: { title: 'New Lord' }, props: true },
   { path: '/lord/:playerAddress/:game', component: PlayerProfile, name: 'Lord Profile', meta: { title: 'Lord Profile' }, props: true },
   { path: '/leaderboard', component: Leaderboard, name: 'Leaderboard', meta: { title: 'Leaderboard' } },
-
+  { path: '/minting', component: Minting, name: 'Minting', meta: { title: 'Minting' } },
+  { path: '/ecosystem', component: Ecosystem, name: 'Ecosystem', meta: { title: 'Ecosystem' } },
 
 //   { path: '/login/:redirect?:key?', component: Login, name: 'Login', meta: { title: 'Login' } },
 
