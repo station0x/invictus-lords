@@ -26,7 +26,7 @@
                 <form action="#">
                     <div class="my-6">
                         <!-- <label for="lord-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lord Name</label> -->
-                        <input type="text" name="full-name" id="full-name" class="bg-invictus-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-invictus-red-600 focus:border-invictus-red-600 block w-full p-2.5 dark:bg-invictus-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Lord Name" required="" :value="playerAlias">
+                        <input :disabled="useSteamData" :class="useSteamData ? 'opacity-40' : ''" @change="changePlayerAlias($event)" type="text" name="full-name" id="full-name" class="bg-invictus-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-invictus-red-600 focus:border-invictus-red-600 block w-full p-2.5 dark:bg-invictus-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Lord Name" required="" :value="playerAlias">
                         <p class="my-2 text-sm text-gray-600 dark:text-white-500">We've generated a random anon-friendly name for you, you can change it to anything or use your default steam name</p>
                     </div>
                     <div class="-mt-2 mb-7">
@@ -88,8 +88,9 @@
             if(this.isMetamaskTrue) this.auth()
             else this.connectMetamask()
         },
-        changePlayerAlias(data) {
-            this.localPlayerAlias = data
+        changePlayerAlias(event) {
+            console.log(event)
+            this.localPlayerAlias = event.target.value
         },
         changeToggleVal() {
             if(this.useSteamData) this.useSteamData = false
@@ -140,7 +141,7 @@
         },
         async auth() {
             this.steamLoader = true
-            this.$store.dispatch('registerCandidate', {signature: this.signature, username: this.playerAlias, useSteamData: this.useSteamData})
+            this.$store.dispatch('registerCandidate', {signature: this.signature, username: this.localPlayerAlias, useSteamData: this.useSteamData})
             const res = await axios.get('/api/auth/steam/getRedirect', {})
             .then( res => 
                 window.open(res.data.redirectUrl, "_self")
