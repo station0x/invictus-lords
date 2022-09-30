@@ -7,13 +7,13 @@
     },
     "economicPolicy": {
         "releaseInterval": 86400,
-        "dailyRewards": 100000,
-        "minter": "",
+        "dailyRewards": 10000,
+        "minter": "0xC0726d702eAF129888E48708ae6cAF0eeF85A4A6",
         "assets": {
             "VON": {
               "name": "Victus Cronus Potion",
               "symbol": "VON",
-              "address":"",
+              "address":"0x70d4275F615bf8f7d9777A70f0A8C741049cfEe5",
               "type": "erc20",
               "img": ""
             }

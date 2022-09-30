@@ -29,3 +29,10 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# NFTs
+/scripts/nfts/
+/scripts/old/
+/scripts/chunks
+/scripts/randomized
+/scripts/randomized-legacy

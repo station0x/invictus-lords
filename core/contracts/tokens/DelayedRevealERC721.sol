@@ -8,7 +8,7 @@ contract ConsumableERC721 is ERC721Enumerable, ERC721URIStorage {
     uint256 public constant SALE_LIMIT = 9000;
     uint256 public constant PRICE = 0.1 ether;
     bytes16 internal constant ALPHABET = '0123456789abcdef';
-
+    b
     address public owner;
     address public pendingOwner;
     uint256 public sold;
@@ -38,21 +38,10 @@ contract ConsumableERC721 is ERC721Enumerable, ERC721URIStorage {
         ERC721Enumerable._beforeTokenTransfer(from, to, tokenId);
     }
 
-    function mintNFT(bytes32 _salt, bytes calldata _amount, uint8 _v, bytes32 _r, bytes32 _s) public {
-        bytes32 _hash = keccak256(abi.encodePacked(msg.sender, _amount));
-        require(verifyHash(_hash, _v, _r, _s) == signer);
+    function mintNFT(uint _amount) public {
         uint256 tokenId = totalSupply();
-        string memory _tokenURI = string(abi.encodePacked("https://encounter.station0x.com/api/tokens/", class, "/", toString(tokenId), ".json"));
+        string memory _tokenURI = string(abi.encodePacked("https://encounter.station0x.com/api/tokens/", "/", toString(tokenId), ".json"));
         mint(msg.sender, tokenId, _tokenURI, "");
-        mintingSalt[_salt] == true; 
-    }
-
-    function burnNFT(uint256 _tokenId) internal { 
-        require(_tokenId <= totalSupply(), "Token doesn't exist!");
-        // reset nft stats
-        statsByTokenId[_tokenId].consumesLeft = 0;
-        statsByTokenId[_tokenId].data = "";
-        _burn(_tokenId);
     }
 
     function mint(address to, uint256 tokenId, string memory _tokenURI, bytes memory _data) internal {
