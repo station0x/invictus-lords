@@ -28,6 +28,7 @@ module.exports = async (req, res) => {
                     'TRN-Api-Key': process.env.TRACKER_API
                 }
             }))
+            console.log(data)
             let gameProfile = {
                 personaId,
                 address,
@@ -50,16 +51,19 @@ module.exports = async (req, res) => {
             }
             await gameCollection.insertOne(gameProfile)
             const createdProfile = (await gameCollection.find({personaId}).limit(1).toArray())[0]
+            // reduce rating digits for showing purposes only
+            createdProfile.rating = createdProfile.rating/100
             res.status(200).json({ succes: true, playerGameDoc: createdProfile, playerDoc })
             }
             catch(err) {
-                if(err.response.status === 451) res.status(451).json({ succes: false, msg: "The player either hasn't played CSGO or their profile is private." })
+                if(err.response.status === 451) res.status(451).json({ success: false, playerDoc, msg: "The player either hasn't played CSGO or their profile is private." })
                 else throw new Error('Unknown error occured')
             }
-        } else {
+    } else {
+        if(Date.now() > playerGameDoc.lastFetched + (CONSTANTS.api.refetchTimout * 1000)) {
             // calculate seasons data
             const newPlayerGameDoc = {...playerGameDoc}
-            try{
+            try {
             const data = (await axios.get(`https://public-api.tracker.gg/v2/csgo/standard/profile/${persona}/${personaId}`, {
                 headers: {
                     'TRN-Api-Key': process.env.TRACKER_API
@@ -97,10 +101,18 @@ module.exports = async (req, res) => {
             await gameCollection.updateOne({personaId}, {
                 $set:newPlayerGameDoc
             })
+
+            // reduce rating digits for showing purposes only
+            playerGameDoc.rating = playerGameDoc.rating/100
             res.status(200).json({ succes: true, playerGameDoc, playerDoc, data: data.data.data })
-        } catch(err) {
-            if(err.response.status === 451) res.status(451).json({ succes: false, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
-            else throw new Error('Unknown error occured')
+            } catch(err) {
+                if(err.response.status === 451) res.status(451).json({ succes: false, playerDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
+                else throw new Error('Unknown error occured')
+            }
+        } else {
+            // reduce rating digits for showing purposes only
+            playerGameDoc.rating = playerGameDoc.rating/100
+            res.status(200).json({ succes: true, playerGameDoc, playerDoc })
         }
     }
 }
