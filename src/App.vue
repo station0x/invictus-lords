@@ -39,7 +39,7 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
   import date from 'date-and-time'
   import dev from '../constants/dev.json'
   import prod from '../constants/prod.json'
-  const CONSTANTS = import.meta.env.VITE_APP_ENV === prod ? prod : dev
+  const CONSTANTS = import.meta.env.VITE_APP_ENV === "prod" ? prod : dev
   export default {
     data() {
       return {
