@@ -32,8 +32,8 @@ module.exports = {
       default:0
     },
     signerAddress: {
-      1: '0x004774C00D6b847F76865fC8b4779020843F6AD4',
-      5: '0x004774C00D6b847F76865fC8b4779020843F6AD4'
+      1: '0x85cBA880c2CFbD19d3f48708Be155F7AC7B76d8E',
+      5: '0x85cBA880c2CFbD19d3f48708Be155F7AC7B76d8E'
     }
   }
 };

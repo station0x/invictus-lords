@@ -28,6 +28,7 @@ module.exports = async (req, res) => {
                     'TRN-Api-Key': process.env.TRACKER_API
                 }
             }))
+            console.log(data)
             let gameProfile = {
                 personaId,
                 address,
@@ -55,7 +56,7 @@ module.exports = async (req, res) => {
             res.status(200).json({ succes: true, playerGameDoc: createdProfile, playerDoc })
             }
             catch(err) {
-                if(err.response.status === 451) res.status(451).json({ succes: false, msg: "The player either hasn't played CSGO or their profile is private." })
+                if(err.response.status === 451) res.status(451).json({ success: false, playerDoc, msg: "The player either hasn't played CSGO or their profile is private." })
                 else throw new Error('Unknown error occured')
             }
     } else {
