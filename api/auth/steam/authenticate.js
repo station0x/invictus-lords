@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
     if(playerDocById) {
       const redirectURL = url.format({
         host: process.env.REALM_URL,
-        pathname: '/'
+        pathname: '/home/true'
       }).toString()
       res.redirect(redirectURL)
       throw new Error('Player already registered')

@@ -27,7 +27,7 @@ const TITLE = ' | Invictus Lords'
 const routes = [
   { path: '/', redirect: { name: 'Home' }},
   { path: '*', redirect: { name: 'Home' }},
-  { path: '/home', component: Home, name: 'Home', meta: { title: 'Home' } },
+  { path: '/home/:registered?', component: Home, name: 'Home', meta: { title: 'Home' } },
   { path: '/not-found', component: NotFound, name: 'Not Found', meta: { title: 'Page Not Found' } },
   { path: '/new-lord/:isMetamask/:user?', component: RegisterPlayer, name: 'Register', meta: { title: 'New Lord' }, props: true },
   { path: '/lord/:playerAddress/:game', component: PlayerProfile, name: 'Lord Profile', meta: { title: 'Lord Profile' }, props: true },
