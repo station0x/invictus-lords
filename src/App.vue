@@ -44,7 +44,7 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
     data() {
       return {
         lastDistribution: undefined,
-        time: Date.now()
+        time: Date.now(),
       }
     },
     components: {
