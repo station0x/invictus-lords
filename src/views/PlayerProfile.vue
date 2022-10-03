@@ -111,9 +111,9 @@
                                         <h5 class="-mt-3 mb-1 text-xl font-medium text-gray-900 dark:text-white">No Items</h5>
                                     </div>
                                 </div>
-                                <div class="px-2 rounded-lg dark:bg-invictus-gray-700">
-                                    <p class="text-sm font-normal dark:text-gray-400 pt-4 pl-4">Games</p>
-                                    <div class="flex items-center space-x-3 py-1 pr-2 mt-3 mb-3 cursor-pointer">
+                                <div class="p-0 rounded-lg dark:bg-invictus-gray-700">
+                                    <p class="text-sm font-normal dark:text-gray-400 pt-4 pl-6">Games</p>
+                                    <div class="flex items-center space-x-3 py-1 pr-4 pl-2 mt-3 mb-3 cursor-pointer bg-[rgba(0,0,0,.10)]">
                                         <svg class="w-14 h-14 ml-4" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M14.9379 0.944443H16.1958C17.071 1.20824 17.9124 1.57369 18.6749 1.98777C18.9198 2.78027 19.3476 3.62359 18.9776 4.43446C18.6623 4.65826 18.2346 4.75016 17.8547 4.88748C17.8997 5.19994 17.9658 5.51019 18.0292 5.82055C18.7467 5.774 19.4433 5.62916 20.1482 5.52423C20.2453 5.20214 20.2692 4.8518 20.5351 4.57825C20.5928 4.79666 20.6392 5.01718 20.6758 5.23886C21.053 5.40748 21.4188 5.64641 21.8874 5.60859C24.8422 5.6108 27.7985 5.60217 30.7518 5.6097C31.0769 5.59024 31.2318 5.85515 31.4554 5.99137C31.4625 5.50919 31.4596 5.0269 31.4878 4.54474C31.575 4.54691 31.7495 4.54906 31.8368 4.55015C31.855 4.97394 31.796 5.40858 31.9493 5.82165C32.1139 5.85084 32.2827 5.85947 32.453 5.87562C32.4614 6.04113 32.4685 6.20653 32.4811 6.37305C33.3887 6.39351 34.3061 6.44005 35.2066 6.32109C35.8117 6.25087 36.4252 6.29842 37.0358 6.29952C37.0457 6.46493 37.0654 6.62924 37.1034 6.79354C36.3492 6.83577 35.5866 6.87469 34.8366 6.77839C33.635 6.66605 32.4347 6.86165 31.2345 6.80979C31.1937 6.93518 31.1557 7.06066 31.1178 7.18605C29.9639 7.19578 28.8101 7.18063 27.6578 7.18495C27.275 7.17742 26.8543 7.24122 26.6122 7.48878C26.2732 7.81418 25.8623 8.09204 25.5359 8.42506C25.4304 9.03594 25.7413 9.62836 25.9199 10.2144C25.6484 10.2901 25.3755 10.3614 25.1082 10.4393C24.8337 11.0999 24.9421 11.9454 24.1555 12.4081C23.7208 12.6589 23.3366 12.9714 22.84 13.1498C22.4783 13.2752 22.09 13.1444 21.7269 13.1033C20.3719 12.9455 19.2491 12.3054 18.0391 11.8642C17.9602 12.1162 17.8715 12.3649 17.7829 12.6147C18.1502 12.7973 18.6244 12.953 18.7454 13.312C18.9311 13.8374 18.7763 14.3888 18.7496 14.924C18.6919 15.4149 18.6736 15.9089 18.6131 16.3998C18.554 16.8766 18.1951 17.2863 17.8266 17.6572C17.4819 17.5923 17.1441 17.5155 16.8035 17.4463C16.4364 18.0518 16.7417 18.8043 17.3468 19.2552C18.9198 20.5698 19.7725 22.2619 20.5717 23.9107C20.7083 24.2588 21.174 24.4653 21.2528 24.8318C21.385 25.221 21.5721 25.6113 21.5285 26.02C21.468 26.7369 21.4005 27.4537 21.3062 28.1683C21.2415 28.6927 20.9882 29.216 21.1374 29.7458C21.2485 30.1772 21.3174 30.6334 21.112 31.0561C20.8349 31.587 20.8376 32.1676 20.8335 32.7309C20.8461 33.1017 20.8728 33.5093 21.2077 33.8034C21.6046 34.1786 21.9915 34.5678 22.4657 34.8878C23.0524 35.183 23.86 35.1851 24.3427 35.6122C24.4946 35.8457 24.3863 36.1182 24.382 36.3679C22.8582 36.5453 21.264 36.5582 19.7838 36.1928C18.948 35.9842 18.0263 36.342 17.2272 35.9895C17.2707 35.2554 17.5015 34.5386 17.8392 33.8531C17.9785 33.3417 17.8266 32.812 17.8125 32.2941C17.8026 31.8464 17.503 31.4508 17.3876 31.0205C17.0569 30.0971 16.9626 29.136 16.9063 28.1824C16.8331 27.7142 17.3495 27.3607 17.3706 26.9033C17.479 26.4979 17.3988 26.0817 17.0724 25.7465C16.5053 25.7335 15.7413 25.8482 15.4233 25.38C14.7591 24.6253 14.1133 23.8599 13.4505 23.1052C13.2198 22.7797 12.6655 22.8566 12.2856 22.7138C11.9465 22.4738 11.7775 22.1343 11.5665 21.8283C11.4427 22.1787 11.2739 22.5301 10.9362 22.7949C10.4043 23.2057 10.2129 23.7766 9.93709 24.2977C9.74295 24.674 9.56841 25.0599 9.49812 25.4622C9.42358 25.7659 9.4066 26.1217 9.05202 26.3206C8.53139 26.6234 8.34574 27.1336 7.87018 27.4667C7.5156 27.7262 7.29886 28.0796 7.18212 28.4397C7.14404 28.7652 7.26652 29.0949 7.15953 29.4161C6.96675 30.0042 6.54463 30.5232 6.23513 31.0756C6.01564 31.4638 5.90165 31.8821 5.66106 32.2638C5.50062 32.5308 5.08974 32.6173 4.86463 32.8412C4.21178 33.7039 4.00353 34.744 4.23713 35.7225C4.42428 36.1107 4.56074 36.5171 4.44538 36.9345C4.04436 36.9766 3.64608 37.0275 3.24369 37.0556H1.99979C1.67618 37.0037 1.3427 36.9648 1.0473 36.848C0.82635 36.3171 0.862932 35.7355 1.06128 35.2036C1.35256 34.4034 1.61712 33.598 1.88018 32.7935C2.05747 32.3989 1.63685 32.0454 1.6748 31.6508C1.6326 31.0691 2.10117 30.5891 2.44027 30.1037C2.75826 29.6722 2.64565 29.1522 2.86663 28.697C3.36616 27.7088 4.31029 26.9044 4.87312 25.9401C5.04616 25.5475 4.85901 25.1303 4.89272 24.7259C4.93492 23.9594 5.13194 23.2025 5.30361 22.4478C5.36129 22.157 5.48377 21.85 5.33744 21.5635C5.18125 21.2218 5.07151 20.8585 5.13344 20.4942C5.19811 20.159 4.93779 19.826 5.10098 19.4984C5.18687 19.2206 5.51898 19.0638 5.78491 18.8908C5.83273 17.7491 5.29237 16.6268 5.51898 15.4884C5.77779 15.2418 6.1943 15.1532 6.55587 15.0289C6.0255 14.9445 5.49501 14.8592 4.96738 14.7694C4.94628 14.3088 5.02781 13.8526 5.15304 13.4028C5.34731 12.7011 5.24031 11.9756 5.38526 11.2696C5.40773 11.0902 5.66243 11.0296 5.86369 11.0232C6.34487 10.9961 6.83029 10.9788 7.3031 10.8912C7.1624 9.9992 7.04554 9.0889 7.30735 8.20127C7.56055 7.15365 8.1712 6.09188 9.31521 5.44319C10.1031 5.03453 11.2414 4.79342 12.0646 5.28099C12.1321 5.24538 12.2672 5.17506 12.3347 5.14045C11.8563 4.14903 11.9619 3.003 12.7217 2.10995C13.2128 1.50125 14.0739 1.15527 14.9379 0.944443ZM22.6641 7.76553C22.6219 8.02503 22.5177 8.28232 22.1913 8.4067C22.6219 8.38504 23.058 8.38614 23.483 8.31482C23.4731 8.12454 23.4646 7.93525 23.4549 7.74497C23.1889 7.74938 22.9258 7.7558 22.6641 7.76553ZM21.772 8.49859C21.7354 8.5353 21.6608 8.60672 21.6242 8.64343C21.6917 8.99481 22.0337 9.2824 22.2617 9.58734C22.5937 9.22833 22.93 8.86943 23.2466 8.5018C22.7555 8.48454 22.2617 8.45967 21.772 8.49859Z" fill="#9CA3AF"/>
                                         </svg>
@@ -136,6 +136,7 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="py-2 text-center text-[10px] text-invictus-gray-400 uppercase">More games soon</div>
                                 </div>
                             </div>                         
                         </div>
@@ -444,9 +445,11 @@
         <section v-if="privateSteam" class="flex py-20 mt-4 pl-16 rounded-lg dark:bg-invictus-gray-800 bg:py-0 items-center relative gap-4 lg:gap-16 w-full max-w-[900px] lg:w-3/4 mx-auto justify-center">
             <div class="flex w-2/3 items-center mx-auto px-4 md:px-8 xl:px-0 ">
                 <div class="w-full text-white">
-                <h1 class="text-3xl font-bold">Either {{ isMyprofile ?  'your' : 'the' }} profile is private or {{ isMyprofile ?  'you' : 'the player' }}  didn't play any matches yet!</h1>
-                <p v-if="isMyprofile" class="mt-4 text-normal text-gray-500">If you're already a CS:GO player make sure to make your profile public so the system can track your progress via Steam APIs. <br/><br/> If you're new to CS:GO just play couple of matches and come back here to see your progress.</p>
-                <button v-if="isMyprofile" @click="openVideo" type="button" class="text-white mt-5 bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-4 focus:outline-none focus:ring-invictus-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-invictus-red-800 dark:hover:bg-invictus-red-600 dark:focus:ring-invictus-red-800">
+                <h1 v-if="steamCode === 451" class="text-3xl font-bold">{{ isMyprofile ?  'Your' : 'This' }} profile is private.</h1>
+                <h1 v-if="steamCode === 453" class="text-3xl font-bold">{{ isMyprofile ?  'You' : 'This player' }}  didn't play any matches yet!</h1>
+                <p v-if="steamCode === 451 && isMyprofile" class="mt-4 mb-8 text-normal text-gray-500">Make sure your profile public so the system can track your progress via Steam APIs. </p>
+                <p v-if="steamCode === 453" class="mt-4 mb-8text-normal text-gray-500">If you're new to CS:GO just play couple of matches and come back here to see your progress.</p>
+                <button v-if="steamCode === 451 && isMyprofile" @click="openVideo" type="button" class="text-white mt-5 bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-4 focus:outline-none focus:ring-invictus-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-invictus-red-800 dark:hover:bg-invictus-red-600 dark:focus:ring-invictus-red-800">
                 How to make your Steam profile public?</button>
                 </div>
             </div>
@@ -472,7 +475,8 @@
                 isFetching: false,
                 rankings: undefined,
                 activeTab: 1,
-                privateSteam: false
+                privateSteam: false,
+                steamCode: undefined
             }
         },
         methods: {
@@ -500,27 +504,13 @@
                     this.playerInfo = res.data.playerDoc
                 } catch(err) {
                     if(err.response.status === 451) {
-                        console.log(err.response)
+                        this.privateSteam = true
+                        this.steamCode = 451
+                        this.playerInfo = err.response.data.playerDoc
+                    } else if(err.response.status === 453) {
                         this.privateSteam = true
                         this.playerInfo = err.response.data.playerDoc
-                        // this.$buefy.dialog.alert({
-                        //     title: 'Error',
-                        //     message: `${err.response.data.msg}`,
-                        //     type: 'is-danger',
-                        //     hasIcon: true,
-                        //     icon: 'times-circle',
-                        //     iconPack: 'fa',
-                        //     ariaRole: 'alertdialog',
-                        //     ariaModal: true,
-                        //     confirmText: 'How?',
-                        //     canCancel: ['escape', 'outside'],
-                        //     onConfirm: () => this.$buefy.modal.open({
-                        //         parent: this,
-                        //         component: SteamPublicGuide,
-                        //         canCancel: ['escape', 'button'],
-                        //         trapFocus: true
-                        //     })
-                        // })
+                        this.steamCode = 453
                     }
                     // if(!err.response.data.success) this.$router.push('/')
                 }

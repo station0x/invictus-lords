@@ -2,7 +2,7 @@
   <div>
     <section class="bg-white dark:bg-invictus-gray-900 -landing-section">
     <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-28 lg:px-12">
-        <a href="https://t.me/invictuslords" target="_blank" class="inline-flex justify-between items-center md:text-xs sm:font-light md:py-0 py-1 px-1 pr-4 mt-10 mb-7 text-sm text-gray-700 bg-invictus-gray-100 rounded-full dark:bg-invictus-gray-800 dark:text-white hover:bg-invictus-gray-200 dark:hover:bg-invictus-gray-700" role="alert">
+        <a v-if="!isProd" href="https://t.me/invictuslords" target="_blank" class="inline-flex justify-between items-center md:text-xs sm:font-light md:py-0 py-1 px-1 pr-4 mt-10 mb-7 text-sm text-gray-700 bg-invictus-gray-100 rounded-full dark:bg-invictus-gray-800 dark:text-white hover:bg-invictus-gray-200 dark:hover:bg-invictus-gray-700" role="alert">
             <span class="text-xs bg-invictus-gray-300 rounded-full text-gray-800 px-4 py-1.5 mr-3 font-bold">Beta</span> <span class="text-sm font-medium">This is a test version on the Goerli Network. share your feedback</span> 
             <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
         </a>
@@ -259,6 +259,33 @@
 </section>
 
 <Footer/>
+<!-- modal -->
+    <div v-if="modalUp" aria-hidden="true" class="fixed flex top-0 z-50 w-full md:inset-0 h-modal md:h-full bg-[rgba(0,0,0,.8)]">
+        <div class="relative p-4 mx-auto my-auto w-full max-w-md h-1/2 md:h-auto">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-invictus-gray-700">
+                <button @click="closeModal" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-invictus-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-invictus-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="py-8 px-14 lg:px-8">
+                    <h3 class="mb-2 text-xl font-medium text-gray-900 dark:text-white">Player already registered.</h3>
+                    <h3 class="mb-4 text-sm font-normal text-gray-900 dark:text-gray-400">The Steam account you provided during signing up is already associated with another Metamask address, try loggin in instead.</h3>
+                    <form class="space-y-6" action="#">
+                        <button @click="connectMetamask" type="button" class="w-full text-white bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-0 focus:outline-none focus:ring-invictus-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-invictus-red-600 dark:invictus-red:bg-blue-700 dark:focus:ring-invictus-red-800">
+                            <svg v-if="mmLoader" aria-hidden="true" role="status" class="inline mr-3 w-4 h-4 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                            </svg>
+                            {{ mmLoader ? 'Connecting' : 'Connect Metamask' }}</button>
+                        <!-- <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                            Not registered? <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create account</a>
+                        </div> -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
   </div>
 </template>
 <script>
@@ -284,10 +311,17 @@
               { title: 'Track your progress', body: 'The system estimates your score according to your competence, performance & winning rates for each game.'},
               { title: 'Climb the ranks', body: 'Prove yourself and compete with others, attain your rank in leaderboard. the higher your rating is, the more you gain.'},
               { title: 'Earn your rewards', body: 'You will get rewarded daily depending of your attained rank in the leaderboard of your linked games.'}
-            ]
+            ],
+            modalUp: false
         };
     },
     methods: {
+        openModal() {
+          this.modalUp = true
+        },
+        closeModal() {
+          this.modalUp = false
+        },
         async auth() {
             this.steamLoader = true;
             const res = await axios.get("/api/auth/steam/getRedirect", {})
@@ -351,6 +385,14 @@
                 .finally(this.steamLoader = true);
             return res;
         },
+    },
+    computed: {
+      isProd() {
+        return import.meta.env.VITE_APP_ENV === 'prod'
+      }
+    },
+    created() {
+      if(this.$route.params.registered) this.modalUp = true
     },
     components: { 
       Card,
