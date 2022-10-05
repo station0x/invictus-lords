@@ -6,7 +6,7 @@
         }
     },
     "economicPolicy": {
-        "releaseInterval": 9000,
+        "releaseInterval": 6000,
         "dailyRewards": 100000,
         "minter": "0x2bd8C2F238629074ce7d6Dea25954D500d34066E",
         "assets": {
@@ -28,6 +28,6 @@
         "chainExplorer":"https://goerli.etherscan.io/"
     },
     "api": {
-        "refetchTimout": 600
+        "refetchTimout": 60
     }
 }

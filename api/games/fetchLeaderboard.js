@@ -23,9 +23,11 @@ module.exports = async (req, res) => {
     // Deacrease time by 30% (benchmarked locally) (Iterate using cursor- instead of await/ increasing batch size from 101 to 1000)
     let playerDocs = []
     let playerAvatars = []
+    console.log('workin')
     Promise.all([
         await gameCollection.find().project(projection).batchSize(1000).sort({rating: -1}).forEach(v => {
             // playerDoc = (players.find({address: player.address}).limit(1).toArray())[0]
+            console.log(v)
             let player = {}
             player.rating = v.rating / 100
             player.player = v.playerAlias && v.playerAlias.length > 0 ? v.playerAlias: v.address

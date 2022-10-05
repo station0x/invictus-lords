@@ -21,6 +21,11 @@ module.exports = async (req, res) => {
         const userClaimed = Number(ethers.utils.formatEther(await Contract.UserClaimed(address)))
         const claimableRewards = playerDoc.rewards - userClaimed
         newPlayerDoc.rewards = claimableRewards < 0 ? 0 : claimableRewards
+        // console.log(newPlayerDoc.personas.steam.steamid)
+        // delete newPlayerDoc.personas.steam.steamid
+        // delete newPlayerDoc.personas.steam.profile
+        // delete newPlayerDoc.steam
+        // console.log(newPlayerDoc.personas.steam.steamid)
         res.status(200).json({ success: true, playerDoc: newPlayerDoc })
     }
 }
