@@ -8,8 +8,8 @@ module.exports = async (req, res) => {
         const client = await clientPromise;
         const db = client.db()
         // get latest reward distribution info
-        const cronRewardsColleciton = db.collection("cronRewards")
-        const lastReleaseDoc = ((await cronRewardsColleciton.find().limit(1).toArray())[0])
+        const cronRewardsCollection = db.collection("cronRewards")
+        const lastReleaseDoc = ((await cronRewardsCollection.find().limit(1).toArray())[0])
 
         const now = Date.now()/1000
         const lastRelease = lastReleaseDoc.lastRelease/1000
@@ -56,7 +56,7 @@ module.exports = async (req, res) => {
         // update rewards distribution time
         const newLastRelease = {...lastReleaseDoc}
         newLastRelease.lastRelease = Date.now()
-        await cronRewardsColleciton.updateOne({_id: newLastRelease._id}, {
+        await cronRewardsCollection.updateOne({_id: newLastRelease._id}, {
             $set:newLastRelease
         })
         res.status(200).json({ success: true })
