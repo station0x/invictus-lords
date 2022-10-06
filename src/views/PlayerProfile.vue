@@ -87,11 +87,10 @@
                             </a>
                         </li>
                         <li class="mr-2">
-                            <!-- <a @click="switchTab(2)" type="button"                             
+                            <a @click="switchTab(2)" type="button"                             
                             :class="activeTab === 2 ? 'text-invictus-red-600 rounded-t-lg border-b-2 border-invictus-red-600 active dark:text-invictus-red-500 dark:border-invictus-red-500' 
                             : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'"
-                            class="cursor-pointer inline-flex p-4 rounded-t-lg border-b-2 group"> -->
-                            <a type="button" class="border-transparent cursor-not-allowed inline-flex p-4 rounded-t-lg border-b-2 group">
+                            class="cursor-pointer inline-flex p-4 rounded-t-lg border-b-2 group">
                                 <svg class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clipRule="evenodd" /></svg>
                                 Today
                             </a>
@@ -343,7 +342,7 @@
                                                 ref="number1"
                                                 :from="0"
                                                 :to="playerGameData.timePlayed.value"
-                                                :format="integerFormat"
+                                                :format="inHours"
                                                 :duration="2"
                                                 easing="Power1.easeOut"/>
                                             </p>
@@ -442,12 +441,12 @@
                 /> -->
             </div>
         </div>
-        <section v-if="privateSteam" class="flex py-20 mt-4 pl-16 rounded-lg dark:bg-invictus-gray-800 bg:py-0 items-center relative gap-4 lg:gap-16 w-full max-w-[900px] lg:w-3/4 mx-auto justify-center">
+        <section v-if="!fetchingProfileLoader && privateSteam" class="flex py-20 mt-4 pl-16 rounded-lg dark:bg-invictus-gray-800 bg:py-0 items-center relative gap-4 lg:gap-16 w-full max-w-[900px] lg:w-3/4 mx-auto justify-center">
             <div class="flex w-2/3 items-center mx-auto px-4 md:px-8 xl:px-0 ">
                 <div class="w-full text-white">
                 <h1 v-if="steamCode === 451" class="text-3xl font-bold">{{ isMyprofile ?  'Your' : 'This' }} profile is private.</h1>
                 <h1 v-if="steamCode === 453" class="text-3xl font-bold">{{ isMyprofile ?  'You' : 'This player' }}  didn't play any matches yet!</h1>
-                <p v-if="steamCode === 451 && isMyprofile" class="mt-4 mb-8 text-normal text-gray-500">Make sure your profile public so the system can track your progress via Steam APIs. </p>
+                <p v-if="steamCode === 451" class="mt-4 mb-8 text-normal text-gray-500">Make sure your profile public so the system can track your progress via Steam APIs. </p>
                 <p v-if="steamCode === 453" class="mt-4 mb-8text-normal text-gray-500">If you're new to CS:GO just play couple of matches and come back here to see your progress.</p>
                 <button v-if="steamCode === 451 && isMyprofile" @click="openVideo" type="button" class="text-white mt-5 bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-4 focus:outline-none focus:ring-invictus-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-invictus-red-800 dark:hover:bg-invictus-red-600 dark:focus:ring-invictus-red-800">
                 How to make your Steam profile public?</button>
@@ -464,6 +463,9 @@
     import Loader from '@/components/Loader.vue'
     import { ethers } from 'ethers'
     import axios from 'axios'
+    import dev from '../../constants/dev.json'
+  import prod from '../../constants/prod.json'
+  const CONSTANTS = import.meta.env.VITE_APP_ENV === "prod" ? prod : dev
 
     export default {
         data() {
@@ -474,7 +476,7 @@
                 isSeasonData: true,
                 isFetching: false,
                 rankings: undefined,
-                activeTab: 1,
+                activeTab: 2,
                 privateSteam: false,
                 steamCode: undefined
             }
@@ -578,7 +580,25 @@
         computed: {
             playerGameData() {
                 if(this.fetchingProfileLoader) return undefined
-                else if(this.playerGameProfile) return this.activeTab === 1 ? this.playerGameProfile.gameInfo : this.playerGameProfile.gameInfoLifetime
+                else if(this.playerGameProfile) {
+                    if(!this.playerGameProfile.dailyGameInfo) {
+                        this.$router.push({
+                            name: 'Lord Profile',
+                            params: {
+                                playerAddress: this.$route.params.playerAddress,
+                                game: 'csgo'
+                            }
+                        })
+                    }
+                    switch(this.activeTab) {
+                    case 0:
+                        return this.playerGameProfile.gameInfoLifetime
+                    case 1: 
+                        return this.playerGameProfile.gameInfo
+                    case 2:
+                        return this.playerGameProfile.dailyGameInfo[this.playerGameProfile.dailyGameInfo.length - 1][Math.floor((Date.now()/CONSTANTS.economicPolicy.releaseInterval)/1000)].stats
+                    }
+                }
             },
             myRank() {
             let rank = '--'

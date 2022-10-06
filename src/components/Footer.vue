@@ -42,7 +42,7 @@
                   </a>
               </li>
               <li>
-                <a href="http://medium.com/@invictuslords" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400">
+                <a href="http://medium.com/invictuslords" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400">
                   <svg  class="w-5 h-5" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M13.5374 11.8277C13.5374 15.5984 10.5069 18.6552 6.76884 18.6552C3.03073 18.6552 0 15.5977 0 11.8277C0 8.05767 3.0305 5 6.76884 5C10.5072 5 13.5374 8.05698 13.5374 11.8277Z" fill="#9CA3AF"/>
                   <path d="M20.9628 11.8277C20.9628 15.377 19.4476 18.2554 17.5784 18.2554C15.7092 18.2554 14.194 15.377 14.194 11.8277C14.194 8.27834 15.709 5.3999 17.5782 5.3999C19.4473 5.3999 20.9626 8.27742 20.9626 11.8277" fill="#5C5E63"/>
@@ -59,9 +59,7 @@
               </li>
 
           </ul>
-          <span class="block text-xs text-center pt-10 text-gray-500 dark:text-gray-700">This site is not affiliated with Valve. Landing page game assets are not owned by Invictus Lords.</a>
-          </span>
-
+          <span class="block text-xs text-center pt-10 text-gray-500 dark:text-gray-700">This site is not affiliated with Valve. Landing page game assets are not owned by Invictus Lords.</span>
       </div>
   </div>
 </footer>
