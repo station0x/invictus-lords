@@ -25,14 +25,39 @@
                         <li aria-current="page">
                         <div class="flex items-center">
                             <svg class="w-6 h-6 text-invictus-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-base font-medium text-invictus-gray-500 md:ml-2 dark:text-invictus-gray-300">Season 1</span> 
+                            <span class="ml-1 mr-2 text-base font-medium text-invictus-gray-500 md:ml-2 dark:text-invictus-gray-300">Season 1</span>
+                            <svg class=" w-6 h-6 text-invictus-gray-300 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                         </div>
                         </li>
                     </ol>
                 </nav>
+                <!-- Dropdown menu -->
+                <!-- <div class="relative -top-[5px] left-[255px] w-[120px] z-10 border border-invictus-gray-600 bg-white rounded divide-y divide-invictus-gray-100 shadow dark:bg-invictus-gray-700 dark:divide-invictus-gray-600">
+                    <div class="flex text-sm text-invictus-gray-900 dark:text-white">
+                    <ul class="py-1 mx-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
+                    <li >
+                        <a  class="cursor-pointer block py-2 px-4 hover:bg-invictus-gray-100 dark:hover:bg-invictus-gray-600 dark:hover:text-white"> {{ daily ? 'Daily' : 'Season 1'+ }}</a>
+                    </li>
+                    </ul>
+                    </div>
+                    <div class="flex text-sm text-invictus-gray-900 dark:text-white">
+                    <ul class="py-1 mx-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
+                    <li >
+                        <a  class="cursor-pointer block py-2 px-4 hover:bg-invictus-gray-100 dark:hover:bg-invictus-gray-600 dark:hover:text-white">Daily</a>
+                    </li>
+                    </ul>
+                    </div>
+                </div> -->
                 <!-- card -->
                 <div class="flex items-center space-x-4 py-4 mt-3 mb-3">
                     <h1 class="text-4xl text-white font-bold">Season 1</h1>
+                    <!-- <div class="-mt-2 mb-7">
+                        <label for="small-toggle" class="inline-flex relative items-center mb-5 cursor-pointer" >
+                            <input type="checkbox" @change="changeToggleVal" id="small-toggle" class="sr-only peer" :checked="useSteamData">
+                            <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-invictus-red-300 dark:peer-focus:ring-invictus-red-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-invictus-red-600"></div>
+                            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Use steam profile name</span>
+                        </label>
+                    </div> -->
                 </div>
 
                 <div class="flex w-full bg-red space-x-4">
@@ -87,7 +112,7 @@
                                     </div>
                                 </th>
                                 <td class="py-4 px-6 font-medium text-invictus-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ player.rating.toLocaleString() }}
+                                    {{ player.seasonalRating ? player.seasonalRating.toLocaleString() : 0 }}
                                 </td>
                                 <td class="py-4 px-6 font-medium text-invictus-gray-900 whitespace-nowrap dark:text-white">
                                     {{ player.gameInfo.kd.value.toLocaleString() + ' %' }}
@@ -124,6 +149,7 @@ import axios from 'axios'
 import { ethers } from 'ethers'
 import dev from '../../constants/dev.json'
 import prod from '../../constants/prod.json'
+import arraySort from 'array-sort'
 const CONSTANTS = import.meta.env.VITE_APP_ENV === "prod" ? prod : dev
 export default {
     data() {
@@ -131,7 +157,8 @@ export default {
             data: undefined,
             selected: undefined,
             playerInfo: undefined,
-            minted: 0
+            minted: 0,
+            daily: 0
         }
     },
     components: {
@@ -164,6 +191,14 @@ export default {
             const Contract = new ethers.Contract(CONSTANTS.economicPolicy.assets.VON.address, ["function totalSupply() view returns (uint)"], provider);
             this.minted = (Number(ethers.utils.formatEther(await Contract.totalSupply()))).toLocaleString()
         }
+    },
+    computed: {
+        // nromalizedPlayersData() {
+        //     return this.data
+        // },
+        sortedMatches() {
+            return arraySort([...this.data], 'address', {reverse: true})
+        },
     },
     async created() {
         this.fetchLeaderboard()

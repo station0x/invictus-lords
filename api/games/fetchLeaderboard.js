@@ -1,6 +1,7 @@
 "use strict";
 // Import the dependency.
 const clientPromise = require('../../api-utils/mongodb-client');
+const { fetchGameProfile } = require('../../api-utils/fetchGameProfile')
 const CONSTANTS = require('../../constants')
 
 module.exports = async (req, res) => {
@@ -14,7 +15,7 @@ module.exports = async (req, res) => {
     const gameCollection = db.collection(`${game}`)
     // if(!playerDoc) res.status(404).json({success: false}) //throw new Error('Player does not exist')
 
-    const projection = { _id: 0, rating: 1, playerAlias: 1, address: 1, gameInfo: 1}
+    const projection = { _id: 0, rating: 1, seasonalRating: 1, playerAlias: 1, address: 1, gameInfo: 1, dailyGameInfo: 1, lastFetched: 1}
     const playerProjection = { _id: 0, avatar: 1, address: 1 }
     // Sort then limit (MongoServer exec default behavior)
     // Old Implementation (Slower)
@@ -23,17 +24,20 @@ module.exports = async (req, res) => {
     // Deacrease time by 30% (benchmarked locally) (Iterate using cursor- instead of await/ increasing batch size from 101 to 1000)
     let playerDocs = []
     let playerAvatars = []
-    console.log('workin')
+    // let unsyncedPlayers = []
     Promise.all([
-        await gameCollection.find().project(projection).batchSize(1000).sort({rating: -1}).forEach(v => {
+        await gameCollection.find().project(projection).batchSize(1000).forEach(v => {
             // playerDoc = (players.find({address: player.address}).limit(1).toArray())[0]
-            console.log(v)
             let player = {}
             player.rating = v.rating / 100
             player.player = v.playerAlias && v.playerAlias.length > 0 ? v.playerAlias: v.address
             player.address = v.address
             player.gameInfo = v.gameInfo
+            player.dailyGameInfo = v.dailyGameInfo
+            player.seasonalRating = v.seasonalRating
+            player.lastFetched = v.lastFetched
             playerDocs.push(player)
+            // if( ) unsyncedPlayers.push(player)
         }),
         await players.find().project(playerProjection).batchSize(1000).forEach(v => {
             // playerDoc = (players.find({address: player.address}).limit(1).toArray())[0]
@@ -41,6 +45,18 @@ module.exports = async (req, res) => {
             player.address = v.address
             player.avatar = v.avatar
             playerAvatars.push(player)
+        })
+    ])
+
+    function checkNotFetched(lastFetch) {
+        const refetchTimout = CONSTANTS.api.refetchTimout * 1000
+        return (Date.now() > (lastFetch + refetchTimout))
+    }
+   await Promise.all([...
+        playerDocs
+        .filter(player => (checkNotFetched(player.lastFetched)))
+        .map(async (player) => {
+            const fetched = (await fetchGameProfile(player.address, 'csgo'))
         })
     ])
 
