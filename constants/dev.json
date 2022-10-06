@@ -28,6 +28,6 @@
         "chainExplorer":"https://goerli.etherscan.io/"
     },
     "api": {
-        "refetchTimout": 60
+        "refetchTimout": 180
     }
 }

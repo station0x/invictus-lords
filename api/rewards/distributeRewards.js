@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
         
         // calculate csgo players rewards
         const csgoCollection = db.collection(`csgo`)
-        const projection = { _id: 0, rating: 1, address: 1}
+        const projection = { _id: 0, rating: 1, seasonalRating: 1, address: 1}
         // Deacrease time by 30% (benchmarked locally) (Iterate using cursor- instead of await/ increasing batch size from 101 to 1000)
         let playerDocs = []
         let playerTotalRatings = 0
