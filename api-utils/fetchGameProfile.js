@@ -101,8 +101,8 @@ async function fetchGameProfile(address, game) {
             }
             catch(err) {
                 const playerInfo = (await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_API_KEY}&steamids=${personaId}`))
-                if(playerInfo.data.response.players[0].communityvisibilitystate === 1) res.status(451).json({ succes: false, playerDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
-                else if(playerInfo.data.response.players[0].communityvisibilitystate === 3) res.status(451).json({ succes: false, playerDoc, msg: "Player hasn't played CSGO." })
+                if(playerInfo.data.response.players[0].communityvisibilitystate === 1) return [451, { succes: false, playerDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." }]
+                else if(playerInfo.data.response.players[0].communityvisibilitystate === 3) return [451, { succes: false, playerDoc, msg: "Player hasn't played CSGO." }]
                 else return [0, new Error('Unknown error occured')] // new Error('Unknown error occured')
             }
     } else {
@@ -266,19 +266,19 @@ async function fetchGameProfile(address, game) {
                 // console.log(playerGameDoc, newPlayerGameDoc)
 
                 // reduce rating digits for showing purposes only
-                newPlayerGameDoc.rating = playerGameDoc.rating/100
+                newPlayerGameDoc.rating > 0 ? playerGameDoc.rating/100 : 0
                 // res.status(200).json({ succes: true, playerGameDoc: newPlayerGameDoc, playerDoc })
                 return [200, { sucess: true, playerGameDoc: newPlayerGameDoc, playerDoc }]
             } catch(err) {
                 console.log(err)
                 const playerInfo = (await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_API_KEY}&steamids=${personaId}`))
-                if(playerInfo.data.response.players[0].communityvisibilitystate === 1) res.status(451).json({ succes: false, playerDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." })
-                else if(playerInfo.data.response.players[0].communityvisibilitystate === 3) res.status(453).json({ succes: false, playerDoc, msg: "Player hasn't played CSGO." })
+                if(playerInfo.data.response.players[0].communityvisibilitystate === 1) return [451, {succes: false, playerDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system."}]
+                else if(playerInfo.data.response.players[0].communityvisibilitystate === 3) return [453, { succes: false, playerDoc, msg: "Player hasn't played CSGO." }]
                 else return [0, new Error('Unknown error occured')]
             }
         } else {
             // reduce rating digits for showing purposes only
-            playerGameDoc.rating = playerGameDoc.rating/100
+            playerGameDoc.rating > 0 ? playerGameDoc.rating/100 : 0
             // res.status(200).json({ succes: true, playerGameDoc, playerDoc })
             return [200, { sucess: true, playerGameDoc, playerDoc }]
         }
