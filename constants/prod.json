@@ -28,6 +28,6 @@
         "chainExplorer":"https://etherscan.io/"
     },
     "api": {
-        "refetchTimout": 1
+        "refetchTimout": 10
     }
 }

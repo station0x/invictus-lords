@@ -14,13 +14,15 @@
             <img class="py-16 mx-auto" src="/img/embryos.png"/>
         </section>
         <section class="p-10 w-full">
-            <h1 class="text-white text-5xl font-extrabold text-center"> Embryogenesis <br/> 'Revealing'</h1>
-            <p class="w-2/3 py-4 mx-auto text-invictus-gray-400 text-xl font-normal text-center">After 7 days of closing the sale on NFTs, your vampire NFT will be revealed on Opensea.</p>
-            <carousel :loop="true" class="py-5 2xl:w-3/4 mx-auto" :paginationEnabled="false" :autoplayHoverPause="false" :autoplay="true" :perPageCustom="[[768, 3], [1024, 4]]">
-                <slide v-for="i in 24" :key="i">
-                    <img class="px-4" :src="`/img/vampires/${i}.jpg`"/>
-                </slide>
-            </carousel>
+            <div class="max-w-screen-xl mx-auto">
+                <h1 class="text-white text-5xl font-extrabold text-center"> Embryogenesis <br/> 'Revealing'</h1>
+                <p class="w-2/3 py-4 mx-auto text-invictus-gray-400 text-xl font-normal text-center">After 7 days of closing the sale on NFTs, your vampire NFT will be revealed on Opensea.</p>
+                <carousel :loop="true" class="py-5 mx-auto" :paginationEnabled="false" :autoplayHoverPause="false" :autoplay="true" :perPageCustom="[[768, 3], [1024, 4]]">
+                    <slide v-for="i in 24" :key="i">
+                        <img class="px-4" :src="`/img/vampires/${i}.jpg`"/>
+                    </slide>
+                </carousel>
+            </div>
         </section>
         <section class="bg-white dark:bg-invictus-gray-900 px-10 py-16">
             <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-20">
