@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
     let playerAvatars = []
     // let unsyncedPlayers = []
     Promise.all([
-        await gameCollection.find().project(projection).batchSize(1000).forEach(v => {
+        await gameCollection.find().project(projection).batchSize(1000).sort({rating: 1}).forEach(v => {
             // playerDoc = (players.find({address: player.address}).limit(1).toArray())[0]
             let player = {}
             player.rating = v.rating / 100
