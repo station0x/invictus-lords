@@ -1,10 +1,12 @@
 <template>
 <footer class="bg-white dark:bg-invictus-gray-900 pt-16">
+  <div class="max-w-screen-xl mx-auto">
     <p class="text-3xl mb-8 font-bold leading-tight text-center dark:text-white">Help us build it</p>
-    <p class=" w-4/5 mx-auto md:w-2/3 lg:w-1/3   font-medium text-base text-center text-gray-500 dark:text-gray-400">Unlike the majority of current P2E games. VON token inflation is controlled and is fixed to 100K daily and is halving each 6 months (6 seasons). No insiders allocations. The token belongs to the players only. No hyper-inflation lords.</p>
-      <div class="flex justify-center items-center my-6">
-          <a href="https://discord.gg/bBbmywSU6N" target="_blank" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Join Discord</a>
-      </div>
+    <p class=" w-4/5 mx-auto md:w-2/3 lg:w-1/3   font-medium text-base text-center text-gray-500 dark:text-gray-400">Unlike the majority of current P2E games. VON token inflation is controlled and is fixed to 100K daily and is halving each 1 year (4 seasons). No insiders allocations. The token belongs to the players only. No hyper-inflation lords.</p>
+    <div class="flex justify-center items-center my-6">
+        <a href="https://discord.gg/bBbmywSU6N" target="_blank" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Join Discord</a>
+    </div>
+  </div>
   <div class="p-4 py-6 mx-auto max-w-screen-xl md:p-8 lg:p-10">
       <hr class="my-6 border-gray-200 sm:mx-auto dark:border-invictus-gray-700 lg:my-8">
       <div class="text-center">

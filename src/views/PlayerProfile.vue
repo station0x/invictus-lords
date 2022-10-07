@@ -51,7 +51,7 @@
                             <path d="M7.99063 10.5017C7.5592 10.4945 7.16964 10.1555 7.1054 9.73129C7.0272 9.21414 7.27888 8.78594 7.75194 8.61581C7.81137 8.59451 7.87682 8.53964 7.90473 8.48201C8.30175 7.66395 8.69251 6.84263 9.08495 6.02231C9.36696 5.433 9.64848 4.84369 9.93169 4.25489C10.0065 4.09929 10.1372 4.04442 10.2681 4.10731C10.4014 4.1712 10.4408 4.30074 10.3824 4.46636C10.1316 5.17819 9.88332 5.89127 9.63164 6.60285C9.3607 7.3693 9.0852 8.13399 8.81739 8.90144C8.79742 8.95882 8.80512 9.04401 8.83183 9.09938C9.14848 9.75308 8.69419 10.5135 7.99063 10.5017Z" fill="white"/>
                             <path d="M7.89268 7.76068C7.80702 7.93481 7.72545 8.1092 7.6345 8.27807C7.61597 8.31265 7.56424 8.33219 7.52382 8.34873C7.01202 8.55644 6.62583 9.2119 6.80774 9.90669C6.95259 10.4609 7.51443 10.8846 8.09384 10.844C8.92854 10.7854 9.47258 9.89992 9.18023 9.08411C9.1564 9.01771 9.16314 8.92852 9.18311 8.85836C9.22594 8.70778 9.28658 8.56296 9.34072 8.41287C9.66362 8.63361 9.93648 9.51507 9.6297 10.2727C9.26179 11.181 8.22233 11.6293 7.32603 11.2324C6.45042 10.8448 6.04474 9.86209 6.34864 8.95082C6.58685 8.23748 7.44032 7.58829 7.89268 7.76068Z" fill="white"/>
                             </svg>
-                            Rating {{ playerGameProfile ? playerGameProfile.rating.toLocaleString() : '--' }}
+                            Seasonal Rating {{ playerGameProfile ? playerGameProfile.seasonalRating.toLocaleString() : '--' }}
                         </span>
                         
                         <span class="mx-0.5 lg-ml-7 lg:mr-2 bg-gray-100 text-gray-800 text-xs lg:text-sm font-medium inline-flex items-center px-3 py-1.5 rounded border border-invictus-gray-600 dark:bg-invictus-gray-700 dark:text-gray-300">
@@ -131,7 +131,7 @@
                                         </div>
                                         <div>
                                             <span class="-ml-1 justify-start  w-full whitespace-nowrap px-3 py-1.5 rounded mr-3">
-                                                <svg className="w-28 h-28" fill="none" stroke="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                                                <svg class="w-5 h-5" fill="none" stroke="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                                             </span>
                                         </div>
                                     </div>
