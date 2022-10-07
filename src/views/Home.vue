@@ -235,13 +235,15 @@
       </ul>
     </div>
 </section> -->
-<section class="p-10 w-full cursor-grab  w-screen">
-    <h1 class="text-white text-4xl font-extrabold text-center"> Join the movement</h1>
+<section class="p-10 w-full cursor-grab">
+  <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-20">
+    <h1 class="text-white text-4xl font-extrabold text-center ml-10"> Join the movement</h1>
     <carousel :loop="true" class="py-5 mx-auto" :paginationEnabled="false" :perPageCustom="[[768, 3], [1024, 4], [500, 1.2]]">
         <slide v-for="(card, index) in cards" :key="index">
             <Card :title="card.title" :body="card.body" :img="`/img/cards/${index+1}.png`"/>
         </slide>
     </carousel>
+  </div>
 </section>
 <section class="bg-white dark:bg-invictus-gray-800">
     <div class="gap-8 items-center pt-8 lg:pb-0 px-10 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
@@ -533,9 +535,6 @@
   }
   .card-item {
     display: inline;
-  }
-  .scrollable-cards {
-    /* height: 55vh !important; */
   }
 }
 .-landing-section {

@@ -95,7 +95,8 @@ async function fetchGameProfile(address, game) {
             await gameCollection.insertOne(gameProfile)
             const createdProfile = (await gameCollection.find({personaId}).limit(1).toArray())[0]
             // reduce rating digits for showing purposes only
-            createdProfile.rating = createdProfile.rating/100
+            console.log('1')
+            createdProfile.rating = createdProfile.rating > 0 ? Number.parseInt(createdProfile.rating/100) : 0
             // res.status(200).json({ succes: true, playerGameDoc: createdProfile, playerDoc })
             return [200, { succes: true, playerGameDoc: createdProfile, playerDoc }]
             }
@@ -266,7 +267,8 @@ async function fetchGameProfile(address, game) {
                 // console.log(playerGameDoc, newPlayerGameDoc)
 
                 // reduce rating digits for showing purposes only
-                newPlayerGameDoc.rating > 0 ? playerGameDoc.rating/100 : 0
+                console.log('2')
+                newPlayerGameDoc.rating = newPlayerGameDoc.rating > 0 ? Number.parseInt(playerGameDoc.rating/100) : 0
                 // res.status(200).json({ succes: true, playerGameDoc: newPlayerGameDoc, playerDoc })
                 return [200, { sucess: true, playerGameDoc: newPlayerGameDoc, playerDoc }]
             } catch(err) {
@@ -278,7 +280,8 @@ async function fetchGameProfile(address, game) {
             }
         } else {
             // reduce rating digits for showing purposes only
-            playerGameDoc.rating > 0 ? playerGameDoc.rating/100 : 0
+            console.log('3')
+            playerGameDoc.rating = playerGameDoc.rating > 0 ? Number.parseInt(playerGameDoc.rating/100) : 0
             // res.status(200).json({ succes: true, playerGameDoc, playerDoc })
             return [200, { sucess: true, playerGameDoc, playerDoc }]
         }
