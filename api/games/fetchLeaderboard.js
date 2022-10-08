@@ -26,15 +26,15 @@ module.exports = async (req, res) => {
     let playerAvatars = []
     // let unsyncedPlayers = []
     Promise.all([
-        await gameCollection.find().project(projection).batchSize(1000).sort({rating: 1}).forEach(v => {
+        await gameCollection.find().project(projection).batchSize(1000).sort({rating: -1}).forEach(v => {
             // playerDoc = (players.find({address: player.address}).limit(1).toArray())[0]
             let player = {}
-            player.rating = v.rating / 100
+            player.rating = v.rating > 0 ? Number.parseInt((v.rating / 100).toFixed()) : 0
             player.player = v.playerAlias && v.playerAlias.length > 0 ? v.playerAlias: v.address
             player.address = v.address
             player.gameInfo = v.gameInfo
             player.dailyGameInfo = v.dailyGameInfo
-            player.seasonalRating = v.seasonalRating
+            player.seasonalRating = v.seasonalRating > 0 ? Number.parseInt((v.seasonalRating / 100).toFixed()) : 0
             player.lastFetched = v.lastFetched
             playerDocs.push(player)
             // if( ) unsyncedPlayers.push(player)
