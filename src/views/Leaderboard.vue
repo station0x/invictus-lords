@@ -100,7 +100,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(player, index) in sortedMatches" @click="openProfile(player.address)" class="cursor-pointer bg-white border-b dark:bg-invictus-gray-900 dark:border-invictus-gray-700 hover:bg-invictus-gray-50 dark:hover:bg-invictus-gray-600">
+                            <tr v-for="(player, index) in sortedPlayers" @click="openProfile(player.address)" class="cursor-pointer bg-white border-b dark:bg-invictus-gray-900 dark:border-invictus-gray-700 hover:bg-invictus-gray-50 dark:hover:bg-invictus-gray-700">
                                 <th scope="row" class="py-4 px-6 font-medium text-invictus-gray-900 whitespace-nowrap dark:text-white">
                                     {{ '# ' + Number.parseInt(index + 1) }}
                                 </th>
@@ -127,8 +127,6 @@
                         </tbody>
                     </table>
                 </div>
-
-
                 <!-- <ProfileBox 
                     :playerInfo="playerInfo"
                     :playerGameProfile="playerGameData"
@@ -196,7 +194,7 @@ export default {
         // nromalizedPlayersData() {
         //     return this.data
         // },
-        sortedMatches() {
+        sortedPlayers() {
             return arraySort([...this.data], 'seasonalRating', {reverse: true})
         },
     },

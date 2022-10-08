@@ -9,7 +9,8 @@ function getTodayUnix() {
 }
 
 async function fetchGameProfile(address, game) {
-    console.log('pong')
+    // console.log('pong')
+    // console.log('=========================')
     if(!CONSTANTS.games[game]) return [0, new Error('{game} is not found or formatted wrongly')]
     const client = await clientPromise;
     const db = client.db()
@@ -95,7 +96,7 @@ async function fetchGameProfile(address, game) {
             await gameCollection.insertOne(gameProfile)
             const createdProfile = (await gameCollection.find({personaId}).limit(1).toArray())[0]
             // reduce rating digits for showing purposes only
-            console.log('1')
+            // console.log('1')
             createdProfile.rating = createdProfile.rating > 0 ? Number.parseInt(createdProfile.rating/100) : 0
             // res.status(200).json({ succes: true, playerGameDoc: createdProfile, playerDoc })
             return [200, { succes: true, playerGameDoc: createdProfile, playerDoc }]
@@ -110,6 +111,7 @@ async function fetchGameProfile(address, game) {
         let playerGameDoc = {...playerGameDocRaw}
         // delete playerGameDoc.personaId
         if(Date.now() > playerGameDoc.lastFetched + (CONSTANTS.api.refetchTimout * 1000)) {
+            // console.log(Date.now() > playerGameDoc.lastFetched + (CONSTANTS.api.refetchTimout * 1000))
         // if(Date.now() > Date.now() - 100) {
             // calculate seasons data
             let newPlayerGameDoc = {...playerGameDoc}
@@ -174,7 +176,7 @@ async function fetchGameProfile(address, game) {
                 if(newPlayerGameDoc.dailyGameInfo && newPlayerGameDoc.dailyGameInfo.length > 0) {
                     const lastDay = newPlayerGameDoc.dailyGameInfo.length - 1
                     const snapshotDate = newPlayerGameDoc.dailyGameInfo[lastDay]
-                    if(Number.parseInt(Object.keys(snapshotDate)[0]) === Math.floor(Date.now()/60)) { // change time to today
+                    if(Number.parseInt(Object.keys(snapshotDate)[0]) === getTodayUnix()) { // change time to today
                         const snapshot = newPlayerGameDoc.dailyGameInfo[lastDay][today].snapshot
                         for(const property in snapshot) {
                             if(snapshot.hasOwnProperty(property)) {
@@ -245,7 +247,7 @@ async function fetchGameProfile(address, game) {
 
                 // Calculate ratings (seasonal and daily)
                 const todaysProgress = newPlayerGameDoc.dailyGameInfo[newPlayerGameDoc.dailyGameInfo.length - 1][today].stats
-                newPlayerGameDoc.rating = 
+                newPlayerGameDoc.rating =
                 Number.parseInt((todaysProgress['score'].value 
                 * (todaysProgress['wlPercentage'].value * todaysProgress['matchesPlayed'].value)
                 * todaysProgress['headshotPct'].value).toFixed(0))
@@ -253,7 +255,7 @@ async function fetchGameProfile(address, game) {
                 Number.parseInt((newPlayerGameDoc.gameInfo['score'].value 
                 * (newPlayerGameDoc.gameInfo['wlPercentage'].value * newPlayerGameDoc.gameInfo['matchesPlayed'].value)
                 * newPlayerGameDoc.gameInfo['headshotPct'].value).toFixed(0))
-                newPlayerGameDoc.rating = ((newPlayerGameDoc.seasonalRating * .25) + newPlayerGameDoc.rating / (newPlayerGameDoc.seasonalRating + newPlayerGameDoc.rating)).toFixed(0)
+                newPlayerGameDoc.rating = Number.parseInt(((newPlayerGameDoc.seasonalRating * .25) + (newPlayerGameDoc.rating * .75)).toFixed())
 
                 // fallback add address if not present
                 newPlayerGameDoc.address = address
@@ -267,20 +269,26 @@ async function fetchGameProfile(address, game) {
                 // console.log(playerGameDoc, newPlayerGameDoc)
 
                 // reduce rating digits for showing purposes only
-                console.log('2')
+                // console.log('2')
                 newPlayerGameDoc.rating = newPlayerGameDoc.rating > 0 ? Number.parseInt(playerGameDoc.rating/100) : 0
+                newPlayerGameDoc.seasonalRating = newPlayerGameDoc.seasonalRating > 0 ? Number.parseInt(playerGameDoc.seasonalRating/100) : 0
                 // res.status(200).json({ succes: true, playerGameDoc: newPlayerGameDoc, playerDoc })
                 return [200, { sucess: true, playerGameDoc: newPlayerGameDoc, playerDoc }]
             } catch(err) {
-                console.log(err)
+                // console.log(err)
+                // console.log('4')
                 const playerInfo = (await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_API_KEY}&steamids=${personaId}`))
-                if(playerInfo.data.response.players[0].communityvisibilitystate === 1) return [451, {succes: false, playerDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system."}]
-                else if(playerInfo.data.response.players[0].communityvisibilitystate === 3) return [453, { succes: false, playerDoc, msg: "Player hasn't played CSGO." }]
+                // normalize profile
+                let privateProfileDoc = {...playerDoc}
+                privateProfileDoc.rating = 0
+                privateProfileDoc.seasonalRating = 0
+                if(playerInfo.data.response.players[0].communityvisibilitystate === 1) return [451, {succes: false, playerDoc: privateProfileDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system."}]
+                else if(playerInfo.data.response.players[0].communityvisibilitystate === 3) return [453, { succes: false, playerDoc: privateProfileDoc, msg: "Player hasn't played CSGO." }]
                 else return [0, new Error('Unknown error occured')]
             }
         } else {
             // reduce rating digits for showing purposes only
-            console.log('3')
+            // console.log('3')
             playerGameDoc.rating = playerGameDoc.rating > 0 ? Number.parseInt(playerGameDoc.rating/100) : 0
             // res.status(200).json({ succes: true, playerGameDoc, playerDoc })
             return [200, { sucess: true, playerGameDoc, playerDoc }]

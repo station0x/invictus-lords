@@ -74,9 +74,9 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
           const releaseDate = new Date((CONSTANTS.economicPolicy.releaseInterval + this.lastDistribution) * 1000)
           const nowDate = new Date(this.time)
           const countdown = new Date(date.subtract(releaseDate , nowDate).toMilliseconds()).toISOString().substr(11, 8)
-          if((date.subtract(releaseDate , nowDate).toMilliseconds()/1000) <= 0) {
-            this.distributeRewards()
-          }
+          // if((date.subtract(releaseDate , nowDate).toMilliseconds()/1000) <= 0) {
+          //   this.distributeRewards()
+          // }
           return countdown
         } else return undefined
       },
