@@ -4,7 +4,7 @@
         <div v-if="!fetchingProfileLoader && playerGameProfile" class="h-12 top-[338px] lg:top-60 absolute w-full py-4 border-b border-invictus-gray-700"></div>
         <div v-if="!fetchingProfileLoader && !playerGameProfile" class="h-12 top-48 absolute w-full py-4 border-b border-invictus-gray-700"></div>
         <div v-if="!fetchingProfileLoader" class="h-12 top-16 absolute w-full py-4 border-b border-invictus-gray-700"></div>
-        <div v-if="!fetchingProfileLoader" class="container -top-4 relative flex items-center py-4 mx-auto md:px-14">
+        <div v-if="!fetchingProfileLoader" class="container -top-4 relative flex items-center py-4 mx-auto md:pl-14">
             <div class="w-full">
                 <!-- breadcrumb -->
                 <nav class="flex flex-grow mb-2 mt-1 py-2 z-40 w-full" aria-label="Breadcrumb">
@@ -126,7 +126,7 @@
                                                 <svg aria-hidden="true" class="mr-2 w-5 h-5" width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M5.0239 11.1607L4.81859 10.144L2.22974 8.67611C1.7 8.40876 1.32468 7.91016 1.21423 7.32696L0.460704 3.41002C0.238001 2.23411 1.13935 1.14555 2.33571 1.14555L3.42145 1.14533C3.63163 0.646931 4.12399 0.285706 4.71518 0.285706H13.2869C13.8773 0.285706 14.369 0.645834 14.5798 1.14307L15.6606 1.14285C16.857 1.14285 17.7584 2.2314 17.5357 3.40731L16.7889 7.32431C16.6784 7.90751 16.3031 8.4061 15.7733 8.67345L13.1845 10.1392L12.9782 11.1607C12.8461 11.8151 12.271 12.2857 11.6033 12.2857H10.8273C10.5653 12.2857 10.3646 12.5188 10.4034 12.7779L10.532 13.635C10.5635 13.8448 10.7437 14 10.9559 14H12.0524C12.1574 14 12.2587 14.0385 12.3371 14.1082L13.3014 14.9654C13.5959 15.2272 13.4108 15.7143 13.0167 15.7143H4.98543C4.59135 15.7143 4.40617 15.2272 4.70071 14.9654L5.66497 14.1082C5.74348 14.0385 5.8448 14 5.94971 14H7.04625C7.2584 14 7.43865 13.8448 7.47011 13.635L7.59868 12.7779C7.63751 12.5188 7.43685 12.2857 7.17482 12.2857H6.39877C5.73114 12.2857 5.15605 11.8151 5.0239 11.1607ZM2.33571 2.85983L3.52079 2.85959L4.38007 7.97222L3.00153 7.14559C2.94748 7.11825 2.90918 7.06742 2.89791 7.00785L2.14439 3.0909C2.12167 2.97091 2.21364 2.85983 2.33571 2.85983ZM15.6606 2.85713L14.4818 2.85737L13.6232 7.96665L15.0016 7.14285C15.0556 7.11559 15.0939 7.06468 15.1052 7.00519L15.852 3.0882C15.8747 2.96821 15.7828 2.85713 15.6606 2.85713ZM8.88714 7.21579C8.95828 7.17859 9.04314 7.17859 9.11428 7.21579L10.5578 7.97179C10.7375 8.06591 10.9469 7.91325 10.9126 7.71345L10.6373 6.11496C10.6236 6.03533 10.6501 5.95408 10.7081 5.89785L11.8733 4.76642C12.019 4.62491 11.9388 4.37772 11.7378 4.34862L10.1259 4.1153C10.0463 4.10377 9.97734 4.05383 9.94159 3.98173L9.22005 2.52532C9.13014 2.34385 8.87128 2.34385 8.78137 2.52532L8.05982 3.98173C8.02408 4.05383 7.95525 4.10377 7.87554 4.1153L6.26368 4.34862C6.0626 4.37772 5.98245 4.62491 6.12817 4.76642L7.29337 5.89785C7.35131 5.95408 7.37779 6.03533 7.36408 6.11496L7.08885 7.71345C7.05448 7.91325 7.26405 8.06591 7.44362 7.97179L8.88714 7.21579Z" fill="#D1D5DB"/>
                                                 </svg>
-                                                Rank #{{ myRank }}
+                                                {{ myRank }}
                                             </span>
                                         </div>
                                         <div>
@@ -151,7 +151,7 @@
                                             ref="number1"
                                             :from="0"
                                             :to="playerGameData.kd.value "
-                                            :format="percentageFormat"
+                                            :format="floatFormat"
                                             :duration="2"
                                             easing="Power1.easeOut"/>
                                             </p>
@@ -430,7 +430,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- <ProfileBox 
+                <ProfileBox 
                     :playerInfo="playerInfo"
                     :playerGameProfile="playerGameData"
                     :lastFetched="playerGameProfile.lastFetched"
@@ -438,7 +438,7 @@
                     @refresh="refetch"
                     :isFetching="isFetching"
                     :myRank="myRank"
-                /> -->
+                />
             </div>
         </div>
         <section v-if="!fetchingProfileLoader && privateSteam" class="flex py-20 mt-4 pl-16 rounded-lg dark:bg-invictus-gray-800 bg:py-0 items-center relative gap-4 lg:gap-16 w-full max-w-[900px] lg:w-3/4 mx-auto justify-center">
@@ -598,7 +598,7 @@
                     case 1: 
                         return this.playerGameProfile.gameInfo
                     case 2:
-                        return this.playerGameProfile.dailyGameInfo[this.playerGameProfile.dailyGameInfo.length - 1][Math.floor((Date.now()/CONSTANTS.economicPolicy.releaseInterval)/1000)].stats
+                        return this.playerGameProfile.dailyGameInfo
                     }
                 }
             },

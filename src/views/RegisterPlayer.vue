@@ -2,7 +2,7 @@
   <div>
     <Loader v-if="isLoading"/>
     <!-- <div v-else class="greetings"> -->
-      <h3>
+      <h3 v-else>
         <!-- <center> -->
           <ConnectBox v-if="!isMetamask" :user="user" :signature="signature" :address="address" :isMetamask="$route.params.isMetamask" :avatar="user.avatar" :playerAlias="user.username" @error="openToast('Address already registered, use another wallet address or log in using metamask!', 'danger')" />
           <ConnectBox v-else :isMetamask="$route.params.isMetamask" :playerAlias="user.username" :signature="this.$route.params.user" @error="openToast('Address already registered, use another wallet address or log in using metamask!', 'danger')" />
