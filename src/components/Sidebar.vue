@@ -54,20 +54,30 @@
             toggleSidebar() {
                 debounce(this.isHovered ? this.isHovered = false : this.isHovered = true,
                 10000)
-                console.log(this.isHovered)
             },
             openLeaderboard() {
                 let routeData = this.$router.push({ name: 'Leaderboard' })
                 window.open(routeData.href, '_self')
             },
             openProfile() {
-                this.$router.push({
+                if(this.$route.name === 'Lord Profile') {
+                    let profile = this.$router.resolve({
                     name: 'Lord Profile',
                     params: {
                         playerAddress: this.$store.state.address,
                         game: 'csgo'
                     }
                 })
+                this.$router.go(profile)
+                } else {
+                    this.$router.push({
+                        name: 'Lord Profile',
+                        params: {
+                            playerAddress: this.$store.state.address,
+                            game: 'csgo'
+                        }
+                    })
+                }
             },
             openMinting() {
                 this.$router.push('minting')

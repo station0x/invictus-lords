@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="z-[1000] flex h-16 w-full items-center justify-between border-b border-invictus-gray-700 pl-0 pr-5">
+        <header :class=" (isApp && isConnected) ? 'sticky' : ''" class="z-[1000] flex h-16 w-full items-center justify-between border-b border-invictus-gray-700 pl-0 pr-5">
             <!-- Dropdown menu -->
             <div :class="isDropdownOpen ? '' : 'hidden'" class="absolute right-5 top-[65px] z-10 w-[290px] border border-invictus-gray-600 bg-white rounded divide-y divide-invictus-gray-100 shadow dark:bg-invictus-gray-700 dark:divide-invictus-gray-600">
                 <div @click="zeroClicks" class="flex py-4 px-2 text-sm text-invictus-gray-900 dark:text-white">
@@ -34,7 +34,7 @@
                 </li>
                 </ul>
             </div>
-            <nav :class=" (isApp && isConnected) ? 'px-4 lg:px-5' : 'px-4 lg:px-6'" class="flex items-center sm:pl-2 bg-white py-2 z-20 dark:bg-invictus-gray-900">
+            <nav :class="(isApp && isConnected) ? 'px-4 lg:px-5' : 'px-4 lg:px-6'" class="flex items-center sm:pl-2 bg-white py-2 z-20 dark:bg-invictus-gray-900">
                 <div class="grid items-center mx-auto" :class=" (isApp && isConnected) ? '' : 'max-w-screen-xl'">
                     <!-- <a href="https://flowbite.com" class="flex items-center lg:justify-center lg:order-2">
                         <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
@@ -423,13 +423,24 @@
                 window.open(routeData.href, '_self')
             },
             openProfile() {
-                this.$router.push({
+                if(this.$route.name === 'Lord Profile') {
+                    let profile = this.$router.resolve({
                     name: 'Lord Profile',
                     params: {
                         playerAddress: this.$store.state.address,
                         game: 'csgo'
                     }
                 })
+                this.$router.go(profile)
+                } else {
+                    this.$router.push({
+                        name: 'Lord Profile',
+                        params: {
+                            playerAddress: this.$store.state.address,
+                            game: 'csgo'
+                        }
+                    })
+                }
             },
             openMinting() {
                 this.$router.push('minting')

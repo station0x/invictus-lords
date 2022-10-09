@@ -33,12 +33,9 @@ module.exports = async (req, res) => {
     }
 
     const steamData = (await steam.find({steamHash: providerIdHash}).limit(1).toArray())[0]
-    console.log(steamData)
     if(!steamData) throw new Error('No steam linked')
     const providerId = steamData.user.steamid
     const playerDocById = (await players.find({[`${providerType}`]:`${providerId}`}).limit(1).toArray())[0]
-    console.log(playerDocById)
-    console.log({[`${providerType}`]:`${providerId}`})
     if(playerDocById) {
         res.status(500).json({ msg: 'This steam account is already register, Login instead.' })
         return true

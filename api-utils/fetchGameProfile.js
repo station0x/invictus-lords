@@ -5,7 +5,7 @@ const CONSTANTS = require('../constants')
 const axios = require('axios')
 
 function getTodayUnix() {
-    return Math.floor((Date.now()/CONSTANTS.economicPolicy.releaseInterval)/1000)
+    return Number.parseInt(((Date.now()/CONSTANTS.economicPolicy.releaseInterval)/1000).toFixed())
 }
 
 async function fetchGameProfile(address, game) {
@@ -25,13 +25,14 @@ async function fetchGameProfile(address, game) {
     const personaIdKey = CONSTANTS.games[game].personaIdKey
     const personaId = playerDoc.personas[persona][personaIdKey]
     const playerGameDocRaw = (await gameCollection.find({personaId}).limit(1).toArray())[0]
-
+    const today = getTodayUnix()
     // remove sensitive-data
     delete playerDoc.personas
     delete playerDoc.steam
+
     if(!playerGameDocRaw) {
-        let playerGameDoc = {...playerGameDocRaw}
-        delete playerGameDoc.personaId
+        // let playerGameDoc = {...playerGameDocRaw}
+        // delete playerGameDoc.personaId
         try {
             const resp = (await axios.get(`http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=730&key=${process.env.STEAM_API_KEY}&steamid=${personaId}`, {}))
             let latestData  = Object.assign({}, ...(resp.data.playerstats.stats.map(item => ({ [item.name]: item.value }))))
@@ -76,11 +77,15 @@ async function fetchGameProfile(address, game) {
                 playerAlias: playerDoc.playerAlias,
                 persona,
                 rating: 0,
+                seasonalRating: 0,
                 lastFetched: Date.now(),
                 // userInfo: data.data.data.userInfo, // data data data slooow hahaha
                 gameInfoSnapshot: formattedLatestData,
                 gameInfoLifetime: formattedLatestData,
-                gameInfo: {}
+                gameInfo: {},
+                dailyGameInfoSnapshot: formattedLatestData,
+                dailyGameInfo: {}
+                
             }
             for(const property in gameProfile.gameInfoSnapshot) {
                 const value = 0
@@ -89,19 +94,27 @@ async function fetchGameProfile(address, game) {
                         value: value
                     }
                 }
+                if(gameProfile.gameInfoSnapshot.hasOwnProperty(property)) {
+                    gameProfile.dailyGameInfo[property] = {
+                        value: value
+                    }
+                }
             }
             // daily progress
-            gameProfile.dailyGameInfo = gameProfile.gameInfo
+            // gameProfile.dailyGameInfo.push({
+            //     [today]: {
+            //         snapshot: gameProfile.gameInfoSnapshot,
+            //         stats: gameProfile.gameInfo
+            //     }
+            // })
 
             await gameCollection.insertOne(gameProfile)
-            const createdProfile = (await gameCollection.find({personaId}).limit(1).toArray())[0]
-            // reduce rating digits for showing purposes only
-            // console.log('1')
-            createdProfile.rating = createdProfile.rating > 0 ? Number.parseInt(createdProfile.rating/100) : 0
+            // const createdProfile = (await gameCollection.find({personaId}).limit(1).toArray())[0]
             // res.status(200).json({ succes: true, playerGameDoc: createdProfile, playerDoc })
-            return [200, { succes: true, playerGameDoc: createdProfile, playerDoc }]
+            return [200, { succes: true, playerGameDoc: gameProfile, playerDoc }]
             }
             catch(err) {
+                console.log(err)
                 const playerInfo = (await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_API_KEY}&steamids=${personaId}`))
                 if(playerInfo.data.response.players[0].communityvisibilitystate === 1) return [451, { succes: false, playerDoc, msg: "The player profile is private. Make sure your profile is public to join invictus lords rewarding system." }]
                 else if(playerInfo.data.response.players[0].communityvisibilitystate === 3) return [451, { succes: false, playerDoc, msg: "Player hasn't played CSGO." }]
@@ -111,10 +124,11 @@ async function fetchGameProfile(address, game) {
         let playerGameDoc = {...playerGameDocRaw}
         // delete playerGameDoc.personaId
         if(Date.now() > playerGameDoc.lastFetched + (CONSTANTS.api.refetchTimout * 1000)) {
-            // console.log(Date.now() > playerGameDoc.lastFetched + (CONSTANTS.api.refetchTimout * 1000))
+        // console.log(Date.now() > playerGameDoc.lastFetched + (CONSTANTS.api.refetchTimout * 1000))
         // if(Date.now() > Date.now() - 100) {
             // calculate seasons data
-            let newPlayerGameDoc = {...playerGameDoc}
+            let newPlayerGameDoc = Object.assign({}, playerGameDoc)
+            // console.log(newPlayerGameDoc)
             try {
                 const resp = (await axios.get(`http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=730&key=${process.env.STEAM_API_KEY}&steamid=${personaId}`, {}))
                 let latestData  = Object.assign({}, ...(resp.data.playerstats.stats.map(item => ({ [item.name]: item.value }))))
@@ -168,99 +182,100 @@ async function fetchGameProfile(address, game) {
                 newPlayerGameDoc.gameInfo['wlPercentage'].value = (newPlayerGameDoc.gameInfo.wins.value / newPlayerGameDoc.gameInfo.matchesPlayed.value) * 100 || 0
                 newPlayerGameDoc.gameInfo['headshotPct'].value = (newPlayerGameDoc.gameInfo.headshots.value / newPlayerGameDoc.gameInfo.kills.value) * 100 || 0
 
-                // newPlayerGameDoc.dailyGameInfo = []
-
-                // daily progress
-                const today = getTodayUnix()
-                let deep =  undefined
-                if(newPlayerGameDoc.dailyGameInfo && newPlayerGameDoc.dailyGameInfo.length > 0) {
-                    const lastDay = newPlayerGameDoc.dailyGameInfo.length - 1
-                    const snapshotDate = newPlayerGameDoc.dailyGameInfo[lastDay]
-                    if(Number.parseInt(Object.keys(snapshotDate)[0]) === getTodayUnix()) { // change time to today
-                        const snapshot = newPlayerGameDoc.dailyGameInfo[lastDay][today].snapshot
-                        for(const property in snapshot) {
-                            if(snapshot.hasOwnProperty(property)) {
-                                const value = newPlayerGameDoc.gameInfo[property].value - snapshot[property].value
-                                newPlayerGameDoc.dailyGameInfo[lastDay][today].stats[property] = {
-                                    value: value                    
-                                }
-                            }
-                        }
-                        // Calculate percentages-based stats
-                        newPlayerGameDoc.dailyGameInfo[lastDay][today].stats['kd'].value = newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.kills.value / newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.deaths.value || 0
-                        newPlayerGameDoc.dailyGameInfo[lastDay][today].stats['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.shotsHit.value / newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.shotsFired.value) * 100 || 0 
-                        newPlayerGameDoc.dailyGameInfo[lastDay][today].stats['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.wins.value / newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.matchesPlayed.value) * 100 || 0
-                        newPlayerGameDoc.dailyGameInfo[lastDay][today].stats['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.headshots.value / newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.kills.value) * 100 || 0
-                    } else {
-                        // const newDay = (newPlayerGameDoc.dailyGameInfo.length)
-                        newPlayerGameDoc.dailyGameInfo.push({
-                            [today]: {
-                                snapshot: newPlayerGameDoc.gameInfo,
-                                stats: {}
-                            }
-                        })
-                        const lastDay = (newPlayerGameDoc.dailyGameInfo.length) - 1
-                        const snapshot = newPlayerGameDoc.dailyGameInfo[lastDay][today].snapshot // last day stats is todays snapshot
-                        for(const property in snapshot) {
-                            if(snapshot.hasOwnProperty(property)) {
-                                const value = newPlayerGameDoc.gameInfo[property].value - snapshot[property].value
-                                newPlayerGameDoc.dailyGameInfo[lastDay][today].stats[property] = {
-                                    value: value                    
-                                }
-                            }
-                        }
-                        // Calculate percentages-based stats
-                        newPlayerGameDoc.dailyGameInfo[lastDay][today].stats['kd'].value = newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.kills.value / newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.deaths.value || 0
-                        newPlayerGameDoc.dailyGameInfo[lastDay][today].stats['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.shotsHit.value / newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.shotsFired.value) * 100 || 0 
-                        newPlayerGameDoc.dailyGameInfo[lastDay][today].stats['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.wins.value / newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.matchesPlayed.value) * 100 || 0
-                        newPlayerGameDoc.dailyGameInfo[lastDay][today].stats['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.headshots.value / newPlayerGameDoc.dailyGameInfo[lastDay][today].stats.kills.value) * 100 || 0
-                    }
-                    // deep = newPlayerGameDoc.dailyGameInfo[lastDay][today].stats
-                } else {
-                    // seasonal to daily conversion for first time
-                    newPlayerGameDoc.dailyGameInfo = [{
-                        [today]: {
-                            snapshot: newPlayerGameDoc.gameInfo,
-                            stats: {}
-                        }
-                    }]
-                    const snapshot = newPlayerGameDoc.dailyGameInfo[0][today].snapshot
-                    for(const property in snapshot) {
-                        if(snapshot.hasOwnProperty(property)) {
-                            const value = newPlayerGameDoc.gameInfo[property].value - snapshot[property].value
-                            newPlayerGameDoc.dailyGameInfo[0][today].stats[property] = {
+                // backward compatability
+                console.log(Array.isArray(newPlayerGameDoc.dailyGameInfo))
+                if(Array.isArray(newPlayerGameDoc.dailyGameInfo)) {
+                    console.log('yes')
+                    newPlayerGameDoc.dailyGameInfo = {}
+                    newPlayerGameDoc.daySinceEpoch = getTodayUnix()
+                    newPlayerGameDoc.dailyGameInfoSnapshot = formattedLatestData
+                    for(const property in newPlayerGameDoc.gameInfoSnapshot) {
+                        if(newPlayerGameDoc.gameInfo.hasOwnProperty(property)) {
+                            const value = formattedLatestData[property].value - newPlayerGameDoc.dailyGameInfoSnapshot[property].value
+                            newPlayerGameDoc.dailyGameInfo[property] = {
                                 value: value                    
                             }
                         }
                     }
                     // Calculate percentages-based stats
-                    newPlayerGameDoc.dailyGameInfo[0][today].stats['kd'].value = newPlayerGameDoc.dailyGameInfo[0][today].stats.kills.value / newPlayerGameDoc.dailyGameInfo[0][today].stats.deaths.value || 0
-                    newPlayerGameDoc.dailyGameInfo[0][today].stats['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo[0][today].stats.shotsHit.value / newPlayerGameDoc.dailyGameInfo[0][today].stats.shotsFired.value) * 100 || 0 
-                    newPlayerGameDoc.dailyGameInfo[0][today].stats['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo[0][today].stats.wins.value / newPlayerGameDoc.dailyGameInfo[0][today].stats.matchesPlayed.value) * 100 || 0
-                    newPlayerGameDoc.dailyGameInfo[0][today].stats['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo[0][today].stats.headshots.value / newPlayerGameDoc.dailyGameInfo[0][today].stats.kills.value) * 100 || 0
-                }
-                // console.log(deep, newPlayerGameDoc.dailyGameInfo[newPlayerGameDoc.dailyGameInfo.length - 1][today].stats)
-                if(deep) {
-                    newPlayerGameDoc.dailyGameInfo[newPlayerGameDoc.dailyGameInfo.length - 1][today].stats = deep
-                }
-                // console.log('latest',newPlayerGameDoc.dailyGameInfo[newPlayerGameDoc.dailyGameInfo.length - 1][today].stats)
+                    newPlayerGameDoc.dailyGameInfo['kd'].value = newPlayerGameDoc.dailyGameInfo.kills.value / newPlayerGameDoc.dailyGameInfo.deaths.value || 0
+                    newPlayerGameDoc.dailyGameInfo['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo.shotsHit.value / newPlayerGameDoc.dailyGameInfo.shotsFired.value) * 100 || 0 
+                    newPlayerGameDoc.dailyGameInfo['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo.wins.value / newPlayerGameDoc.dailyGameInfo.matchesPlayed.value) * 100 || 0
+                    newPlayerGameDoc.dailyGameInfo['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo.headshots.value / newPlayerGameDoc.dailyGameInfo.kills.value) * 100 || 0
 
+                } else {
+                    // calculate daily progress 
+                    if(!newPlayerGameDoc.daySinceEpoch) {
+                        newPlayerGameDoc.daySinceEpoch = getTodayUnix()
+                        newPlayerGameDoc.dailyGameInfoSnapshot = formattedLatestData
+                        for(const property in newPlayerGameDoc.gameInfoSnapshot) {
+                            if(newPlayerGameDoc.gameInfo.hasOwnProperty(property)) {
+                                const value = formattedLatestData[property].value - newPlayerGameDoc.dailyGameInfoSnapshot[property].value
+                                newPlayerGameDoc.dailyGameInfo[property] = {
+                                    value: value                    
+                                }
+                            }
+                        }
+                        // Calculate percentages-based stats
+                        newPlayerGameDoc.dailyGameInfo['kd'].value = newPlayerGameDoc.dailyGameInfo.kills.value / newPlayerGameDoc.dailyGameInfo.deaths.value || 0
+                        newPlayerGameDoc.dailyGameInfo['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo.shotsHit.value / newPlayerGameDoc.dailyGameInfo.shotsFired.value) * 100 || 0 
+                        newPlayerGameDoc.dailyGameInfo['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo.wins.value / newPlayerGameDoc.dailyGameInfo.matchesPlayed.value) * 100 || 0
+                        newPlayerGameDoc.dailyGameInfo['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo.headshots.value / newPlayerGameDoc.dailyGameInfo.kills.value) * 100 || 0
+                    } else {
+                        if(newPlayerGameDoc.daySinceEpoch === getTodayUnix()) {
+                            for(const property in newPlayerGameDoc.gameInfoSnapshot) {
+                                if(newPlayerGameDoc.gameInfo.hasOwnProperty(property)) {
+                                    const value = formattedLatestData[property].value - newPlayerGameDoc.dailyGameInfoSnapshot[property].value
+                                    newPlayerGameDoc.dailyGameInfo[property] = {
+                                        value: value                    
+                                    }
+                                }
+                            }
+                            // Calculate percentages-based stats
+                            newPlayerGameDoc.dailyGameInfo['kd'].value = newPlayerGameDoc.dailyGameInfo.kills.value / newPlayerGameDoc.dailyGameInfo.deaths.value || 0
+                            newPlayerGameDoc.dailyGameInfo['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo.shotsHit.value / newPlayerGameDoc.dailyGameInfo.shotsFired.value) * 100 || 0 
+                            newPlayerGameDoc.dailyGameInfo['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo.wins.value / newPlayerGameDoc.dailyGameInfo.matchesPlayed.value) * 100 || 0
+                            newPlayerGameDoc.dailyGameInfo['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo.headshots.value / newPlayerGameDoc.dailyGameInfo.kills.value) * 100 || 0
+                        } else {
+                            newPlayerGameDoc.daySinceEpoch = getTodayUnix()
+                            newPlayerGameDoc.dailyGameInfoSnapshot = formattedLatestData
+                            for(const property in newPlayerGameDoc.gameInfoSnapshot) {
+                                if(newPlayerGameDoc.gameInfo.hasOwnProperty(property)) {
+                                    const value = formattedLatestData[property].value - newPlayerGameDoc.dailyGameInfoSnapshot[property].value
+                                    newPlayerGameDoc.dailyGameInfo[property] = {
+                                        value: value                    
+                                    }
+                                }
+                            }
+                            // Calculate percentages-based stats
+                            newPlayerGameDoc.dailyGameInfo['kd'].value = newPlayerGameDoc.dailyGameInfo.kills.value / newPlayerGameDoc.dailyGameInfo.deaths.value || 0
+                            newPlayerGameDoc.dailyGameInfo['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo.shotsHit.value / newPlayerGameDoc.dailyGameInfo.shotsFired.value) * 100 || 0 
+                            newPlayerGameDoc.dailyGameInfo['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo.wins.value / newPlayerGameDoc.dailyGameInfo.matchesPlayed.value) * 100 || 0
+                            newPlayerGameDoc.dailyGameInfo['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo.headshots.value / newPlayerGameDoc.dailyGameInfo.kills.value) * 100 || 0
+                        }
+                    }
+                }
+
+                console.log(newPlayerGameDoc)
                 // Calculate ratings (seasonal and daily)
-                const todaysProgress = newPlayerGameDoc.dailyGameInfo[newPlayerGameDoc.dailyGameInfo.length - 1][today].stats
+                // const todaysProgress = newPlayerGameDoc.dailyGameInfo[newPlayerGameDoc.dailyGameInfo.length - 1][today].stats
                 newPlayerGameDoc.rating =
-                Number.parseInt((todaysProgress['score'].value 
-                * (todaysProgress['wlPercentage'].value * todaysProgress['matchesPlayed'].value)
-                * todaysProgress['headshotPct'].value).toFixed(0))
+                Number.parseInt((newPlayerGameDoc.dailyGameInfo['score'].value 
+                * (newPlayerGameDoc.dailyGameInfo['wlPercentage'].value * newPlayerGameDoc.dailyGameInfo['matchesPlayed'].value)
+                * newPlayerGameDoc.dailyGameInfo['headshotPct'].value).toFixed(0));
+                
                 newPlayerGameDoc.seasonalRating = 
                 Number.parseInt((newPlayerGameDoc.gameInfo['score'].value 
                 * (newPlayerGameDoc.gameInfo['wlPercentage'].value * newPlayerGameDoc.gameInfo['matchesPlayed'].value)
-                * newPlayerGameDoc.gameInfo['headshotPct'].value).toFixed(0))
-                newPlayerGameDoc.rating = Number.parseInt(((newPlayerGameDoc.seasonalRating * .25) + (newPlayerGameDoc.rating * .75)).toFixed())
+                * newPlayerGameDoc.gameInfo['headshotPct'].value).toFixed(0));
+                
+                newPlayerGameDoc.rating = Number.parseInt(((newPlayerGameDoc.seasonalRating * .25) * (newPlayerGameDoc.rating * .75)).toFixed());
 
                 // fallback add address if not present
                 newPlayerGameDoc.address = address
                 // Update last fetched time
                 newPlayerGameDoc.lastFetched = Date.now()
+                // console.log(newPlayerGameDoc)
 
                 await gameCollection.updateOne({personaId}, {
                     $set:newPlayerGameDoc
@@ -270,12 +285,12 @@ async function fetchGameProfile(address, game) {
 
                 // reduce rating digits for showing purposes only
                 // console.log('2')
-                newPlayerGameDoc.rating = newPlayerGameDoc.rating > 0 ? Number.parseInt(playerGameDoc.rating/100) : 0
-                newPlayerGameDoc.seasonalRating = newPlayerGameDoc.seasonalRating > 0 ? Number.parseInt(playerGameDoc.seasonalRating/100) : 0
+                newPlayerGameDoc.rating = newPlayerGameDoc.rating > 0 ? Number.parseInt(newPlayerGameDoc.rating/100) : 0
+                newPlayerGameDoc.seasonalRating = newPlayerGameDoc.seasonalRating > 0 ? Number.parseInt(newPlayerGameDoc.seasonalRating/100) : 0
                 // res.status(200).json({ succes: true, playerGameDoc: newPlayerGameDoc, playerDoc })
                 return [200, { sucess: true, playerGameDoc: newPlayerGameDoc, playerDoc }]
             } catch(err) {
-                // console.log(err)
+                console.log(err)
                 // console.log('4')
                 const playerInfo = (await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_API_KEY}&steamids=${personaId}`))
                 // normalize profile
@@ -290,6 +305,7 @@ async function fetchGameProfile(address, game) {
             // reduce rating digits for showing purposes only
             // console.log('3')
             playerGameDoc.rating = playerGameDoc.rating > 0 ? Number.parseInt(playerGameDoc.rating/100) : 0
+            playerGameDoc.seasonalRating = playerGameDoc.seasonalRating > 0 ? Number.parseInt(playerGameDoc.seasonalRating/100) : 0
             // res.status(200).json({ succes: true, playerGameDoc, playerDoc })
             return [200, { sucess: true, playerGameDoc, playerDoc }]
         }

@@ -89,10 +89,16 @@
                                     Rating
                                 </th>
                                 <th scope="col" class="py-3 px-6">
-                                    K/D %
+                                    HS %
                                 </th>
                                 <th scope="col" class="py-3 px-6">
-                                    Matches Played
+                                    Win Rate %
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    K/D
+                                </th>
+                                <th scope="col" class="py-3 px-6">
+                                    Total Matches
                                 </th>
                                 <th scope="col" class="py-3 px-6">
                                     Score
@@ -115,7 +121,13 @@
                                     {{ player.seasonalRating ? player.seasonalRating.toLocaleString() : 0 }}
                                 </td>
                                 <td class="py-4 px-6 font-medium text-invictus-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ player.gameInfo.kd.value.toLocaleString() + ' %' }}
+                                    {{ player.gameInfo.headshotPct.value.toFixed(2) + ' %' }}
+                                </td>
+                                <td class="py-4 px-6 font-medium text-invictus-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ player.gameInfo.wlPercentage.value.toFixed(2) + ' %' }}
+                                </td>
+                                <td class="py-4 px-6 font-medium text-invictus-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ player.gameInfo.kd.value.toFixed(2) }}
                                 </td>
                                 <td class="py-4 px-6 font-medium text-invictus-gray-900 whitespace-nowrap dark:text-white">
                                     {{ player.gameInfo.matchesPlayed.value }}
