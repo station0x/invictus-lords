@@ -183,7 +183,7 @@ async function fetchGameProfile(address, game) {
                 newPlayerGameDoc.gameInfo['headshotPct'].value = (newPlayerGameDoc.gameInfo.headshots.value / newPlayerGameDoc.gameInfo.kills.value) * 100 || 0
 
                 // backward compatability
-                console.log(Array.isArray(newPlayerGameDoc.dailyGameInfo))
+                // console.log(Array.isArray(newPlayerGameDoc.dailyGameInfo))
                 if(Array.isArray(newPlayerGameDoc.dailyGameInfo)) {
                     console.log('yes')
                     newPlayerGameDoc.dailyGameInfo = {}
@@ -256,20 +256,48 @@ async function fetchGameProfile(address, game) {
                     }
                 }
 
-                console.log(newPlayerGameDoc)
+                // console.log(newPlayerGameDoc)
                 // Calculate ratings (seasonal and daily)
                 // const todaysProgress = newPlayerGameDoc.dailyGameInfo[newPlayerGameDoc.dailyGameInfo.length - 1][today].stats
                 newPlayerGameDoc.rating =
                 Number.parseInt((newPlayerGameDoc.dailyGameInfo['score'].value 
                 * (newPlayerGameDoc.dailyGameInfo['wlPercentage'].value * newPlayerGameDoc.dailyGameInfo['matchesPlayed'].value)
-                * newPlayerGameDoc.dailyGameInfo['headshotPct'].value).toFixed(0));
+                * (newPlayerGameDoc.dailyGameInfo['headshotPct'].value / 100)));
                 
                 newPlayerGameDoc.seasonalRating = 
                 Number.parseInt((newPlayerGameDoc.gameInfo['score'].value 
                 * (newPlayerGameDoc.gameInfo['wlPercentage'].value * newPlayerGameDoc.gameInfo['matchesPlayed'].value)
-                * newPlayerGameDoc.gameInfo['headshotPct'].value).toFixed(0));
+                * (newPlayerGameDoc.gameInfo['headshotPct'].value / 100)));
                 
-                newPlayerGameDoc.rating = Number.parseInt(((newPlayerGameDoc.seasonalRating * .25) * (newPlayerGameDoc.rating * .75)).toFixed());
+                console.log('=========== seasonal rating ============')
+                console.table([
+                    ['name', newPlayerGameDoc.playerAlias],
+                    ['seasonal rating', newPlayerGameDoc.seasonalRating.toLocaleString()],
+                    ['score',
+                    newPlayerGameDoc.gameInfo['score'].value],
+                    ['wlPercentage',
+                    newPlayerGameDoc.gameInfo['wlPercentage'].value],
+                    ['matchesPlayed',
+                    newPlayerGameDoc.gameInfo['matchesPlayed'].value],
+                    ['headshotPct',
+                    newPlayerGameDoc.gameInfo['headshotPct'].value],
+                ])
+                console.log('=========== daily rating ============')
+                console.table([
+                    ['name', newPlayerGameDoc.playerAlias],
+                    ['seasonal rating', newPlayerGameDoc.rating.toLocaleString()],
+                    ['score',
+                    newPlayerGameDoc.dailyGameInfo['score'].value],
+                    ['wlPercentage',
+                    newPlayerGameDoc.dailyGameInfo['wlPercentage'].value],
+                    ['matchesPlayed',
+                    newPlayerGameDoc.dailyGameInfo['matchesPlayed'].value],
+                    ['headshotPct',
+                    newPlayerGameDoc.dailyGameInfo['headshotPct'].value]
+                ])
+
+                if(newPlayerGameDoc.rating > 0) newPlayerGameDoc.rating = Number.parseInt(((newPlayerGameDoc.seasonalRating * .25) + (newPlayerGameDoc.rating * .75)).toFixed());
+                console.log('finalRating: ', newPlayerGameDoc.rating)
 
                 // fallback add address if not present
                 newPlayerGameDoc.address = address
