@@ -424,14 +424,13 @@
             },
             openProfile() {
                 if(this.$route.name === 'Lord Profile') {
-                    let profile = this.$router.resolve({
+                this.$router.go({
                     name: 'Lord Profile',
                     params: {
                         playerAddress: this.$store.state.address,
                         game: 'csgo'
                     }
                 })
-                this.$router.go(profile)
                 } else {
                     this.$router.push({
                         name: 'Lord Profile',
