@@ -423,23 +423,13 @@
                 window.open(routeData.href, '_self')
             },
             openProfile() {
-                if(this.$route.name === 'Lord Profile') {
-                this.$router.go({
+                this.$router.push({
                     name: 'Lord Profile',
                     params: {
                         playerAddress: this.$store.state.address,
                         game: 'csgo'
                     }
                 })
-                } else {
-                    this.$router.push({
-                        name: 'Lord Profile',
-                        params: {
-                            playerAddress: this.$store.state.address,
-                            game: 'csgo'
-                        }
-                    })
-                }
             },
             openMinting() {
                 this.$router.push('minting')

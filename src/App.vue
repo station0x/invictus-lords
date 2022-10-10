@@ -25,7 +25,7 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
       </div>
     </div>
     <div class="app-body">
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
     <MobileSidebar class="lg:hidden"/>
   </div>
