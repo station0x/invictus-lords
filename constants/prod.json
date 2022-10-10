@@ -6,7 +6,7 @@
         }
     },
     "economicPolicy": {
-        "releaseInterval": 86400,
+        "releaseInterval": 900,
         "dailyRewards": 10000,
         "minter": "0xC0726d702eAF129888E48708ae6cAF0eeF85A4A6",
         "assets": {
