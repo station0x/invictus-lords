@@ -9,12 +9,12 @@ import os, random
 # Total 2020
 
 # Vampires
-# Blue - Male => [1-500] (0-499)
-# Blue  - Females => [501-1000] (500-999)
-# Red - Male => [1001 - 1306] (1000-1305)
-# Red - Females => [1307 - 1612] (1306-1611)
-# Gold - Male => [1613 - 1816] (1612 - 1815)
-# Gold - Females => [1817 - 2020] (1816 - 2019)
+# Blue - Male => (0-499)
+# Blue  - Females => (500-999)
+# Red - Male => (1000-1305)
+# Red - Females => (1306-1610)
+# Gold - Male => (1611 - 1814)
+# Gold - Females => (1815 - 2019)
 
 # assign directory
 directory = os.path.join(os.getcwd(), 'nfts', 'vampires', 'gold', 'females')
@@ -32,14 +32,14 @@ directory = os.path.join(os.getcwd(), 'nfts', 'vampires', 'gold', 'females')
 
 # iterate over files in
 # that directory
-id = 1819
+id = 1815
 for filename in os.listdir(directory):
     print(directory, filename)
     old = os.path.join(directory, filename)
     # new = os.path.join(directory, "filename")
     # checking if it is a file
     if os.path.isfile(old):
-        newFileName = str(id) + '-f' + ".png"
+        newFileName = str(id) + ".png"
         new = os.path.join(directory, newFileName)
         os.rename(old, new)
         print(old, new)
