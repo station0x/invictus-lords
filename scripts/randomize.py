@@ -1,10 +1,13 @@
 # import required module
 import os, random, sys
 
-# Blue => 1000 [1-1000] (0 - 999)
-# Red => 611 [1001-1612] (1000 - 1610)
-# Gold => 409 [1612-2020] (1611 - 2019)
-# Total 2020
+# Embryos
+# Blue - Male => (0-499)
+# Blue  - Females => (500-999)
+# Red - Male => (1000-1305)
+# Red - Females => (1306-1610)
+# Gold - Male => (1611 - 1814)
+# Gold - Females => (1815 - 2019)
 
 # assign directory
 directory = os.path.join(os.getcwd(), 'nfts')
@@ -26,8 +29,8 @@ def containsNum(arr, no):
     return found
 
 stdout = sys.stdout
-logs = os.path.join(directory, 'logs.json')
-with open(logs, 'w') as f:
+mapping = os.path.join(randomizedDir, 'mapping.json')
+with open(mapping, 'w') as f:
     sys.stdout = f
     print('{')
     for id in range(start, end):
@@ -53,7 +56,7 @@ with open(logs, 'w') as f:
             VNew = os.path.join(VdirNew,newFN)
             os.rename(EOld, ENew)
             # 0: { "id": 0, "" }
-            print('"', id,'":{"id": "', randID, '"},')
+            print('"', randID,'":{"id": "', id, '"},')
             os.rename(VOld, VNew)
         elif id <= 1610:
             Edir = os.path.join(directory, 'embryos', 'red')
@@ -68,7 +71,7 @@ with open(logs, 'w') as f:
             ENew = os.path.join(EdirNew,newFN)
             VNew = os.path.join(VdirNew,newFN)
             os.rename(EOld, ENew)
-            print('"', id,'":{"id": "', randID, '"},')
+            print('"', randID,'":{"id": "', id, '"},')
             os.rename(VOld, VNew)
         elif (id <= 2019):
             Edir = os.path.join(directory, 'embryos', 'gold')
@@ -83,7 +86,7 @@ with open(logs, 'w') as f:
             ENew = os.path.join(EdirNew,newFN)
             VNew = os.path.join(VdirNew,newFN)
             os.rename(EOld, ENew)
-            print('"', id,'":{"id": "', randID, '"},')
+            print('"', randID,'":{"id": "', id, '"},')
             os.rename(VOld, VNew)
         else:
             print('error')

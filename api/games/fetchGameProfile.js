@@ -1,13 +1,6 @@
 "use strict";
 // Import the dependency.
-const clientPromise = require('../../api-utils/mongodb-client');
-const CONSTANTS = require('../../constants')
-const axios = require('axios')
 const { fetchGameProfile } = require('../../api-utils/fetchGameProfile')
-
-function getTodayUnix() {
-    return ((Date.now()/CONSTANTS.economicPolicy.releaseInterval)/1000).toFixed()
-}
 
 module.exports = async (req, res) => {
     const address = req.query.address
