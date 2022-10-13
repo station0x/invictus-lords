@@ -2,7 +2,6 @@
   "name": "invictus-lords",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4173",
     "vercel-dev-helper": "vite --port $PORT",

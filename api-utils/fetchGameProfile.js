@@ -5,7 +5,7 @@ const CONSTANTS = require('../constants')
 const axios = require('axios')
 
 function getTodayUnix() {
-    return Number.parseInt(((Date.now()/CONSTANTS.economicPolicy.releaseInterval)/1000).toFixed())
+    return Math.floor((Date.now()/CONSTANTS.economicPolicy.releaseInterval)/1000)
 }
 
 async function fetchGameProfile(address, game) {
