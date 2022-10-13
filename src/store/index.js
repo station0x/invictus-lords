@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import { ethers } from 'ethers'
-import prodCONSTANTS from '../../constants/dev.json'
+import prodCONSTANTS from '../../constants/prod.json'
 import devCONSTANTS from '../../constants/dev.json'
 const CONSTANTS = import.meta.env.VITE_APP_ENV === "prod" ? prodCONSTANTS : devCONSTANTS
 
