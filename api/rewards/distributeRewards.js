@@ -9,16 +9,20 @@ module.exports = async (req, res) => {
         const db = client.db()
         // get latest reward distribution info
         const cronRewardsCollection = db.collection("cronRewards")
+        const rewardsLogs = db.collection("rewardsLogs")
         const lastReleaseDoc = ((await cronRewardsCollection.find().limit(1).toArray())[0])
 
         const now = Date.now()/1000
         const lastRelease = lastReleaseDoc.lastRelease/1000
         // sanity check
-        if((now - lastRelease) <= CONSTANTS.economicPolicy.releaseInterval) throw new Error('Failed, Need more time.')
+        if(CONSTANTS.economicPolicy.releaseInterval > (now - lastRelease)) {
+            console.log((now - lastRelease), CONSTANTS.economicPolicy.releaseInterval, CONSTANTS.economicPolicy.releaseInterval > (now - lastRelease))
+            throw new Error('Failed, Need more time.')
+        }
         
         // calculate csgo players rewards
         const csgoCollection = db.collection(`csgo`)
-        const projection = { _id: 0, rating: 1, seasonalRating: 1, address: 1}
+        const projection = { _id: 0, rating: 1, address: 1, daySinceEpoch: 1}
         // Deacrease time by 30% (benchmarked locally) (Iterate using cursor- instead of await/ increasing batch size from 101 to 1000)
         let playerDocs = []
         let playerTotalRatings = 0
@@ -26,6 +30,7 @@ module.exports = async (req, res) => {
             let player = {}
             player.rating = v.rating
             player.address = v.address
+            player.daySinceEpoch = v.daySinceEpoch
             playerDocs.push(player)
             playerTotalRatings += v.rating  
         })
@@ -36,7 +41,16 @@ module.exports = async (req, res) => {
 
         // bulk update player docs
         var ops = [];
+        var logsData = []
         playerDocs.forEach(async function(doc) {
+            console.log(Number.parseInt(doc.playerReward))
+            logsData.push({
+                address: doc.address,
+                rewards: Number.parseInt(doc.playerReward),
+                rating: doc.rating,
+                weight: doc.playerWeight,
+                unixInDays: doc.daySinceEpoch
+            })
             ops.push({
                 "updateOne": {
                     "filter": { "address": doc.address },
@@ -59,6 +73,14 @@ module.exports = async (req, res) => {
         await cronRewardsCollection.updateOne({_id: newLastRelease._id}, {
             $set:newLastRelease
         })
+
+        let logs = {
+            timestamp: Date.now(),
+            date: Date(),
+            rewards: logsData
+        }
+        await rewardsLogs.insertOne(logs)
+
         res.status(200).json({ success: true })
     } else {
         res.setHeader('Allow', 'POST');

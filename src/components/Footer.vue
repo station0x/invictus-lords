@@ -1,13 +1,72 @@
 <template>
 <footer class="bg-white dark:bg-invictus-gray-900 pt-16">
-  <div class="max-w-screen-xl mx-auto">
-    <p class="text-3xl mb-8 font-bold leading-tight text-center dark:text-white">Help us build it</p>
-    <p class=" w-4/5 mx-auto md:w-2/3 lg:w-1/3   font-medium text-base text-center text-gray-500 dark:text-gray-400">Unlike the majority of current P2E games. VON token inflation is controlled and is fixed to 100K daily and is halving each 1 year (4 seasons). No insiders allocations. The token belongs to the players only. No hyper-inflation lords.</p>
-    <div class="flex justify-center items-center my-6">
-        <a href="https://discord.gg/bBbmywSU6N" target="_blank" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Join Discord</a>
+  <!-- <div clas="grid grid-cols-3 gap-4">
+    <div class="col-span-6">
+      <p>2</p>
+      <p class="text-3xl mb-8 font-bold leading-tight text-center dark:text-white">Help us build it</p>
+      <p class="w-4/5 mx-auto   font-medium text-base text-center text-gray-500 dark:text-gray-400">Unlike the majority of current P2E games. VON token inflation is controlled and is fixed to 100K daily and is halving each 1 year (4 seasons). No insiders allocations. The token belongs to the players only. No hyper-inflation lords.</p>
+      <div class="flex justify-center items-center my-6">
+          <a href="https://discord.gg/bBbmywSU6N" target="_blank" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Join Discord</a>
+      </div>
+    </div>
+    <div class="col-span-6">
+      <p>2</p>
+      <p class="text-3xl mb-8 font-bold leading-tight text-center dark:text-white">Help us build it</p>
+      <p class=" w-4/5 mx-auto  font-medium text-base text-center text-gray-500 dark:text-gray-400">Unlike the majority of current P2E games. VON token inflation is controlled and is fixed to 100K daily and is halving each 1 year (4 seasons). No insiders allocations. The token belongs to the players only. No hyper-inflation lords.</p>
+      <div class="flex justify-center items-center my-6">
+          <a href="https://discord.gg/bBbmywSU6N" target="_blank" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Join Discord</a>
+      </div>
+    </div>
+  </div> -->
+  <div class="container max-w-screen-xl px-4 mx-auto">
+    <div class="grid grid-cols-4 gap-4">
+      <div class="col-span-2 border border-invictus-gray-700 rounded-lg p-7">
+        <div class="grid items-center gap-8 lg:gap-12 lg:grid-cols-12">
+            <div class="col-span-7 text-center sm:mb-6 lg:text-left lg:mb-0">
+                <h1 class="mb-2 text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-2xl xl:text-3xl dark:text-white">Be aquainted with our philosophy</h1>
+                <p class="max-w-xl mx-auto mb-6 font-light text-gray-500 lg:mx-0 xl:mb-8 text-base dark:text-gray-400">
+                  If you want to be familiar with Invictus Lords’ agenda and philosophy just hit the button and follow us on medium.  
+                </p>
+                <button type="button" class="text-white bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-4 focus:outline-none focus:ring-invictus-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-invictus-red-800 dark:hover:bg-invictus-red-600 dark:focus:ring-invictus-red-800">
+                  <svg class="inline mr-3 w-6 h-6 text-white" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11.2812 10.7396C11.2812 13.8818 8.75579 16.4291 5.6407 16.4291C2.52561 16.4291 0 13.8812 0 10.7396C0 7.59787 2.52542 5.0498 5.6407 5.0498C8.75598 5.0498 11.2812 7.59729 11.2812 10.7396Z" fill="white"/>
+                  <path d="M17.469 10.7395C17.469 13.6973 16.2063 16.096 14.6487 16.096C13.091 16.096 11.8283 13.6973 11.8283 10.7395C11.8283 7.78175 13.0908 5.38306 14.6485 5.38306C16.2061 5.38306 17.4688 7.78098 17.4688 10.7395" fill="white"/>
+                  <path d="M20 10.7395C20 13.389 19.556 15.5381 19.0081 15.5381C18.4602 15.5381 18.0164 13.3895 18.0164 10.7395C18.0164 8.08951 18.4604 5.94098 19.0081 5.94098C19.5558 5.94098 20 8.08932 20 10.7395Z" fill="white"/>
+                  </svg>
+                Read the Manifeso</button>
+            </div>
+            <div class="flex col-span-5 align-middle justify-center">
+                <img src="/img/medium-cta.png" class="w-full dark:hidden" alt="mockup">
+                <img src="/img/medium-cta.png" class="w-full hidden dark:block" alt="mockup dark">
+            </div>
+        </div>
+      </div>
+      <div class="col-span-2 border border-invictus-gray-700 rounded-lg p-7">
+        <div class="grid items-center gap-8 lg:gap-12 lg:grid-cols-12">
+            <div class="col-span-7 text-center sm:mb-6 lg:text-left lg:mb-0">
+                <h1 class="mb-2 text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-2xl xl:text-3xl dark:text-white">Share your thougts join our discord</h1>
+                <p class="max-w-xl mx-auto mb-6 font-light text-gray-500 lg:mx-0 xl:mb-8 text-base dark:text-gray-400">
+                  If you’re well-aquainted with our line of thought and philosophy, just share your ideas & arguments with us on discord.
+                </p>
+                <button type="button" class="text-white bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-4 focus:outline-none focus:ring-invictus-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-invictus-gray-700 dark:hover:bg-invictus-gray-600 dark:focus:ring-invictus-gray-800">
+                  <svg class="inline mr-3 w-6 h-6 text-white" width="24" height="19" viewBox="0 0 24 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20.317 2.15557C18.7873 1.45369 17.147 0.936576 15.4319 0.640403C15.4007 0.634687 15.3695 0.648971 15.3534 0.677541C15.1424 1.05276 14.9087 1.54226 14.7451 1.927C12.9004 1.65083 11.0652 1.65083 9.25832 1.927C9.09465 1.5337 8.85248 1.05276 8.64057 0.677541C8.62448 0.649924 8.59328 0.63564 8.56205 0.640403C6.84791 0.93563 5.20756 1.45275 3.67694 2.15557C3.66368 2.16129 3.65233 2.17082 3.64479 2.18319C0.533392 6.83155 -0.31895 11.3657 0.0991801 15.8436C0.101072 15.8655 0.11337 15.8864 0.130398 15.8997C2.18321 17.4073 4.17171 18.3225 6.12328 18.9291C6.15451 18.9386 6.18761 18.9272 6.20748 18.9015C6.66913 18.2711 7.08064 17.6063 7.43348 16.9073C7.4543 16.8664 7.43442 16.8178 7.39186 16.8016C6.73913 16.554 6.1176 16.2521 5.51973 15.9093C5.47244 15.8816 5.46865 15.814 5.51216 15.7816C5.63797 15.6873 5.76382 15.5893 5.88395 15.4902C5.90569 15.4721 5.93598 15.4683 5.96153 15.4797C9.88928 17.273 14.1415 17.273 18.023 15.4797C18.0485 15.4674 18.0788 15.4712 18.1015 15.4893C18.2216 15.5883 18.3475 15.6873 18.4742 15.7816C18.5177 15.814 18.5149 15.8816 18.4676 15.9093C17.8697 16.2588 17.2482 16.554 16.5945 16.8006C16.552 16.8168 16.533 16.8664 16.5538 16.9073C16.9143 17.6054 17.3258 18.2701 17.7789 18.9005C17.7978 18.9272 17.8319 18.9386 17.8631 18.9291C19.8241 18.3225 21.8126 17.4073 23.8654 15.8997C23.8834 15.8864 23.8948 15.8664 23.8967 15.8445C24.3971 10.6676 23.0585 6.17064 20.3482 2.18414C20.3416 2.17082 20.3303 2.16129 20.317 2.15557ZM8.02002 13.117C6.8375 13.117 5.86313 12.0313 5.86313 10.6981C5.86313 9.36477 6.8186 8.27912 8.02002 8.27912C9.23087 8.27912 10.1958 9.3743 10.1769 10.6981C10.1769 12.0313 9.22141 13.117 8.02002 13.117ZM15.9947 13.117C14.8123 13.117 13.8379 12.0313 13.8379 10.6981C13.8379 9.36477 14.7933 8.27912 15.9947 8.27912C17.2056 8.27912 18.1705 9.3743 18.1516 10.6981C18.1516 12.0313 17.2056 13.117 15.9947 13.117Z" fill="white"/>
+                  </svg>
+                Join Discord</button>
+            </div>
+            <div class="flex col-span-5 align-middle justify-center">
+                <img src="/img/discord-cta.png" class="w-full dark:hidden" alt="mockup">
+                <img src="/img/discord-cta.png" class="w-full hidden dark:block" alt="mockup dark">
+            </div>
+        </div>
     </div>
   </div>
-  <div class="p-4 py-6 mx-auto max-w-screen-xl md:p-8 lg:p-10">
+
+</div>
+  <!-- <div class="max-w-screen-xl mx-auto">
+
+  </div> -->
+  <div class="p-4 pb-6 mx-auto max-w-screen-xl md:pb-8 lg:pb-10">
       <hr class="my-6 border-gray-200 sm:mx-auto dark:border-invictus-gray-700 lg:my-8">
       <div class="text-center">
           <a href="#" class="flex justify-center items-center mb-5 text-2xl font-semibold text-gray-900 dark:text-white">
