@@ -104,7 +104,7 @@
                 <p class="max-w-xl mx-auto mb-6 font-light text-gray-500 lg:mx-0 xl:mb-8 md:text-lg xl:text-xl dark:text-gray-400">
                   No compromisations! It's time for players to end playbour. Our Manifesto clues players to their real-value in the gaming industry.  
                 </p>
-                <button @click="connectMetamask" type="button" class="text-white bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-4 focus:outline-none focus:ring-invictus-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-invictus-red-800 dark:hover:bg-invictus-red-600 dark:focus:ring-invictus-red-800">
+                <button @click="openLink('https://medium.com/invictuslords/the-player-and-its-own-chapter-i-a-gamer-manifesto-55fa51095892')" type="button" class="text-white bg-invictus-red-700 hover:bg-invictus-red-800 focus:ring-4 focus:outline-none focus:ring-invictus-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-invictus-red-800 dark:hover:bg-invictus-red-600 dark:focus:ring-invictus-red-800">
                   <svg class="inline mr-3 w-6 h-6 text-white" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M11.2812 10.7396C11.2812 13.8818 8.75579 16.4291 5.6407 16.4291C2.52561 16.4291 0 13.8812 0 10.7396C0 7.59787 2.52542 5.0498 5.6407 5.0498C8.75598 5.0498 11.2812 7.59729 11.2812 10.7396Z" fill="white"/>
                   <path d="M17.469 10.7395C17.469 13.6973 16.2063 16.096 14.6487 16.096C13.091 16.096 11.8283 13.6973 11.8283 10.7395C11.8283 7.78175 13.0908 5.38306 14.6485 5.38306C16.2061 5.38306 17.4688 7.78098 17.4688 10.7395" fill="white"/>
@@ -331,8 +331,8 @@
                 .finally(this.steamLoader = true);
             return res;
         },
-        openWiki() {
-          window.open('https://en.wikipedia.org/wiki/Playbour', '_blank')
+        openLink(href) {
+          window.open(href, '_blank')
         },
         openProfile() {
           this.$router.push({
