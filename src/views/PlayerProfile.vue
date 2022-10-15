@@ -430,15 +430,6 @@
                         </div>
                     </div>
                 </div>
-                <ProfileBox 
-                    :playerInfo="playerInfo"
-                    :playerGameProfile="playerGameData"
-                    :lastFetched="playerGameProfile.lastFetched"
-                    @setSeasonData="setSeasonDataFromChild"
-                    @refresh="refetch"
-                    :isFetching="isFetching"
-                    :myRank="myRank"
-                />
             </div>
         </div>
         <section v-if="!fetchingProfileLoader && privateSteam" class="flex py-20 mt-4 pl-16 rounded-lg dark:bg-invictus-gray-800 bg:py-0 items-center relative gap-4 lg:gap-16 w-full max-w-[900px] lg:w-3/4 mx-auto justify-center">
@@ -609,7 +600,7 @@
                     else {
                         this.sortedPlayers.map((player, index) => {
                             if(player.address === this.playerInfo.address) {
-                                rank = 'Rank #' + (index + 1)
+                                rank = 'Season Rank #' + (index + 1)
                             }
                         })
                     }  

@@ -1,7 +1,7 @@
 "use strict";
 // Import the dependency.
 const clientPromise = require('../../api-utils/mongodb-client');
-const { fetchGameProfile } = require('../../api-utils/fetchGameProfile')
+const { fetchGameProfile } = require('../../api-utils/game/fetchGameProfile')
 const CONSTANTS = require('../../constants')
 
 module.exports = async (req, res) => {

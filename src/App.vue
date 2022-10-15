@@ -62,7 +62,7 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
       },
       async distributeRewards() {
         const res = await axios.post('/api/rewards/distributeRewards')
-        this.$router.go('/')
+        // this.$router.go('/')
       }
     },
     computed: {
@@ -76,6 +76,7 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
           const countdown = new Date(date.subtract(releaseDate , nowDate).toMilliseconds()).toISOString().substr(11, 8)
           if((date.subtract(releaseDate , nowDate).toMilliseconds()/1000) <= 0) {
             this.distributeRewards()
+            this.$router.go("/")
           }
           return countdown
         } else return undefined
@@ -91,7 +92,7 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
       const self = this
       this.dateInterval = setInterval(function () {
         self.time = Date.now()
-      }, 1000)
+      }, 10)
       this.fetchLastDistribution()
       this.$store.commit('changeWindowWidth', window.innerWidth)
       window.addEventListener("resize", this.responsify)
