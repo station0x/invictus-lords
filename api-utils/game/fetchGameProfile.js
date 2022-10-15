@@ -1,11 +1,52 @@
 "use strict";
 // Import the dependency.
-const clientPromise = require('./mongodb-client')
-const CONSTANTS = require('../constants')
+const clientPromise = require('../mongodb-client')
+const CONSTANTS = require('../../constants')
 const axios = require('axios')
 
 function getTodayUnix() {
     return Math.floor((Date.now()/CONSTANTS.economicPolicy.releaseInterval)/1000)
+}
+
+async function getLatestStats(Id) {
+    const resp = (await axios.get(`http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=730&key=${process.env.STEAM_API_KEY}&steamid=${Id}`, {}))
+    // console.log(resp.data.playerstats)
+    let latestData  = Object.assign({}, ...(resp.data.playerstats.stats.map(item => ({ [item.name]: item.value }))))
+    const formattedLatestData = {
+        timePlayed: { value: latestData.total_time_played || 0 },
+        score: { value: latestData.total_contribution_score || 0 },
+        kills: { value: latestData.total_kills || 0 },
+        deaths: { value: latestData.total_deaths || 0 },
+        // kd: { value: formattedLatestData.kills/formattedLatestData.deaths || 0 },
+        damage: { value: latestData.total_damage_done || 0 },
+        headshots: { value: latestData.total_kills_headshot || 0 },
+        dominations: { value: latestData.total_dominations || 0 },
+        shotsFired: { value: latestData.total_shots_fired || 0 },
+        shotsHit: { value: latestData.total_shots_hit || 0 },
+        // shotsAccuracy: { value: (formattedLatestData.shotsHit/formattedLatestData.shotsFired) * 100 || 0 },
+        snipersKilled: { value: latestData.total_kills_against_zoomed_sniper || 0 },
+        dominationOverkills: { value: latestData.total_domination_overkills || 0 },
+        dominationRevenges: { value: latestData.total_revenges || 0},
+        bombsPlanted: { value: latestData.total_planted_bombs || 0 },
+        bombsDefused: { value: latestData.total_defused_bombs || 0 },
+        moneyEarned: { value: latestData.total_money_earned || 0 },
+        hostagesRescued: { value: latestData.total_rescued_hostages || 0 },
+        mvp: { value: latestData.total_mvps || 0 },
+        matchesPlayed: { value: latestData.total_matches_played || 0 },
+        wins: { value: latestData.total_matches_won || 0 },
+        ties: { value: latestData.total_matches_drawn || 0 },
+        // losses: { value: formattedLatestData.matchesPlayed - (formattedLatestData.wins + formattedLatestData.ties) || 0},
+        roundsPlayed: { value: latestData.total_rounds_played || 0 },
+        roundsWon: { value: latestData.total_wins || 0 },
+        // wlPercentage: { value: (formattedLatestData.wins/formattedLatestData.matchesPlayed) * 100 || 0 },
+        // headshotPct: { value: (formattedLatestData.headshots/formattedLatestData.kills) * 100 || 0 }
+    }
+    formattedLatestData['kd'] =              { value: formattedLatestData.kills.value/formattedLatestData.deaths.value || 0 }
+    formattedLatestData['shotsAccuracy'] =   { value: (formattedLatestData.shotsHit.value/formattedLatestData.shotsFired.value) * 100 || 0 }
+    formattedLatestData['losses'] =          { value: formattedLatestData.matchesPlayed.value - formattedLatestData.wins.value || 0 }
+    formattedLatestData['wlPercentage'] =    { value: (formattedLatestData.wins.value/formattedLatestData.matchesPlayed.value) * 100 || 0 }
+    formattedLatestData['headshotPct'] =     { value: (formattedLatestData.headshots.value/formattedLatestData.kills.value) * 100 || 0 }
+    return formattedLatestData
 }
 
 async function fetchGameProfile(address, game) {
@@ -34,43 +75,7 @@ async function fetchGameProfile(address, game) {
         // let playerGameDoc = {...playerGameDocRaw}
         // delete playerGameDoc.personaId
         try {
-            const resp = (await axios.get(`http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=730&key=${process.env.STEAM_API_KEY}&steamid=${personaId}`, {}))
-            let latestData  = Object.assign({}, ...(resp.data.playerstats.stats.map(item => ({ [item.name]: item.value }))))
-            const formattedLatestData = {
-                timePlayed: { value: latestData.total_time_played || 0 },
-                score: { value: latestData.total_contribution_score || 0 },
-                kills: { value: latestData.total_kills || 0 },
-                deaths: { value: latestData.total_deaths || 0 },
-                // kd: { value: formattedLatestData.kills/formattedLatestData.deaths || 0 },
-                damage: { value: latestData.total_damage_done || 0 },
-                headshots: { value: latestData.total_kills_headshot || 0 },
-                dominations: { value: latestData.total_dominations || 0 },
-                shotsFired: { value: latestData.total_shots_fired || 0 },
-                shotsHit: { value: latestData.total_shots_hit || 0 },
-                // shotsAccuracy: { value: (formattedLatestData.shotsHit/formattedLatestData.shotsFired) * 100 || 0 },
-                snipersKilled: { value: latestData.total_kills_against_zoomed_sniper || 0 },
-                dominationOverkills: { value: latestData.total_domination_overkills || 0 },
-                dominationRevenges: { value: latestData.total_revenges || 0},
-                bombsPlanted: { value: latestData.total_planted_bombs || 0 },
-                bombsDefused: { value: latestData.total_defused_bombs || 0 },
-                moneyEarned: { value: latestData.total_money_earned || 0 },
-                hostagesRescued: { value: latestData.total_rescued_hostages || 0 },
-                mvp: { value: latestData.total_mvps || 0 },
-                matchesPlayed: { value: latestData.total_matches_played || 0 },
-                wins: { value: latestData.total_matches_won || 0 },
-                ties: { value: latestData.total_matches_drawn || 0 },
-                // losses: { value: formattedLatestData.matchesPlayed - (formattedLatestData.wins + formattedLatestData.ties) || 0},
-                roundsPlayed: { value: latestData.total_rounds_played || 0 },
-                roundsWon: { value: latestData.total_wins || 0 },
-                // wlPercentage: { value: (formattedLatestData.wins/formattedLatestData.matchesPlayed) * 100 || 0 },
-                // headshotPct: { value: (formattedLatestData.headshots/formattedLatestData.kills) * 100 || 0 }
-            }
-            formattedLatestData['kd'] =              { value: formattedLatestData.kills.value/formattedLatestData.deaths.value || 0 }
-            formattedLatestData['shotsAccuracy'] =   { value: (formattedLatestData.shotsHit.value/formattedLatestData.shotsFired.value) * 100 || 0 }
-            formattedLatestData['losses'] =          { value: formattedLatestData.matchesPlayed.value - formattedLatestData.wins.value || 0 }
-            formattedLatestData['wlPercentage'] =    { value: (formattedLatestData.wins.value/formattedLatestData.matchesPlayed.value) * 100 || 0 }
-            formattedLatestData['headshotPct'] =     { value: (formattedLatestData.headshots.value/formattedLatestData.kills.value) * 100 || 0 }
-            
+            const formattedLatestData = await getLatestStats(personaId)
             let gameProfile = {
                 personaId,
                 address,
@@ -128,45 +133,8 @@ async function fetchGameProfile(address, game) {
         // if(Date.now() > Date.now() - 100) {
             // calculate seasons data
             let newPlayerGameDoc = Object.assign({}, playerGameDoc)
-            // console.log(newPlayerGameDoc)
             try {
-                const resp = (await axios.get(`http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=730&key=${process.env.STEAM_API_KEY}&steamid=${personaId}`, {}))
-                let latestData  = Object.assign({}, ...(resp.data.playerstats.stats.map(item => ({ [item.name]: item.value }))))
-                const formattedLatestData = {
-                    timePlayed: { value: latestData.total_time_played || 0 },
-                    score: { value: latestData.total_contribution_score || 0 },
-                    kills: { value: latestData.total_kills || 0 },
-                    deaths: { value: latestData.total_deaths || 0 },
-                    // kd: { value: formattedLatestData.kills/formattedLatestData.deaths || 0 },
-                    damage: { value: latestData.total_damage_done || 0 },
-                    headshots: { value: latestData.total_kills_headshot || 0 },
-                    dominations: { value: latestData.total_dominations || 0 },
-                    shotsFired: { value: latestData.total_shots_fired || 0 },
-                    shotsHit: { value: latestData.total_shots_hit || 0 },
-                    // shotsAccuracy: { value: (formattedLatestData.shotsHit/formattedLatestData.shotsFired) * 100 || 0 },
-                    snipersKilled: { value: latestData.total_kills_against_zoomed_sniper || 0 },
-                    dominationOverkills: { value: latestData.total_domination_overkills || 0 },
-                    dominationRevenges: { value: latestData.total_revenges || 0},
-                    bombsPlanted: { value: latestData.total_planted_bombs || 0 },
-                    bombsDefused: { value: latestData.total_defused_bombs || 0 },
-                    moneyEarned: { value: latestData.total_money_earned || 0 },
-                    hostagesRescued: { value: latestData.total_rescued_hostages || 0 },
-                    mvp: { value: latestData.total_mvps || 0 },
-                    matchesPlayed: { value: latestData.total_matches_played || 0 },
-                    wins: { value: latestData.total_matches_won || 0 },
-                    ties: { value: latestData.total_matches_drawn || 0 },
-                    // losses: { value: formattedLatestData.matchesPlayed - (formattedLatestData.wins + formattedLatestData.ties) || 0},
-                    roundsPlayed: { value: latestData.total_rounds_played || 0 },
-                    roundsWon: { value: latestData.total_wins || 0 },
-                    // wlPercentage: { value: (formattedLatestData.wins/formattedLatestData.matchesPlayed) * 100 || 0 },
-                    // headshotPct: { value: (formattedLatestData.headshots/formattedLatestData.kills) * 100 || 0 }
-                }
-                formattedLatestData['kd'] =              { value: formattedLatestData.kills.value/formattedLatestData.deaths.value || 0 }
-                formattedLatestData['shotsAccuracy'] =   { value: (formattedLatestData.shotsHit.value/formattedLatestData.shotsFired.value) * 100 || 0 }
-                formattedLatestData['losses'] =          { value: formattedLatestData.matchesPlayed.value - formattedLatestData.wins.value || 0 }
-                formattedLatestData['wlPercentage'] =    { value: (formattedLatestData.wins.value/formattedLatestData.matchesPlayed.value) * 100 || 0 }
-                formattedLatestData['headshotPct'] =     { value: (formattedLatestData.headshots.value/formattedLatestData.kills.value) * 100 || 0 }
-
+                const formattedLatestData = await getLatestStats(personaId)
                 newPlayerGameDoc.gameInfoLifetime = formattedLatestData
                 for(const property in newPlayerGameDoc.gameInfoSnapshot) {
                     if(newPlayerGameDoc.gameInfo.hasOwnProperty(property)) {
@@ -183,7 +151,6 @@ async function fetchGameProfile(address, game) {
                 newPlayerGameDoc.gameInfo['headshotPct'].value = (newPlayerGameDoc.gameInfo.headshots.value / newPlayerGameDoc.gameInfo.kills.value) * 100 || 0
 
                 // backward compatability
-                // console.log(Array.isArray(newPlayerGameDoc.dailyGameInfo))
                 if(Array.isArray(newPlayerGameDoc.dailyGameInfo)) {
                     console.log('yes')
                     newPlayerGameDoc.dailyGameInfo = {}
@@ -236,22 +203,25 @@ async function fetchGameProfile(address, game) {
                             newPlayerGameDoc.dailyGameInfo['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo.shotsHit.value / newPlayerGameDoc.dailyGameInfo.shotsFired.value) * 100 || 0 
                             newPlayerGameDoc.dailyGameInfo['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo.wins.value / newPlayerGameDoc.dailyGameInfo.matchesPlayed.value) * 100 || 0
                             newPlayerGameDoc.dailyGameInfo['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo.headshots.value / newPlayerGameDoc.dailyGameInfo.kills.value) * 100 || 0
-                        } else {
-                            newPlayerGameDoc.daySinceEpoch = getTodayUnix()
-                            newPlayerGameDoc.dailyGameInfoSnapshot = formattedLatestData
-                            for(const property in newPlayerGameDoc.gameInfoSnapshot) {
-                                if(newPlayerGameDoc.gameInfo.hasOwnProperty(property)) {
-                                    const value = formattedLatestData[property].value - newPlayerGameDoc.dailyGameInfoSnapshot[property].value
-                                    newPlayerGameDoc.dailyGameInfo[property] = {
-                                        value: value                    
-                                    }
-                                }
-                            }
-                            // Calculate percentages-based stats
-                            newPlayerGameDoc.dailyGameInfo['kd'].value = newPlayerGameDoc.dailyGameInfo.kills.value / newPlayerGameDoc.dailyGameInfo.deaths.value || 0
-                            newPlayerGameDoc.dailyGameInfo['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo.shotsHit.value / newPlayerGameDoc.dailyGameInfo.shotsFired.value) * 100 || 0 
-                            newPlayerGameDoc.dailyGameInfo['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo.wins.value / newPlayerGameDoc.dailyGameInfo.matchesPlayed.value) * 100 || 0
-                            newPlayerGameDoc.dailyGameInfo['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo.headshots.value / newPlayerGameDoc.dailyGameInfo.kills.value) * 100 || 0
+                        }
+                        // reset daily progress
+                        else {
+                            await axios.post(process.env.REALM_URL + '/api/rewards/distributeRewards')
+                            // newPlayerGameDoc.daySinceEpoch = getTodayUnix()
+                            // newPlayerGameDoc.dailyGameInfoSnapshot = formattedLatestData
+                            // for(const property in newPlayerGameDoc.gameInfoSnapshot) {
+                            //     if(newPlayerGameDoc.gameInfo.hasOwnProperty(property)) {
+                            //         const value = formattedLatestData[property].value - newPlayerGameDoc.dailyGameInfoSnapshot[property].value
+                            //         newPlayerGameDoc.dailyGameInfo[property] = {
+                            //             value: value                    
+                            //         }
+                            //     }
+                            // }
+                            // // Calculate percentages-based stats
+                            // newPlayerGameDoc.dailyGameInfo['kd'].value = newPlayerGameDoc.dailyGameInfo.kills.value / newPlayerGameDoc.dailyGameInfo.deaths.value || 0
+                            // newPlayerGameDoc.dailyGameInfo['shotsAccuracy'].value = (newPlayerGameDoc.dailyGameInfo.shotsHit.value / newPlayerGameDoc.dailyGameInfo.shotsFired.value) * 100 || 0 
+                            // newPlayerGameDoc.dailyGameInfo['wlPercentage'].value = (newPlayerGameDoc.dailyGameInfo.wins.value / newPlayerGameDoc.dailyGameInfo.matchesPlayed.value) * 100 || 0
+                            // newPlayerGameDoc.dailyGameInfo['headshotPct'].value = (newPlayerGameDoc.dailyGameInfo.headshots.value / newPlayerGameDoc.dailyGameInfo.kills.value) * 100 || 0
                         }
                     }
                 }
@@ -259,10 +229,10 @@ async function fetchGameProfile(address, game) {
                 // console.log(newPlayerGameDoc)
                 // Calculate ratings (seasonal and daily)
                 // const todaysProgress = newPlayerGameDoc.dailyGameInfo[newPlayerGameDoc.dailyGameInfo.length - 1][today].stats
-                newPlayerGameDoc.rating =
-                Number.parseInt((newPlayerGameDoc.dailyGameInfo['score'].value 
-                * (newPlayerGameDoc.dailyGameInfo['wlPercentage'].value * newPlayerGameDoc.dailyGameInfo['matchesPlayed'].value)
-                * (newPlayerGameDoc.dailyGameInfo['headshotPct'].value / 100)));
+                newPlayerGameDoc.rating = 1000
+                // Number.parseInt((newPlayerGameDoc.dailyGameInfo['score'].value 
+                // * (newPlayerGameDoc.dailyGameInfo['wlPercentage'].value * newPlayerGameDoc.dailyGameInfo['matchesPlayed'].value)
+                // * (newPlayerGameDoc.dailyGameInfo['headshotPct'].value / 100)));
                 
                 newPlayerGameDoc.seasonalRating = 
                 Number.parseInt((newPlayerGameDoc.gameInfo['score'].value 
@@ -342,5 +312,6 @@ async function fetchGameProfile(address, game) {
 
 module.exports = {
     fetchGameProfile,
-    getTodayUnix
+    getTodayUnix,
+    getLatestStats
 }
