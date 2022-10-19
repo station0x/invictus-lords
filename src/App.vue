@@ -92,7 +92,7 @@ https://t.me/invictuslords" target="_blank">Telegram</a></p>
       const self = this
       this.dateInterval = setInterval(function () {
         self.time = Date.now()
-      }, 10)
+      }, 1000)
       this.fetchLastDistribution()
       this.$store.commit('changeWindowWidth', window.innerWidth)
       window.addEventListener("resize", this.responsify)
