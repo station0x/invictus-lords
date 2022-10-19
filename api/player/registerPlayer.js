@@ -13,9 +13,10 @@ module.exports = async (req, res) => {
     const address = getAddress(req.query.signature)
     const providerType = req.query.providerType.toLowerCase()
     const providerIdHash = req.query.hash
+    const isAirdropCandidate = req.query.airdropCandidate
     console.log(providerIdHash)
     let playerAlias = req.query.playerAlias
-    console.log(playerAlias)
+    console.log(playerAlias, isAirdropCandidate)
     const useSteamName = req.query.useSteamName
     if(!providerIdHash) throw new Error('Hash is missing')
     if(!validate(address)) {
@@ -45,7 +46,8 @@ module.exports = async (req, res) => {
     } else if(useSteamName === 'true') {
         playerAlias = steamData.user.username
     }
-     // player document doesn't exist, let's create one
+    
+    //player document doesn't exist, let's create one
     await players.insertOne({
         address,
         [`${providerType}`] : `${providerId}`,
@@ -59,5 +61,25 @@ module.exports = async (req, res) => {
         createdAt: Date.now(),
         rewards: 0
     })
+    if(isAirdropCandidate) {
+        const airDropList = db.collection("airdropList")
+        let projectName = isAirdropCandidate
+        const projectDocument = (await airDropList.find({projectName}).limit(1).toArray())[0]
+        if(projectDocument) {
+            let newProjectDoc = {...projectDocument}
+            let membersSet = new Set(newProjectDoc.members)
+            membersSet.add(address)
+            projectDocument.members = [...membersSet]
+            await airDropList.updateOne({projectName}, {
+                $set: newProjectDoc
+            })
+        } else {
+            let newProjectDoc = {
+                projectName: isAirdropCandidate,
+                members: [address]
+            }
+            await airDropList.insertOne(newProjectDoc)
+        }
+    }
     res.status(200).json({ success: true });
 }
