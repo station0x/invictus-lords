@@ -13,6 +13,7 @@ const PlayerProfile = () => import('@/views/PlayerProfile.vue')
 const Leaderboard = () => import('@/views/Leaderboard.vue')
 const Ecosystem = () => import('@/views/Ecosystem.vue')
 const Minting = () => import('@/views/Minting.vue')
+const EliteJoin = () => import ('@/views/EliteJoin.vue')
 
 // const Login = () => import('@/views/Login')
 // const RedeemAccessKey = () => import('@/views/RedeemAccessKey')
@@ -34,6 +35,7 @@ const routes = [
   { path: '/leaderboard', component: Leaderboard, name: 'Leaderboard', meta: { title: 'Leaderboard' } },
   { path: '/minting', component: Minting, name: 'Minting', meta: { title: 'Minting' } },
   { path: '/ecosystem', component: Ecosystem, name: 'Ecosystem', meta: { title: 'Ecosystem' } },
+  { path: '/invitations/:project', component: EliteJoin, name: 'Invitations', meta: { title: 'Invited by ' } },
 
 //   { path: '/login/:redirect?:key?', component: Login, name: 'Login', meta: { title: 'Login' } },
 
@@ -54,9 +56,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // if(to.matched.some(record => record.meta.requiresLogin) && !store.state.address) next({ name: 'Login' })
-  if(to.name != 'Register' && store.state.candidateSignature) {
+  if(to.name != 'Register' && (store.state.candidateSignature || store.state.airdropCandidate)) {
     // clear candidate data from state and localstorage 
     store.dispatch('unregisterCandidate')
+    store.dispatch('unregisterAirdropCandidate')
     next()
   }
   // else if(to.name == 'Lobby' && (!store.state.profile || store.state.profile.banned)) next({ name: 'Home' })
@@ -67,7 +70,11 @@ router.afterEach((to, from, next) => {
   // Use next tick to handle router history correctly
   // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
   Vue.nextTick(() => {
+    if(to.name === 'Invitations') {
+      document.title = to.meta.title + to.params.project + TITLE;
+    } else {
       document.title = to.meta.title + TITLE;
+    }
   })
 })
 

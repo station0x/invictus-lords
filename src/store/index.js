@@ -24,7 +24,8 @@ export default new Vuex.Store({
         inventory: [],
         scrollY: 0,
         clicked: 0,
-        isPlayer: undefined
+        isPlayer: undefined,
+        airdropCandidate: window.localStorage.getItem('airdropCandidate')
     },
     mutations: {
         sign(state, {signature, address}) {
@@ -56,6 +57,9 @@ export default new Vuex.Store({
             state.candidateSignature = signature
             state.candidateUsername = username
             state.candidateUseSteamData = useSteamData
+        },
+        setAirdropCandidate(state, project) {
+            state.airdropCandidate = project
         },
         changeWindowWidth(state, width) {
             state.innerWidth = width
@@ -100,6 +104,14 @@ export default new Vuex.Store({
             window.localStorage.removeItem('candidateSignature')
             window.localStorage.removeItem('candidateUsername')
             window.localStorage.removeItem('candidateUseSteamData')
+        },
+        registerAirdropCandidate({commit, dispatch}, project) {
+            commit('setAirdropCandidate', project)
+            window.localStorage.setItem('airdropCandidate', project)
+        },
+        unregisterAirdropCandidate({commit, dispatch}) {
+            commit('setAirdropCandidate', undefined)
+            window.localStorage.removeItem('airdropCandidate')
         },
         disconnect({commit, dispatch}) {
             commit('sign', {})

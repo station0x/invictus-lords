@@ -3,6 +3,9 @@
     <div class="lg:flex">
         <div class="flex items-center mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
             <div class="w-full">
+                <div v-if="airdropCandidate" class="mb-7 p-4 mx-auto text-sm text-invictus-gray-700 bg-gray-100 rounded-lg dark:bg-invictus-gray-700 dark:text-gray-300" role="alert">
+                    <span class="font-medium">You've been invited by <span class="text-invictus-red-500 capitalize">{{ $store.state.airdropCandidate }} </span> to be eligible for governance airdrop. Complete your registeration below.</span>
+                </div>
                 <ol class="flex mx-auto items-center mb-6 text-sm font-medium text-center text-gray-500 dark:text-gray-400 lg:mb-12 sm:text-base">
                     <li class="flex items-center text-invictus-red-600 dark:text-invictus-red-500 sm:after:content-[''] after:w-12 after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
                         <div class="flex items-center sm:block after:content-['/'] sm:after:hidden after:mx-2 after:font-light after:text-gray-200 dark:after:text-gray-500">
@@ -26,10 +29,18 @@
                 <form action="#">
                     <div class="my-6">
                         <!-- <label for="lord-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lord Name</label> -->
-                        <input :disabled="useSteamData" :class="useSteamData ? 'opacity-40' : ''" @change="changePlayerAlias($event)" type="text" name="full-name" id="full-name" class="bg-invictus-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-invictus-red-600 focus:border-invictus-red-600 block w-full p-2.5 dark:bg-invictus-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Lord Name" required="" :value="playerAlias">
+                        <form class="py-2">
+                            <div class="relative w-full">
+                            <input :disabled="useSteamData" :class="useSteamData ? 'opacity-40' : ''" @change="changePlayerAlias($event)" type="text" name="full-name" id="full-name" class="bg-invictus-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-invictus-red-600 focus:border-invictus-red-600 block w-full p-2.5 dark:bg-invictus-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Lord Name" required="" :value="localPlayerAlias">
+                            <button :disabled="useSteamData" :class="useSteamData ? 'opacity-40 cursor-not-allowed' : ''" @click="generateRandUser()" type="button" class="absolute top-0 right-0 p-2.5 text-sm font-lgiht text-gray-400 bg-invictus-gray-500 rounded-r-lg border border-gray-600 hover:bg-invictus-gray-200 focus:outline-none focus:ring-red-300 dark:bg-invictus-gray-700 dark:hover:bg-invictus-gray-600 dark:focus:ring-invictus-gray-800">
+                                        Generate Random Name
+                                    </button>
+                                </div>
+                        </form>
                         <p class="my-2 text-sm text-gray-600 dark:text-white-500">We've generated a random anon-friendly name for you, you can change it to anything or use your default steam name</p>
+                        
                     </div>
-                    <div class="-mt-2 mb-7">
+                    <div class="-mt-2 mb-7 flex">
                         <label for="small-toggle" class="inline-flex relative items-center mb-5 cursor-pointer" >
                             <input type="checkbox" @change="changeToggleVal" id="small-toggle" class="sr-only peer" :checked="useSteamData">
                             <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-invictus-red-300 dark:peer-focus:ring-invictus-red-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-invictus-red-600"></div>
@@ -55,13 +66,16 @@
 <script>
     import axios from 'axios'
     import { ethers } from 'ethers'
+    import { generateUsername } from "unique-username-generator"
+
     export default {
         data () {
             return {
                 steamLoader: false,
                 localPlayerAlias: undefined,
                 useSteamData: false,
-                mmInstalled: false
+                mmInstalled: false,
+                airdropCandidate: false
             }
         },
         props: {
@@ -84,7 +98,7 @@
         },
         beforeUpdate() {
             if(!this.isMetamaskTrue) {
-                this.localPlayerAlias = this.playerAlias
+                if(this.useSteamData) this.localPlayerAlias = this.playerAlias
             }
         },
         methods: {
@@ -124,8 +138,9 @@
                         providerType: "steam",
                         hash: this.user.steamHash,
                         avatar: this.user.avatar,
-                        playerAlias: this.PlayerAlias,
-                        useSteamName: this.useSteamData
+                        playerAlias: this.localPlayerAlias,
+                        useSteamName: this.useSteamData,
+                        airdropCandidate: this.airdropCandidate
                     }
                 })
             } catch(error) {
@@ -143,6 +158,9 @@
             })
             this.steamLoader = false
             return res
+        },
+        generateRandUser() {
+            if(!this.useSteamData) this.localPlayerAlias = generateUsername("-") + "#" +  Math.floor(1000 + Math.random() * 9000) 
         },
         async auth() {
             this.steamLoader = true
@@ -162,7 +180,8 @@
       },
         created() {
             if(typeof window.ethereum !== 'undefined') this.mmInstalled = true
-            this.localPlayerAlias =  this.$props['playerAlias']
+            this.localPlayerAlias = this.$props['playerAlias']
+            this.airdropCandidate = this.$store.state.airdropCandidate ? this.$store.state.airdropCandidate : false
         }
     }
 </script>
