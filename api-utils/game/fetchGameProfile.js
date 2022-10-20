@@ -214,7 +214,7 @@ async function fetchGameProfile(address, game) {
                 // console.log(newPlayerGameDoc)
                 // Calculate ratings (seasonal and daily)
                 // const todaysProgress = newPlayerGameDoc.dailyGameInfo[newPlayerGameDoc.dailyGameInfo.length - 1][today].stats
-                newPlayerGameDoc.rating = 1000 + Number.parseInt((newPlayerGameDoc.dailyGameInfo['score'].value 
+                newPlayerGameDoc.rating = Number.parseInt((newPlayerGameDoc.dailyGameInfo['score'].value 
                 * (newPlayerGameDoc.dailyGameInfo['wlPercentage'].value * newPlayerGameDoc.dailyGameInfo['matchesPlayed'].value)
                 * (newPlayerGameDoc.dailyGameInfo['headshotPct'].value / 100)));
                 
